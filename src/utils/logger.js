@@ -27,9 +27,7 @@ async function logError(message, error = null) {
         error ? `\nDetails: ${error.stack || JSON.stringify(error, null, 2)}` : ''
     }\n\n\n`;
 
-    // Konsola yazdırma
-    if (process.env.TEST_MODE === 'false')
-        console.error(logMessage);
+    console.error(logMessage);
 
     // Log dosyasına yazma işlemini bekleyin
     try {
