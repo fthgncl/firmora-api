@@ -8,7 +8,7 @@ const statusRouter = require('../routes/serverStatus');
 const verifyTokenMiddleware = require('../middleware/verifyToken');
 const refreshTokenMiddleware = require('../middleware/refreshToken');
 const tokenPayloadMiddleware = require('../middleware/tokenPayloadMiddleware');
-const { strictRateLimit } = require('../../middleware/rateLimitMiddleware');
+const { strictRateLimit } = require('../middleware/rateLimitMiddleware');
 
 const setupRoutes = (app) => {
 

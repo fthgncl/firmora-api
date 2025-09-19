@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('../../config/swagger');
-const { generalRateLimit } = require('../../middleware/rateLimitMiddleware');
+const { generalRateLimit } = require('../middleware/rateLimitMiddleware');
 
 const setupMiddlewares = (app) => {
     // Güvenlik ve rate limiting
