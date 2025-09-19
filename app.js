@@ -11,7 +11,7 @@ const colors = require('ansi-colors');
         // loadEnv() tamamlandıktan sonra diğer modülleri yükle
         const { databaseInit } = require('./src/database');
         const startExpressApp = require('./src/express');
-        //const { startBackupService } = require('./src/services/backupService');
+        const { startBackupService } = require('./src/services/backupService');
 
         console.log(colors.bgGreen.black('~~~ Uygulama başlatılıyor ~~~'));
         console.log(colors.bgYellow.black(envResult.message));
@@ -25,8 +25,8 @@ const colors = require('ansi-colors');
         console.log(colors.bgYellow.black(appResult.message));
 
         // Backup servisini başlat
-        //const backupResult = await startBackupService();
-        //console.log(colors.bgYellow.black(backupResult.message));
+        const backupResult = await startBackupService();
+        console.log(colors.bgYellow.black(backupResult.message));
 
         console.log(colors.bgGreen.black('~~~ Uygulama başlatıldı! ~~~'));
     } catch (error) {
