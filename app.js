@@ -1,7 +1,6 @@
 const logError = require('./src/utils/logger');
 const loadEnv = require('./src/utils/loadEnv');
 const colors = require('ansi-colors');
-const {databaseInit} = require("./src/database");
 
 (async () => {
     try {
