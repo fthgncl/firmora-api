@@ -25,10 +25,9 @@ const languageMiddleware = async (req, res, next) => {
             return next();
         }
 
-        // İstenen dil desteklenmiyor ise ilk desteklenen dili kullan
+        // İstenen dil desteklenmiyor ise varsayılan dili kullan
         if (!supportedLanguages.includes(language)) {
-            language = supportedLanguages[0];
-            console.log(`Desteklenmeyen dil, ${language} kullanılıyor`);
+            language = process.env.DEFAULT_LANGUAGE;
         }
 
         // Dili değiştir
