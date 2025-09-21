@@ -1,0 +1,23 @@
+{
+  "server": {
+    "starting": "Application starting",
+    "started": "Application started!",
+    "failed": "Application could not be started!",
+    "running": "Server is running"
+  },
+  "env": {
+    "loaded": "Environment variables loaded"
+  },
+  "database": {
+    "initialized": "Database initialized"
+  },
+  "express": {
+    "started": "Express application started"
+  },
+  "backup": {
+    "started": "Backup service started"
+  },
+  "errors": {
+    "expressStart": "Error occurred while starting Express application"
+  }
+}

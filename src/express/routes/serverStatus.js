@@ -35,9 +35,10 @@ const responseHelper = require('../utils/responseHelper');
 // Health Check Route
 router.get('/', (req, res) => {
     return responseHelper.success(res, {
-        message: 'Sunucu çalışıyor',
+        message: req.t('server.running'),
         timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV || 'development' // Varsayılan 'development'
+        environment: process.env.NODE_ENV || 'unknown', // NODE_ENV tanımlanmadığında 'unknown'
+        language: req.language
     });
 });
 

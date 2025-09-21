@@ -4,6 +4,7 @@ const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('../../config/swagger');
 const { generalRateLimit } = require('../middleware/rateLimitMiddleware');
+const languageMiddleware = require('../middleware/languageMiddleware');
 
 const setupMiddlewares = (app) => {
     // Güvenlik ve rate limiting
@@ -14,6 +15,9 @@ const setupMiddlewares = (app) => {
 
     // HTTP istek loglama
     app.use(morgan('dev'));
+
+    // Dil desteği middleware'i - tüm route'larda dil desteği
+    app.use(languageMiddleware);
 
     // Body parsing middleware'ları
     app.use(express.json());

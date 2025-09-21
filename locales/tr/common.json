@@ -1,0 +1,23 @@
+{
+  "server": {
+    "starting": "Uygulama başlatılıyor",
+    "started": "Uygulama başlatıldı!",
+    "failed": "Uygulama başlatılamadı!",
+    "running": "Sunucu çalışıyor"
+  },
+  "env": {
+    "loaded": "Ortam değişkenleri yüklendi"
+  },
+  "database": {
+    "initialized": "Veritabanı başlatıldı"
+  },
+  "express": {
+    "started": "Express uygulaması başlatıldı"
+  },
+  "backup": {
+    "started": "Backup servisi başlatıldı"
+  },
+  "errors": {
+    "expressStart": "Express uygulaması başlatılırken hata oluştu"
+  }
+}
