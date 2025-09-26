@@ -24,6 +24,10 @@
       "success": "Giriş başarılı!"
     }
   },
+  "responses": {
+    "serverError": "Sunucu hatası. Lütfen daha sonra tekrar deneyin.",
+    "unknownError": "Bilinmeyen hata"
+  },
   "errors": {
     "expressStart": "Express uygulaması başlatılırken hata oluştu"
   }

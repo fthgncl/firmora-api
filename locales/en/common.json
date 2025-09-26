@@ -24,6 +24,10 @@
       "success": "Sign in successful!"
     }
   },
+  "responses": {
+    "serverError": "Server error. Please try again later.",
+    "unknownError": "Unknown error"
+  },
   "errors": {
     "expressStart": "Error occurred while starting Express application"
   }

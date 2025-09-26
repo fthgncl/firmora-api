@@ -4,6 +4,7 @@
  */
 
 const logError = require("../../utils/logger");
+const { t } = require("../../config/i18nConfig");
 
 /**
  * Başarılı yanıt döndürür (HTTP 200)
@@ -46,8 +47,8 @@ async function serverError(res, error) {
 
     return res.status(500).json({
         status: 'error',
-        message: 'Sunucu hatası. Lütfen daha sonra tekrar deneyin.',
-        error: error.message || 'Bilinmeyen hata'
+        message: t('responses.serverError'),
+        error: error.message || t('responses.unknownError')
     });
 }
 

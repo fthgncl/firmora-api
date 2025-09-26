@@ -24,6 +24,10 @@
       "success": "Anmeldung erfolgreich!"
     }
   },
+  "responses": {
+    "serverError": "Serverfehler. Bitte versuchen Sie es später erneut.",
+    "unknownError": "Unbekannter Fehler"
+  },
   "errors": {
     "expressStart": "Fehler beim Starten der Express-Anwendung"
   }
