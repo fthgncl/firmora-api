@@ -16,12 +16,6 @@ const options = {
         ],
         components: {
             securitySchemes: {
-                BearerAuth: {
-                    type: 'http',
-                    scheme: 'bearer',
-                    bearerFormat: 'JWT',
-                    description: 'JWT token authentication'
-                },
                 ApiKeyAuth: {
                     type: 'apiKey',
                     in: 'header',
@@ -31,7 +25,6 @@ const options = {
             }
         },
         security: [
-            {BearerAuth: []},
             {ApiKeyAuth: []}
         ]
     },
