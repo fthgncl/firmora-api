@@ -6,6 +6,101 @@ const {createToken} = require("../../auth/jwt");
 const responseHelper = require('../utils/responseHelper');
 const { t } = require('../../config/i18nConfig');
 
+/**
+ * @swagger
+ * /signIn:
+ *   post:
+ *     summary: Kullanıcı giriş işlemi
+ *     description: Kullanıcı adı ve şifre ile giriş yaparak JWT token alır
+ *     tags:
+ *       - Authentication
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Kullanıcı adı
+ *                 example: "john_doe"
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 description: Kullanıcı şifresi
+ *                 example: "password123"
+ *               rememberMe:
+ *                 type: boolean
+ *                 description: Beni hatırla seçeneği (token süresini uzatır)
+ *                 example: false
+ *     responses:
+ *       200:
+ *         description: Başarılı giriş
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Giriş başarılı"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Giriş başarılı"
+ *                     token:
+ *                       type: string
+ *                       description: JWT access token
+ *                       example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *       400:
+ *         description: Gerekli alanlar eksik
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Kullanıcı adı ve şifre gereklidir"
+ *       401:
+ *         description: Geçersiz kullanıcı bilgileri
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Geçersiz kullanıcı adı veya şifre"
+ *       500:
+ *         description: Sunucu hatası
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Sunucu hatası"
+ */
 router.post('/', async (req, res) => {
     const {username, password, rememberMe} = req.body;
 
@@ -17,7 +112,7 @@ router.post('/', async (req, res) => {
     try {
         // Kullanıcıyı veritabanında ara
         const query = `
-            SELECT id, username, email, password
+            SELECT id, username, password
             FROM users
             WHERE username = ?
             LIMIT 1
@@ -37,7 +132,7 @@ router.post('/', async (req, res) => {
         }
 
         // Token oluştur
-        const tokenPayload = {id: user.id, username: user.username, email: user.email, rememberMe: !!rememberMe};
+        const tokenPayload = {id: user.id, username: user.username, rememberMe: !!rememberMe};
         const tokenLifetime = rememberMe ? process.env.REMEMBER_ME_TOKEN_LIFETIME : process.env.DEFAULT_TOKEN_LIFETIME;
         const token = await createToken(tokenPayload, tokenLifetime);
 

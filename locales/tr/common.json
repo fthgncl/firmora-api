@@ -19,7 +19,7 @@
   },
   "auth": {
     "signIn": {
-      "fieldsRequired": "Email/Username ve şifre zorunludur.",
+      "fieldsRequired": "username ve şifre zorunludur.",
       "invalidCredentials": "Şifre, Kullanıcı adı veya e-posta hatalı.",
       "success": "Giriş başarılı!"
     }

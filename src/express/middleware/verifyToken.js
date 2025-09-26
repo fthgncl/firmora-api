@@ -5,11 +5,6 @@ const responseHelper = require('../utils/responseHelper');
  * @swagger
  * components:
  *   securitySchemes:
- *     BearerAuth:
- *       type: http
- *       scheme: bearer
- *       bearerFormat: JWT
- *       description: JWT token authentication
  *     ApiKeyAuth:
  *       type: apiKey
  *       in: header
