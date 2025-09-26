@@ -2,6 +2,7 @@ const createError = require('http-errors');
 
 // Routes
 const statusRouter = require('../routes/serverStatus');
+const signInRouter = require('../routes/signIn');
 
 
 // Middleware
@@ -16,6 +17,7 @@ const setupRoutes = (app) => {
     app.use(tokenPayloadMiddleware);
 
     app.use('/server-status', statusRouter);
+    app.use('/sign-in', strictRateLimit, signInRouter);
 
 
     app.use('/', verifyTokenMiddleware);
