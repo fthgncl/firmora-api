@@ -61,21 +61,38 @@ const checkTables = async () => {
 
             // Sütun kontrolü ve güncellemesi
             for (const [colName, colDef] of Object.entries(columns)) {
-                const existingCol = await queryAsync(`
-                    SELECT COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT, COLUMN_KEY, EXTRA
-                    FROM INFORMATION_SCHEMA.COLUMNS
-                    WHERE TABLE_NAME = '${tableName}' AND COLUMN_NAME = '${colName}';
-                `);
+                try {
+                    const existingCol = await queryAsync(`
+                        SELECT COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT, COLUMN_KEY, EXTRA
+                        FROM INFORMATION_SCHEMA.COLUMNS
+                        WHERE TABLE_NAME = '${tableName}' AND COLUMN_NAME = '${colName}' AND TABLE_SCHEMA = DATABASE();
+                    `);
 
-                if (existingCol.length === 0) {
-                    // Sütun yoksa ekle
-                    await queryAsync(`ALTER TABLE ${tableName} ADD COLUMN \`${colName}\` ${colDef};`);
-                } else {
-                    // Sütun mevcut ama farklıysa güncelle
-                    const currentType = `${existingCol[0].COLUMN_TYPE} ${existingCol[0].IS_NULLABLE === 'NO' ? 'NOT NULL' : ''}`;
-                    if (currentType !== colDef) {
-                        await queryAsync(`ALTER TABLE ${tableName} MODIFY COLUMN \`${colName}\` ${colDef};`);
+                    if (existingCol.length === 0) {
+                        // Sütun yoksa ekle
+                        console.log(`${tableName} tablosuna ${colName} sütunu ekleniyor...`);
+                        await queryAsync(`ALTER TABLE ${tableName} ADD COLUMN \`${colName}\` ${colDef};`);
+                        console.log(`${tableName} tablosuna ${colName} sütunu başarıyla eklendi.`);
+                    } else {
+                        // Sütun mevcut, tip kontrolü yap
+                        const currentCol = existingCol[0];
+                        const currentType = currentCol.COLUMN_TYPE;
+                        const isNullable = currentCol.IS_NULLABLE === 'YES';
+                        const hasDefault = currentCol.COLUMN_DEFAULT !== null;
+
+                        // Basit tip karşılaştırması - sadece değişiklik gerekiyorsa güncelle
+                        const needsUpdate = !colDef.toUpperCase().includes(currentType.toUpperCase());
+
+                        if (needsUpdate) {
+                            console.log(`${tableName} tablosundaki ${colName} sütunu güncelleniyor...`);
+                            await queryAsync(`ALTER TABLE ${tableName} MODIFY COLUMN \`${colName}\` ${colDef};`);
+                            console.log(`${tableName} tablosundaki ${colName} sütunu başarıyla güncellendi.`);
+                        }
                     }
+                } catch (columnError) {
+                    console.error(`${tableName}.${colName} sütunu işlenirken hata:`, columnError.message);
+                    // Sütun hatası durumunda diğer sütunları işlemeye devam et
+                    continue;
                 }
             }
         }

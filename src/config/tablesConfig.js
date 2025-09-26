@@ -7,5 +7,6 @@ module.exports = {
         phone: 'VARCHAR(20) UNIQUE',
         password: 'VARCHAR(255)',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
+        permissions: 'VARCHAR(50) NOT NULL DEFAULT \'\' CHECK (permissions REGEXP \'^[a-zA-Z]*$\')',
     }
 };
