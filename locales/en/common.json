@@ -17,6 +17,13 @@
   "backup": {
     "started": "Backup service started"
   },
+  "auth": {
+    "signIn": {
+      "fieldsRequired": "Email/Username and password are required.",
+      "invalidCredentials": "Password, username or email is incorrect.",
+      "success": "Sign in successful!"
+    }
+  },
   "errors": {
     "expressStart": "Error occurred while starting Express application"
   }

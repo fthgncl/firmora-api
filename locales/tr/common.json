@@ -17,6 +17,13 @@
   "backup": {
     "started": "Backup servisi başlatıldı"
   },
+  "auth": {
+    "signIn": {
+      "fieldsRequired": "Email/Username ve şifre zorunludur.",
+      "invalidCredentials": "Şifre, Kullanıcı adı veya e-posta hatalı.",
+      "success": "Giriş başarılı!"
+    }
+  },
   "errors": {
     "expressStart": "Express uygulaması başlatılırken hata oluştu"
   }

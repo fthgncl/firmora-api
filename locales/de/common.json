@@ -1,0 +1,30 @@
+{
+  "server": {
+    "starting": "Anwendung wird gestartet",
+    "started": "Anwendung gestartet!",
+    "failed": "Anwendung konnte nicht gestartet werden!",
+    "running": "Server läuft"
+  },
+  "env": {
+    "loaded": "Umgebungsvariablen geladen"
+  },
+  "database": {
+    "initialized": "Datenbank initialisiert"
+  },
+  "express": {
+    "started": "Express-Anwendung gestartet"
+  },
+  "backup": {
+    "started": "Backup-Service gestartet"
+  },
+  "auth": {
+    "signIn": {
+      "fieldsRequired": "E-Mail/Benutzername und Passwort sind erforderlich.",
+      "invalidCredentials": "Passwort, Benutzername oder E-Mail ist falsch.",
+      "success": "Anmeldung erfolgreich!"
+    }
+  },
+  "errors": {
+    "expressStart": "Fehler beim Starten der Express-Anwendung"
+  }
+}

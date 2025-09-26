@@ -4,13 +4,14 @@ const router = express.Router();
 const {queryAsync} = require('../../database/utils/connection');
 const {createToken} = require("../../auth/jwt");
 const responseHelper = require('../utils/responseHelper');
+const { t } = require('../../config/i18nConfig');
 
 router.post('/', async (req, res) => {
-    const {emailOrUsername, password, rememberMe} = req.body;
+    const {username, password, rememberMe} = req.body;
 
     // Gerekli alanları kontrol et
-    if (!emailOrUsername || !password) {
-        return responseHelper.error(res, 'Email/Username ve şifre zorunludur.', 400);
+    if (!username || !password) {
+        return responseHelper.error(res, t('auth.signIn.fieldsRequired'), 400);
     }
 
     try {
@@ -18,14 +19,13 @@ router.post('/', async (req, res) => {
         const query = `
             SELECT id, username, email, password
             FROM users
-            WHERE email = ?
-               OR username = ?
+            WHERE username = ?
             LIMIT 1
         `;
-        const users = await queryAsync(query, [emailOrUsername, emailOrUsername]);
+        const users = await queryAsync(query, [username]);
 
         if (users.length === 0) {
-            return responseHelper.error(res, 'Şifre, Kullanıcı adı veya e-posta hatalı.', 401);
+            return responseHelper.error(res, t('auth.signIn.invalidCredentials'), 401);
         }
 
         const user = users[0];
@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
         // Şifre kontrolü
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return responseHelper.error(res, 'Şifre, Kullanıcı adı veya e-posta hatalı', 401);
+            return responseHelper.error(res, t('auth.signIn.invalidCredentials'), 401);
         }
 
         // Token oluştur
@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
         const token = await createToken(tokenPayload, tokenLifetime);
 
         return responseHelper.success(res, {
-            message: 'Giriş başarılı!',
+            message: t('auth.signIn.success'),
             token
         });
 
