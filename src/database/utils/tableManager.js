@@ -1,5 +1,6 @@
 const tablesConfig = require('../../config/tablesConfig');
 const { queryAsync } = require('../utils/connection');
+const bcrypt = require("bcryptjs");
 
 const checkTables = async () => {
 
@@ -95,6 +96,47 @@ const checkTables = async () => {
                     continue;
                 }
             }
+        }
+
+        // Admin kullanıcı kontrolü - "a" yetkisine sahip kullanıcı var mı?
+        try {
+            const adminUsers = await queryAsync(`
+                SELECT COUNT(*) as count 
+                FROM users 
+                WHERE permissions LIKE '%a%';
+            `);
+    
+            if (adminUsers[0].count === 0) {
+                // "a" yetkisine sahip kullanıcı yoksa admin kullanıcı oluştur
+                console.log('Admin yetkisine sahip kullanıcı bulunamadı, varsayılan admin kullanıcı oluşturuluyor...');
+
+                let bcryptPass;
+                await bcrypt.hash('admin', 10)
+                    .then(bcryptData => {
+                        bcryptPass = bcryptData;
+                    })
+                    .catch(error => {
+                        throw {
+                            status: 'error',
+                            message: 'Admin kullanıcı oluşturulurken şifreleme işlemi başarısız.',
+                            error
+                        };
+                    });
+
+                // UUID için basit bir çözüm (gerçek projede uuid paketi kullanılabilir)
+                const adminId = require('crypto').randomUUID();
+
+                const insertDefaultAdminUser = `
+                    INSERT INTO users (id, name, surname, username, phone, password, permissions)
+                    VALUES ('${adminId}', 'Admin', 'User', 'admin', '5551112233', '${bcryptPass}', 'a');
+                `;
+
+                await queryAsync(insertDefaultAdminUser);
+                console.log('Varsayılan admin kullanıcı başarıyla oluşturuldu (username: admin, password: admin)');
+            }
+        } catch (adminError) {
+            console.error('Admin kullanıcı kontrolü/oluşturma sırasında hata:', adminError);
+            // Admin kullanıcı hatası tablo kontrollerini durdurmasın
         }
 
         return { status: 'success', message: 'Tüm tablolar kontrol edildi ve güncellendi.' };
