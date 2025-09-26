@@ -3,13 +3,19 @@ const loadEnv = require('./src/utils/loadEnv');
 const colors = require('ansi-colors');
 
 (async () => {
+    let t = null;
+
     try {
         // Ortam değişkenlerini yükle
         const envResult = await loadEnv();
 
         // i18next'i başlat
-        const { initializeI18n, t } = require('./src/config/i18nConfig');
+        const { initializeI18n } = require('./src/config/i18nConfig');
         const i18nResult = await initializeI18n();
+
+        // i18n yüklendikten sonra t fonksiyonunu al
+        const i18nModule = require('./src/config/i18nConfig');
+        t = i18nModule.t;
 
         console.log(colors.bgGreen.black(`~~~ ${t('server.starting')} ~~~`));
         console.log(colors.bgYellow.black(envResult.message));
@@ -35,7 +41,9 @@ const colors = require('ansi-colors');
         console.log(colors.bgGreen.black(`~~~ ${t('server.started')} ~~~`));
     } catch (error) {
         await logError(error.message, error);
-        console.log(colors.bgRed.black(`~~~ ${t('server.failed')} ~~~`));
+        // t fonksiyonu yüklenmediyse basit mesaj kullan
+        const failedMessage = t ? t('server.failed') : 'Uygulama başlatılamadı!';
+        console.log(colors.bgRed.black(`~~~ ${failedMessage} ~~~`));
         process.exit(1);
     }
 })();
