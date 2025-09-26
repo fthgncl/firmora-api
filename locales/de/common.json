@@ -19,8 +19,8 @@
   },
   "auth": {
     "signIn": {
-      "fieldsRequired": "E-Mail/Benutzername und Passwort sind erforderlich.",
-      "invalidCredentials": "Passwort, Benutzername oder E-Mail ist falsch.",
+      "fieldsRequired": "Benutzername und Passwort sind erforderlich.",
+      "invalidCredentials": "Ungültiger Benutzername oder Passwort.",
       "success": "Anmeldung erfolgreich!"
     }
   },
