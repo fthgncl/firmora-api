@@ -24,12 +24,10 @@ const handleServerError = (error, port) => {
     switch (error.code) {
         case 'EACCES':
             console.error(`${bind} için yetkili erişim gerekli.`);
-            process.exit(1);
-            break;
+            throw error;
         case 'EADDRINUSE':
             console.error(`${bind} zaten kullanılıyor.`);
-            process.exit(1);
-            break;
+            throw error;
         default:
             throw error;
     }
