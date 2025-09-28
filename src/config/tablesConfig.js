@@ -11,7 +11,7 @@ module.exports = {
     },
     companies: {
         id: 'VARCHAR(36) NOT NULL UNIQUE',
-        company_name: 'VARCHAR(50) NOT NULL CHECK (CHAR_LENGTH(company_name) >= 2)',
+        company_name: 'VARCHAR(50) NOT NULL UNIQUE CHECK (CHAR_LENGTH(company_name) >= 2)',
         sector: 'VARCHAR(50) NULL',
         currency: 'VARCHAR(3) NOT NULL DEFAULT \'USD\' CHECK (currency REGEXP \'^[A-Z]{3}$\')',
         owner_id: 'VARCHAR(36) NOT NULL',
