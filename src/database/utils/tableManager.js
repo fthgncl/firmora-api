@@ -1,6 +1,6 @@
 const tablesConfig = require('../../config/tablesConfig');
 const { queryAsync } = require('../utils/connection');
-const bcrypt = require("bcryptjs");
+const createUser = require('../users/createUser');
 
 const checkTables = async () => {
 
@@ -110,29 +110,17 @@ const checkTables = async () => {
                 // "a" yetkisine sahip kullanıcı yoksa admin kullanıcı oluştur
                 console.log('Admin yetkisine sahip kullanıcı bulunamadı, varsayılan admin kullanıcı oluşturuluyor...');
 
-                let bcryptPass;
-                await bcrypt.hash('admin', 10)
-                    .then(bcryptData => {
-                        bcryptPass = bcryptData;
-                    })
-                    .catch(error => {
-                        throw {
-                            status: 'error',
-                            message: 'Admin kullanıcı oluşturulurken şifreleme işlemi başarısız.',
-                            error
-                        };
-                    });
+                const adminUserData = {
+                    name: 'Admin',
+                    surname: 'User',
+                    username: 'admin',
+                    phone: '905551112233',
+                    password: 'admin',
+                    permissions: 'a'
+                };
 
-                // UUID için basit bir çözüm (gerçek projede uuid paketi kullanılabilir)
-                const adminId = require('crypto').randomUUID();
-
-                const insertDefaultAdminUser = `
-                    INSERT INTO users (id, name, surname, username, phone, password, permissions)
-                    VALUES ('${adminId}', 'Admin', 'User', 'admin', '5551112233', '${bcryptPass}', 'a');
-                `;
-
-                await queryAsync(insertDefaultAdminUser);
-                console.log('Varsayılan admin kullanıcı başarıyla oluşturuldu (username: admin, password: admin)');
+                await createUser(adminUserData);
+                console.log(`Varsayılan admin kullanıcı başarıyla oluşturuldu (username: ${adminUserData.username}, password: ${adminUserData.password})`);
             }
         } catch (adminError) {
             console.error('Admin kullanıcı kontrolü/oluşturma sırasında hata:', adminError);
