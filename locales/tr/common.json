@@ -24,6 +24,27 @@
       "success": "Giriş başarılı!"
     }
   },
+  "users": {
+    "create": {
+      "success": "Kullanıcı başarıyla oluşturuldu!",
+      "error": "Kullanıcı oluşturma sırasında hata oluştu"
+    },
+    "delete": {
+      "success": "Kullanıcı başarıyla silindi!",
+      "notFound": "Kullanıcı bulunamadı.",
+      "error": "Kullanıcı silinemedi:"
+    },
+    "getUserById": {
+      "userIdRequired": "Kullanıcı ID belirtilmelidir",
+      "fieldsRequired": "En az bir alan belirtilmelidir",
+      "validFieldsRequired": "En az bir geçerli alan belirtilmelidir",
+      "invalidFieldsLog": "getUserById fonksiyonunda geçersiz alanlar talep edildi"
+    },
+    "getPhoneNumberByUserId": {
+      "userNotFound": "Kullanıcı bulunamadı",
+      "phoneNotRegistered": "Kullanıcının telefon numarası kayıtlı değil"
+    }
+  },
   "responses": {
     "serverError": "Sunucu hatası. Lütfen daha sonra tekrar deneyin.",
     "unknownError": "Bilinmeyen hata"
