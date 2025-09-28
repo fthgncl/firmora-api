@@ -8,5 +8,13 @@ module.exports = {
         password: 'VARCHAR(255)',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
         permissions: 'VARCHAR(50) NOT NULL DEFAULT \'\' CHECK (permissions REGEXP \'^[a-zA-Z]*$\')',
+    },
+    companies: {
+        id: 'VARCHAR(36) NOT NULL UNIQUE',
+        company_name: 'VARCHAR(50) NOT NULL CHECK (CHAR_LENGTH(company_name) >= 2)',
+        sector: 'VARCHAR(50) NULL',
+        currency: 'VARCHAR(3) NOT NULL DEFAULT \'USD\' CHECK (currency REGEXP \'^[A-Z]{3}$\')',
+        owner_id: 'VARCHAR(36) NOT NULL',
+        created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
     }
 };
