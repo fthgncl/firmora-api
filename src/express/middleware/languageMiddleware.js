@@ -2,13 +2,18 @@ const { changeLanguage, t, getSupportedLanguages } = require('../../config/i18nC
 
 const languageMiddleware = async (req, res, next) => {
     try {
+        // Önce özel header'ı kontrol et
+        const customLanguage = req.headers['x-language'];
         // Accept-Language header'ından dil bilgisini al
         const acceptLanguage = req.headers['accept-language'];
 
         let language = process.env.DEFAULT_LANGUAGE;
 
-        if (acceptLanguage) {
-            // Accept-Language header'ından ilk dili al
+        if (customLanguage) {
+            // Özel header varsa bunu kullan
+            language = customLanguage.toLowerCase();
+        } else if (acceptLanguage) {
+            // Özel header yoksa Accept-Language header'ından ilk dili al
             const languages = acceptLanguage.split(',');
             const primaryLang = languages[0].split('-')[0];
             language = primaryLang.toLowerCase();
