@@ -51,5 +51,27 @@
   },
   "errors": {
     "expressStart": "Fehler beim Starten der Express-Anwendung"
+  },
+  "permissions": {
+    "sys_admin": {
+      "name": "Systemadministrator",
+      "description": "Vollzugriff auf alle Systemoperationen"
+    },
+    "user_management": {
+      "name": "Benutzerverwaltung",
+      "description": "Berechtigung zum Anzeigen und Bearbeiten von Benutzerinformationen"
+    },
+    "create_user": {
+      "name": "Benutzer Erstellen",
+      "description": "Berechtigung zum Erstellen neuer Benutzer"
+    },
+    "delete_user": {
+      "name": "Benutzer Löschen",
+      "description": "Berechtigung zum Löschen bestehender Benutzer"
+    },
+    "modify_permissions": {
+      "name": "Berechtigungen Ändern",
+      "description": "Berechtigung zum Bearbeiten von Benutzerberechtigungen"
+    }
   }
 }

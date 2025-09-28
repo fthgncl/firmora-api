@@ -51,5 +51,27 @@
   },
   "errors": {
     "expressStart": "Express uygulaması başlatılırken hata oluştu"
+  },
+  "permissions": {
+    "sys_admin": {
+      "name": "Sistem Yöneticisi",
+      "description": "Tüm sistem işlemlerine tam erişim yetkisi"
+    },
+    "user_management": {
+      "name": "Kullanıcı Yönetimi",
+      "description": "Kullanıcı bilgilerini görüntüleme ve düzenleme yetkisi"
+    },
+    "create_user": {
+      "name": "Kullanıcı Oluşturma",
+      "description": "Yeni kullanıcı oluşturma yetkisi"
+    },
+    "delete_user": {
+      "name": "Kullanıcı Silme",
+      "description": "Mevcut kullanıcıları silme yetkisi"
+    },
+    "modify_permissions": {
+      "name": "Yetki Düzenleme",
+      "description": "Kullanıcı yetkilerini düzenleme yetkisi"
+    }
   }
 }

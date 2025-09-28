@@ -51,5 +51,27 @@
   },
   "errors": {
     "expressStart": "Error occurred while starting Express application"
+  },
+  "permissions": {
+    "sys_admin": {
+      "name": "System Administrator",
+      "description": "Full access to all system operations"
+    },
+    "user_management": {
+      "name": "User Management",
+      "description": "Permission to view and edit user information"
+    },
+    "create_user": {
+      "name": "Create User",
+      "description": "Permission to create new users"
+    },
+    "delete_user": {
+      "name": "Delete User",
+      "description": "Permission to delete existing users"
+    },
+    "modify_permissions": {
+      "name": "Modify Permissions",
+      "description": "Permission to edit user permissions"
+    }
   }
 }
