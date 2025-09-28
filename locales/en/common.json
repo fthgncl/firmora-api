@@ -72,6 +72,47 @@
     "modify_permissions": {
       "name": "Modify Permissions",
       "description": "Permission to edit user permissions"
+    },
+    "readUser": {
+      "userNotFound": "User not found",
+      "success": "User permissions read successfully",
+      "error": "Error occurred while reading user permissions"
+    },
+    "setUser": {
+      "success": "User permissions updated successfully",
+      "error": "Error occurred while updating user permissions"
+    },
+    "checkUserRoles": {
+      "error": "Error occurred while checking permissions for user (id:{{userId}})"
+    }
+  },
+  "companies": {
+    "create": {
+      "success": "Company created successfully!",
+      "error": "Error occurred while creating company"
+    },
+    "delete": {
+      "success": "Company deleted successfully!",
+      "notFound": "Company not found",
+      "error": "Could not delete company"
+    },
+    "update": {
+      "success": "Company updated successfully!",
+      "notFound": "Company not found",
+      "error": "Error occurred while updating company",
+      "noValidFields": "No valid fields to update found"
+    },
+    "getCompanyById": {
+      "companyIdRequired": "Company ID must be specified",
+      "fieldsRequired": "At least one field must be specified",
+      "validFieldsRequired": "At least one valid field must be specified",
+      "invalidFieldsLog": "Invalid fields requested in getCompanyById function"
+    },
+    "getCompaniesByOwnerId": {
+      "ownerIdRequired": "Owner ID must be specified",
+      "fieldsRequired": "At least one field must be specified",
+      "validFieldsRequired": "At least one valid field must be specified",
+      "invalidFieldsLog": "Invalid fields requested in getCompaniesByOwnerId function"
     }
   }
 }

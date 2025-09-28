@@ -1,5 +1,6 @@
 const permissions = require('../config/permissionsConfig');
 const {queryAsync} = require("../database/utils/connection");
+const { t } = require('../config/i18nConfig');
 
 async function readUserPermissions (userId){
     try {
@@ -13,21 +14,21 @@ async function readUserPermissions (userId){
         if (!results || results.length === 0) {
             throw {
                 status: 404,
-                message: 'Kullanıcı bulunamadı'
+                message: t('permissions.readUser.userNotFound')
             };
         }
 
         // Başarılı sonucu döndür
         return {
             status: 200,
-            message: 'Kullanıcı yetkileri okundu',
+            message: t('permissions.readUser.success'),
             permissions: results[0].permissions || ''
         };
 
     } catch (error) {
         throw {
             status: error.status || 500,
-            message: error.message || 'Kullanıcı yetkileri okunurken hata oluştu',
+            message: error.message || t('permissions.readUser.error'),
             error
         };
     }
@@ -42,13 +43,13 @@ async function setUserPermissions(userId, permissions) {
 
         return {
             status: true,
-            message: 'Kullanıcı yetkileri güncellendi.',
+            message: t('permissions.setUser.success'),
             newPermissions: sortedPermissions
         };
     } catch (error) {
         throw {
             status: 500,
-            message: 'Kullanıcı yetkileri güncellenirken hata oluştu.',
+            message: t('permissions.setUser.error'),
             error
         };
     }
@@ -122,7 +123,7 @@ async function checkUserRoles(userId, roles = ['sys_admin'], fullMatch = false) 
             return roles.some(role => userRoles.includes(role));    // roles array'ında bulunan her hangi bir index userRoles array'ında da bulunuyorsa true döner
 
     } catch (error) {
-        console.error(`Kullanıcının (id:${userId}) yetkileri kontrol edilirken hata oluştu:`, error);
+        console.error(t('permissions.checkUserRoles.error', { userId }), error);
     }
 }
 

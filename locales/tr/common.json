@@ -72,6 +72,47 @@
     "modify_permissions": {
       "name": "Yetki Düzenleme",
       "description": "Kullanıcı yetkilerini düzenleme yetkisi"
+    },
+    "readUser": {
+      "userNotFound": "Kullanıcı bulunamadı",
+      "success": "Kullanıcı yetkileri okundu",
+      "error": "Kullanıcı yetkileri okunurken hata oluştu"
+    },
+    "setUser": {
+      "success": "Kullanıcı yetkileri güncellendi",
+      "error": "Kullanıcı yetkileri güncellenirken hata oluştu"
+    },
+    "checkUserRoles": {
+      "error": "Kullanıcının (id:{{userId}}) yetkileri kontrol edilirken hata oluştu"
+    }
+  },
+  "companies": {
+    "create": {
+      "success": "Şirket başarıyla oluşturuldu!",
+      "error": "Şirket oluşturma sırasında hata oluştu"
+    },
+    "delete": {
+      "success": "Şirket başarıyla silindi!",
+      "notFound": "Şirket bulunamadı",
+      "error": "Şirket silinemedi"
+    },
+    "update": {
+      "success": "Şirket başarıyla güncellendi!",
+      "notFound": "Şirket bulunamadı",
+      "error": "Şirket güncellenirken hata oluştu",
+      "noValidFields": "Güncellenecek geçerli alan bulunamadı"
+    },
+    "getCompanyById": {
+      "companyIdRequired": "Şirket ID belirtilmelidir",
+      "fieldsRequired": "En az bir alan belirtilmelidir",
+      "validFieldsRequired": "En az bir geçerli alan belirtilmelidir",
+      "invalidFieldsLog": "getCompanyById fonksiyonunda geçersiz alanlar talep edildi"
+    },
+    "getCompaniesByOwnerId": {
+      "ownerIdRequired": "Sahip ID belirtilmelidir",
+      "fieldsRequired": "En az bir alan belirtilmelidir",
+      "validFieldsRequired": "En az bir geçerli alan belirtilmelidir",
+      "invalidFieldsLog": "getCompaniesByOwnerId fonksiyonunda geçersiz alanlar talep edildi"
     }
   }
 }

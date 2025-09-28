@@ -1,6 +1,6 @@
 {
   "server": {
-    "starting": "Anwendung wird gestartet",
+    "starting": "Anwendung startet",
     "started": "Anwendung gestartet!",
     "failed": "Anwendung konnte nicht gestartet werden!",
     "running": "Server läuft"
@@ -62,16 +62,57 @@
       "description": "Berechtigung zum Anzeigen und Bearbeiten von Benutzerinformationen"
     },
     "create_user": {
-      "name": "Benutzer Erstellen",
+      "name": "Benutzer erstellen",
       "description": "Berechtigung zum Erstellen neuer Benutzer"
     },
     "delete_user": {
-      "name": "Benutzer Löschen",
-      "description": "Berechtigung zum Löschen bestehender Benutzer"
+      "name": "Benutzer löschen",
+      "description": "Berechtigung zum Löschen vorhandener Benutzer"
     },
     "modify_permissions": {
-      "name": "Berechtigungen Ändern",
+      "name": "Berechtigungen ändern",
       "description": "Berechtigung zum Bearbeiten von Benutzerberechtigungen"
+    },
+    "readUser": {
+      "userNotFound": "Benutzer nicht gefunden",
+      "success": "Benutzerberechtigungen erfolgreich gelesen",
+      "error": "Fehler beim Lesen der Benutzerberechtigungen"
+    },
+    "setUser": {
+      "success": "Benutzerberechtigungen erfolgreich aktualisiert",
+      "error": "Fehler beim Aktualisieren der Benutzerberechtigungen"
+    },
+    "checkUserRoles": {
+      "error": "Fehler beim Überprüfen der Berechtigungen für Benutzer (id:{{userId}})"
+    }
+  },
+  "companies": {
+    "create": {
+      "success": "Unternehmen erfolgreich erstellt!",
+      "error": "Fehler beim Erstellen des Unternehmens"
+    },
+    "delete": {
+      "success": "Unternehmen erfolgreich gelöscht!",
+      "notFound": "Unternehmen nicht gefunden",
+      "error": "Unternehmen konnte nicht gelöscht werden"
+    },
+    "update": {
+      "success": "Unternehmen erfolgreich aktualisiert!",
+      "notFound": "Unternehmen nicht gefunden",
+      "error": "Fehler beim Aktualisieren des Unternehmens",
+      "noValidFields": "Keine gültigen Felder zum Aktualisieren gefunden"
+    },
+    "getCompanyById": {
+      "companyIdRequired": "Unternehmens-ID muss angegeben werden",
+      "fieldsRequired": "Mindestens ein Feld muss angegeben werden",
+      "validFieldsRequired": "Mindestens ein gültiges Feld muss angegeben werden",
+      "invalidFieldsLog": "Ungültige Felder in getCompanyById-Funktion angefordert"
+    },
+    "getCompaniesByOwnerId": {
+      "ownerIdRequired": "Eigentümer-ID muss angegeben werden",
+      "fieldsRequired": "Mindestens ein Feld muss angegeben werden",
+      "validFieldsRequired": "Mindestens ein gültiges Feld muss angegeben werden",
+      "invalidFieldsLog": "Ungültige Felder in getCompaniesByOwnerId-Funktion angefordert"
     }
   }
 }
