@@ -8,7 +8,7 @@ const { t } = require('../../config/i18nConfig');
 
 /**
  * @swagger
- * /signIn:
+ * /sign-in:
  *   post:
  *     summary: Kullanıcı giriş işlemi
  *     description: Kullanıcı adı ve şifre ile giriş yaparak JWT token alır

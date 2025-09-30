@@ -17,8 +17,8 @@ const setupRoutes = (app) => {
     app.use('/sign-in', strictRateLimit, signInRouter);
 
 
-    app.use('/', verifyTokenMiddleware);
-    app.use('/', refreshTokenMiddleware);
+    app.use('/', strictRateLimit, verifyTokenMiddleware);
+    app.use('/', strictRateLimit, refreshTokenMiddleware);
 
     // Korumalı rotalar
     app.use('/companies', strictRateLimit, companiesRouter);
