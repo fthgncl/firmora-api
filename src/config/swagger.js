@@ -30,8 +30,7 @@ const options = {
     },
 
     apis: [
-        'src/express/routes/*.js',
-        'src/express/routes/profile/*.js',
+        'src/express/routes/**/*.js',
         'src/express/middleware/*.js',
     ],
 };
