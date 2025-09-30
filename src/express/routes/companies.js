@@ -9,5 +9,6 @@ const deleteCompanyRoute = require('./companies/deleteCompany');
 
 // Company routes
 router.use('/', createCompanyRoute);
+router.use('/', listCompaniesRoute);
 
 module.exports = router;

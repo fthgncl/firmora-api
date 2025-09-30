@@ -14,6 +14,7 @@ module.exports = {
         company_name: 'VARCHAR(50) NOT NULL UNIQUE CHECK (CHAR_LENGTH(company_name) >= 2)',
         sector: 'VARCHAR(50) NULL',
         currency: 'VARCHAR(3) NOT NULL DEFAULT \'USD\' CHECK (currency REGEXP \'^[A-Z]{3}$\')',
+        balance: 'DECIMAL(15, 2) NOT NULL DEFAULT 0',
         owner_id: 'VARCHAR(36) NOT NULL',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
     }
