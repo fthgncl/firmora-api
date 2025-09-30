@@ -8,15 +8,11 @@ const signInRouter = require('../routes/signIn');
 // Middleware
 const verifyTokenMiddleware = require('../middleware/verifyToken');
 const refreshTokenMiddleware = require('../middleware/refreshToken');
-const tokenPayloadMiddleware = require('../middleware/tokenPayloadMiddleware');
 const { strictRateLimit } = require('../middleware/rateLimitMiddleware');
 
 const setupRoutes = (app) => {
 
-    // Tüm routerlardan önce tokenPayload middleware'ini uygula (token kontrolü zorunlu değil)
-    app.use(tokenPayloadMiddleware);
-
-    app.use('/server-status', statusRouter);
+    app.use('/server-status', strictRateLimit, statusRouter);
     app.use('/sign-in', strictRateLimit, signInRouter);
 
 
