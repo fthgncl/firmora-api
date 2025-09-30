@@ -3,6 +3,7 @@ const createError = require('http-errors');
 // Routes
 const statusRouter = require('../routes/serverStatus');
 const signInRouter = require('../routes/signIn');
+const companiesRouter = require('../routes/companies');
 
 
 // Middleware
@@ -20,7 +21,7 @@ const setupRoutes = (app) => {
     app.use('/', refreshTokenMiddleware);
 
     // Korumalı rotalar
-    // app.use......
+    app.use('/companies', strictRateLimit, companiesRouter);
 
     // 404 hata handler'ı - hiçbir rotaya eşleşmeyen istekler için
     app.use((req, res, next) => {

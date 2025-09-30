@@ -18,6 +18,7 @@
     "started": "Backup servisi başlatıldı"
   },
   "auth": {
+    "tokenRequired": "Kimlik doğrulama token'ı gereklidir.",
     "signIn": {
       "fieldsRequired": "Kullanıcı adı ve şifre zorunludur.",
       "invalidCredentials": "Geçersiz kullanıcı adı veya şifre.",
@@ -53,9 +54,14 @@
     "expressStart": "Express uygulaması başlatılırken hata oluştu"
   },
   "permissions": {
+    "insufficientPermissions": "Bu işlem için yeterli yetkiniz bulunmamaktadır.",
     "sys_admin": {
       "name": "Sistem Yöneticisi",
       "description": "Tüm sistem işlemlerine tam erişim yetkisi"
+    },
+    "create_company": {
+      "name": "Şirket Oluşturma",
+      "description": "Yeni şirket oluşturma yetkisi"
     },
     "user_management": {
       "name": "Kullanıcı Yönetimi",
@@ -89,7 +95,9 @@
   "companies": {
     "create": {
       "success": "Şirket başarıyla oluşturuldu!",
-      "error": "Şirket oluşturma sırasında hata oluştu"
+      "error": "Şirket oluşturma sırasında hata oluştu",
+      "fieldsRequired": "Şirket adı ve para birimi alanları zorunludur.",
+      "duplicateError": "Bu isimde bir şirket zaten mevcut."
     },
     "delete": {
       "success": "Şirket başarıyla silindi!",

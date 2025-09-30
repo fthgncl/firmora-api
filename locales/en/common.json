@@ -57,6 +57,10 @@
       "name": "System Administrator",
       "description": "Full access to all system operations"
     },
+    "create_company": {
+      "name": "Create Company",
+      "description": "Permission to create new companies"
+    },
     "user_management": {
       "name": "User Management",
       "description": "Permission to view and edit user information"

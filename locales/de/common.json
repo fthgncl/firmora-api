@@ -57,6 +57,10 @@
       "name": "Systemadministrator",
       "description": "Vollzugriff auf alle Systemoperationen"
     },
+    "create_company": {
+      "name": "Unternehmen erstellen",
+      "description": "Berechtigung zum Erstellen neuer Unternehmen"
+    },
     "user_management": {
       "name": "Benutzerverwaltung",
       "description": "Berechtigung zum Anzeigen und Bearbeiten von Benutzerinformationen"
