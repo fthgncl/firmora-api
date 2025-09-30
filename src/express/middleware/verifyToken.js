@@ -29,7 +29,7 @@ const responseHelper = require('../utils/responseHelper');
 
 // JWT token doğrulama middleware
 async function verifyTokenMiddleware(req, res, next) {
-    const token = req.headers['x-access-token'] || req.body.token || req.query.token;
+    const token = req.headers['x-access-token'] || req.body?.token || req.query?.token;
 
     if (!token) {
         return responseHelper.error(res, 'Token sağlanmadı.', 401);

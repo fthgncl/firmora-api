@@ -11,7 +11,7 @@ async function tokenPayloadMiddleware(req, res, next) {
     try {
         req.tokenPayload = null;
 
-        const token = req.headers['x-access-token'] || req.body.token || req.query.token;
+        const token = req.headers['x-access-token'] || req.body?.token || req.query?.token;
 
         if (token) {
             try {
