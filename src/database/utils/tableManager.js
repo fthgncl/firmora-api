@@ -1,6 +1,39 @@
 const tablesConfig = require('../../config/tablesConfig');
 const { queryAsync } = require('../utils/connection');
-const createUser = require('../users/createUser');
+
+// Sütun tipini normalleştir (boşlukları temizle, büyük harfe çevir)
+const normalizeColumnType = (type) => {
+    return type
+        .toUpperCase()
+        .replace(/\s+/g, '') // Tüm boşlukları kaldır
+        .replace(/,/g, ', ') // Virgülden sonra boşluk ekle (tekrar normalleştirme için)
+        .replace(/\s+/g, ''); // Tekrar tüm boşlukları kaldır
+};
+
+// MySQL tip eşdeğerliklerini kontrol et
+const areTypesEquivalent = (configType, dbType) => {
+    const normalizedConfig = normalizeColumnType(configType);
+    const normalizedDb = normalizeColumnType(dbType);
+
+    // Tam eşleşme varsa true döndür
+    if (normalizedConfig.includes(normalizedDb) || normalizedDb.includes(normalizedConfig)) {
+        return true;
+    }
+
+    // BOOLEAN -> TINYINT(1) eşdeğerliği
+    if ((normalizedConfig.includes('BOOLEAN') || normalizedConfig.includes('BOOL')) 
+        && normalizedDb.includes('TINYINT(1)')) {
+        return true;
+    }
+
+    // INT -> INTEGER eşdeğerliği
+    if ((normalizedConfig.includes('INTEGER') && normalizedDb.includes('INT'))
+        || (normalizedConfig.includes('INT') && normalizedDb.includes('INTEGER'))) {
+        return true;
+    }
+
+    return false;
+};
 
 const checkTables = async () => {
 
@@ -81,8 +114,8 @@ const checkTables = async () => {
                         const isNullable = currentCol.IS_NULLABLE === 'YES';
                         const hasDefault = currentCol.COLUMN_DEFAULT !== null;
 
-                        // Basit tip karşılaştırması - sadece değişiklik gerekiyorsa güncelle
-                        const needsUpdate = !colDef.toUpperCase().includes(currentType.toUpperCase());
+                        // Tip eşdeğerliğini kontrol et - sadece gerçekten değişiklik gerekiyorsa güncelle
+                        const needsUpdate = !areTypesEquivalent(colDef, currentType);
 
                         if (needsUpdate) {
                             console.log(`${tableName} tablosundaki ${colName} sütunu güncelleniyor...`);
@@ -96,35 +129,6 @@ const checkTables = async () => {
                     continue;
                 }
             }
-        }
-
-        // Admin kullanıcı kontrolü - "a" yetkisine sahip kullanıcı var mı?
-        try {
-            const adminUsers = await queryAsync(`
-                SELECT COUNT(*) as count 
-                FROM users 
-                WHERE permissions LIKE '%a%';
-            `);
-    
-            if (adminUsers[0].count === 0) {
-                // "a" yetkisine sahip kullanıcı yoksa admin kullanıcı oluştur
-                console.log('Admin yetkisine sahip kullanıcı bulunamadı, varsayılan admin kullanıcı oluşturuluyor...');
-
-                const adminUserData = {
-                    name: 'Admin',
-                    surname: 'User',
-                    username: 'admin',
-                    phone: '905551112233',
-                    password: 'admin',
-                    permissions: 'a'
-                };
-
-                await createUser(adminUserData);
-                console.log(`Varsayılan admin kullanıcı başarıyla oluşturuldu (username: ${adminUserData.username}, password: ${adminUserData.password})`);
-            }
-        } catch (adminError) {
-            console.error('Admin kullanıcı kontrolü/oluşturma sırasında hata:', adminError);
-            // Admin kullanıcı hatası tablo kontrollerini durdurmasın
         }
 
         return { status: 'success', message: 'Tüm tablolar kontrol edildi ve güncellendi.' };
