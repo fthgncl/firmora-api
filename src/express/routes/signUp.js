@@ -227,6 +227,10 @@ router.post('/', async (req, res) => {
         errors.email = 'Geçerli bir e-posta adresi girilmelidir.';
     }
 
+    if (!phone) {
+        return responseHelper.error(res, 'Telefon numarası gereklidir', 400);
+    }
+
     if (!isValidPhone(phone)) {
         return responseHelper.error(res, 'Geçersiz telefon numarası formatı', 400);
     }
