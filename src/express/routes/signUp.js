@@ -51,7 +51,7 @@
  *               - confirmpassword
  *     responses:
  *       201:
- *         description: Kullanıcı başarıyla oluşturuldu.
+ *         description: Kullanıcı başarıyla oluşturuldu. E-posta doğrulama bağlantısı gönderilir (başarısız olursa warning alanı eklenir).
  *         content:
  *           application/json:
  *             schema:
@@ -62,14 +62,22 @@
  *                   example: success
  *                 message:
  *                   type: string
- *                   example: Kullanıcı başarıyla oluşturuldu.
+ *                   example: Kullanıcı başarıyla oluşturuldu. E-posta adresinize bir doğrulama bağlantısı gönderildi. Lütfen e-postanızı kontrol edin.
  *                 user:
  *                   type: object
  *                   properties:
  *                     id:
- *                       type: integer
+ *                       type: string
  *                       description: Kullanıcı ID'si
- *                       example: 1
+ *                       example: "USR001"
+ *                     name:
+ *                       type: string
+ *                       description: Kullanıcının adı
+ *                       example: "Ahmet"
+ *                     surname:
+ *                       type: string
+ *                       description: Kullanıcının soyadı
+ *                       example: "Yılmaz"
  *                     username:
  *                       type: string
  *                       description: Kullanıcı adı
@@ -78,6 +86,14 @@
  *                       type: string
  *                       description: Email adresi
  *                       example: "ahmet@example.com"
+ *                     phone:
+ *                       type: string
+ *                       description: Telefon numarası
+ *                       example: "05551234567"
+ *                 warning:
+ *                   type: string
+ *                   description: E-posta gönderimi başarısız olursa eklenir (opsiyonel)
+ *                   example: Doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin veya destek ekibiyle iletişime geçin.
  *       400:
  *         description: Geçersiz giriş bilgileri.
  *         content:
@@ -152,6 +168,7 @@ const validator = require('../../utils/validation');
 const responseHelper = require('../utils/responseHelper');
 const {isValidUsername, isValidPhone} = require("../../utils/validation");
 const {cleanInputs} = require("../../utils/inputCleaner");
+const {sendVerificationEmail} = require('../../express/services/emailService');
 
 // Error handling for duplicate entries
 const getErrorMessages = (error) => {
@@ -255,10 +272,27 @@ router.post('/', async (req, res) => {
     try {
         // Create the user
         const result = await createUser({name, surname, username, email, password, phone});
-        return responseHelper.success(res, {
-            message: 'Kullanıcı başarıyla oluşturuldu.',
+
+        // Doğrulama e-postası gönder
+        let emailSent = true;
+        try {
+            await sendVerificationEmail(result.user);
+        } catch (emailError) {
+            emailSent = false;
+        }
+
+        const responseData = {
+            message: emailSent 
+                ? 'Kullanıcı başarıyla oluşturuldu. E-posta adresinize bir doğrulama bağlantısı gönderildi. Lütfen e-postanızı kontrol edin.'
+                : 'Kullanıcı başarıyla oluşturuldu.',
             user: { ...result.user }
-        }, 201);
+        };
+
+        if (!emailSent) {
+            responseData.warning = 'Doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin veya destek ekibiyle iletişime geçin.';
+        }
+
+        return responseHelper.success(res, responseData, 201);
     } catch (error) {
         // Handle errors (duplicate entries)
         const errorMessages = getErrorMessages(error);
