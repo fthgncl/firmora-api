@@ -3,6 +3,7 @@ const createError = require('http-errors');
 // Routes
 const statusRouter = require('../routes/serverStatus');
 const signInRouter = require('../routes/signIn');
+const signUp = require('../routes/signUp');
 const companiesRouter = require('../routes/companies');
 
 
@@ -15,6 +16,7 @@ const setupRoutes = (app) => {
 
     app.use('/server-status', strictRateLimit, statusRouter);
     app.use('/sign-in', strictRateLimit, signInRouter);
+    app.use('/sign-up', strictRateLimit, signUp);
 
 
     app.use('/', strictRateLimit, verifyTokenMiddleware);
