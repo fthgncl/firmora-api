@@ -228,11 +228,11 @@ router.post('/', async (req, res) => {
     }
 
     if (!phone) {
-        return responseHelper.error(res, 'Telefon numarası gereklidir', 400);
+        errors.phone = 'Telefon numarası gereklidir.';
     }
 
     if (!isValidPhone(phone)) {
-        return responseHelper.error(res, 'Geçersiz telefon numarası formatı', 400);
+        errors.phone = 'Geçersiz telefon numarası formatı.';
     }
 
     // Password validation (required)
@@ -260,7 +260,6 @@ router.post('/', async (req, res) => {
             user: { ...result.user }
         }, 201);
     } catch (error) {
-        console.log(error);
         // Handle errors (duplicate entries)
         const errorMessages = getErrorMessages(error);
 

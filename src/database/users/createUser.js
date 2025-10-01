@@ -10,14 +10,12 @@ const createUser = async (userData) => {
         const processedUserData = await prepareUserData(userData, userId);
         await insertUserToDatabase(processedUserData);
 
+        const { password, ...userWithoutPassword } = processedUserData;
+
         return {
             status: 'success',
             message: t('users.create.success'),
-            user: {
-                id: userId,
-                name: processedUserData.name,
-                surname: processedUserData.surname,
-            }
+            user: userWithoutPassword
         };
     } catch (error) {
         if (error.code !== 'ER_DUP_ENTRY') {
