@@ -2,27 +2,47 @@ const permissions = require('../config/permissionsConfig');
 const {queryAsync} = require("../database/utils/connection");
 const { t } = require('../config/i18nConfig');
 
-async function readUserPermissions (userId){
+async function readUserPermissions (userId, companyId = null){
     try {
-        // Kullanıcıyı ID'ye göre bulmak için sorgu oluştur
-        const query = `SELECT permissions FROM users WHERE id = ?`;
+        let query, params;
+
+        if (companyId) {
+            // Belirli bir şirket için yetkileri getir
+            query = `SELECT company_id, permissions FROM user_company_permissions WHERE user_id = ? AND company_id = ?`;
+            params = [userId, companyId];
+        } else {
+            // Kullanıcının tüm şirketlerdeki yetkilerini getir
+            query = `SELECT company_id, permissions FROM user_company_permissions WHERE user_id = ?`;
+            params = [userId];
+        }
 
         // queryAsync kullan
-        const results = await queryAsync(query, [userId]);
+        const results = await queryAsync(query, params);
 
         // Sonuç kontrolü
         if (!results || results.length === 0) {
-            throw {
-                status: 404,
-                message: t('permissions.readUser.userNotFound')
+            if (companyId) {
+                throw {
+                    status: 404,
+                    message: t('permissions.readUser.noPermissionsForCompany')
+                };
+            }
+            // Kullanıcının hiç yetkisi yoksa boş array döndür
+            return {
+                status: 200,
+                message: t('permissions.readUser.noPermissions'),
+                permissions: []
             };
         }
 
-        // Başarılı sonucu döndür
+        // Her zaman array olarak döndür (tek şirket veya tüm şirketler)
         return {
             status: 200,
             message: t('permissions.readUser.success'),
-            permissions: results[0].permissions || ''
+            permissions: results.map(row => ({
+                companyId: row.company_id,
+                permissions: row.permissions || ''
+            }))
         };
 
     } catch (error) {
@@ -34,16 +54,29 @@ async function readUserPermissions (userId){
     }
 }
 
-async function setUserPermissions(userId, permissions) {
+async function setUserPermissions(userId, companyId, permissions) {
     try {
         const sortedPermissions = alfabetikSirala(permissions);
-        const query = `UPDATE users SET permissions = ? WHERE id = ?`;
 
-        await queryAsync(query, [sortedPermissions, userId]);
+        // Önce kayıt var mı kontrol et
+        const checkQuery = `SELECT * FROM user_company_permissions WHERE user_id = ? AND company_id = ?`;
+        const existingRecord = await queryAsync(checkQuery, [userId, companyId]);
+
+        let query;
+        if (existingRecord && existingRecord.length > 0) {
+            // Kayıt varsa güncelle
+            query = `UPDATE user_company_permissions SET permissions = ? WHERE user_id = ? AND company_id = ?`;
+            await queryAsync(query, [sortedPermissions, userId, companyId]);
+        } else {
+            // Kayıt yoksa yeni ekle
+            query = `INSERT INTO user_company_permissions (user_id, company_id, permissions) VALUES (?, ?, ?)`;
+            await queryAsync(query, [userId, companyId, sortedPermissions]);
+        }
 
         return {
             status: true,
             message: t('permissions.setUser.success'),
+            companyId: companyId,
             newPermissions: sortedPermissions
         };
     } catch (error) {
@@ -55,10 +88,16 @@ async function setUserPermissions(userId, permissions) {
     }
 }
 
-function addUserPermissions(userId, newPermissions) {
+function addUserPermissions(userId, companyId, newPermissions) {
     return new Promise((resolve, reject) => {
-        readUserPermissions(userId)
-            .then(response => response.permissions)
+        readUserPermissions(userId, companyId)
+            .then(response => {
+                // Array'den ilk elemanı al (tek şirket sorgusu)
+                if (response.permissions.length === 0) {
+                    return '';
+                }
+                return response.permissions[0].permissions;
+            })
             .then(userPermissions => {
                 for (const permission of newPermissions) {
                     if (permission && userPermissions.indexOf(permission) === -1)
@@ -67,7 +106,7 @@ function addUserPermissions(userId, newPermissions) {
                 return userPermissions;
             })
             .then(userNewPermissions => {
-                setUserPermissions(userId, userNewPermissions)
+                setUserPermissions(userId, companyId, userNewPermissions)
                     .then(data => resolve(data))
                     .catch(error => reject(error))
             })
@@ -75,10 +114,16 @@ function addUserPermissions(userId, newPermissions) {
     });
 }
 
-function removeUserPermissions(userId, removePermissions) {
+function removeUserPermissions(userId, companyId, removePermissions) {
     return new Promise((resolve, reject) => {
-        readUserPermissions(userId)
-            .then(response => response.permissions)
+        readUserPermissions(userId, companyId)
+            .then(response => {
+                // Array'den ilk elemanı al (tek şirket sorgusu)
+                if (response.permissions.length === 0) {
+                    return '';
+                }
+                return response.permissions[0].permissions;
+            })
             .then(userPermissions => {
                 for (const permission of removePermissions) {
                     if (permission)
@@ -87,7 +132,7 @@ function removeUserPermissions(userId, removePermissions) {
                 return userPermissions;
             })
             .then(userNewPermissions => {
-                setUserPermissions(userId, userNewPermissions)
+                setUserPermissions(userId, companyId, userNewPermissions)
                     .then(data => resolve(data))
                     .catch(error => reject(error))
             })
@@ -108,12 +153,19 @@ function checkRoles(permissionsString) {
     return roles;
 }
 
-async function checkUserRoles(userId, roles = ['sys_admin'], fullMatch = false) {
+async function checkUserRoles(userId, companyId, roles = ['sys_admin'], fullMatch = false) {
     try {
-        const data = await readUserPermissions(userId);
-        const userPermissions = data.permissions;
-        const userRoles = checkRoles(userPermissions);
+        const data = await readUserPermissions(userId, companyId);
 
+        let userPermissions = '';
+
+        // Belirli bir şirket için - sadece o şirketin yetkilerini kontrol et
+        if (Array.isArray(data.permissions) && data.permissions.length > 0) {
+            userPermissions = data.permissions[0].permissions || '';
+        }
+
+        const userRoles = checkRoles(userPermissions);
+        console.log("userRoles :",userRoles);
         if (userRoles.includes('sys_admin'))
             return true;
 
