@@ -5,6 +5,7 @@ const statusRouter = require('../routes/serverStatus');
 const signInRouter = require('../routes/signIn');
 const signUp = require('../routes/signUp');
 const companiesRouter = require('../routes/companies');
+const verifyEmail = require('../routes/verifyEmail');
 
 
 // Middleware
@@ -17,6 +18,7 @@ const setupRoutes = (app) => {
     app.use('/server-status', strictRateLimit, statusRouter);
     app.use('/sign-in', strictRateLimit, signInRouter);
     app.use('/sign-up', strictRateLimit, signUp);
+    app.use('/verify-email', verifyEmail);
 
 
     app.use('/', strictRateLimit, verifyTokenMiddleware);
