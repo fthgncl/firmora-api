@@ -5,6 +5,7 @@ const {queryAsync} = require('../../database/utils/connection');
 const {createToken} = require("../../auth/jwt");
 const responseHelper = require('../utils/responseHelper');
 const {t} = require('../../config/i18nConfig');
+const {readUserPermissions} = require('../../utils/permissionsManager');
 
 /**
  * @swagger
@@ -59,8 +60,47 @@ const {t} = require('../../config/i18nConfig');
  *                       example: "Giriş başarılı"
  *                     token:
  *                       type: string
- *                       description: JWT access token
+ *                       description: |
+ *                         JWT access token. Token decode edildiğinde aşağıdaki bilgileri içerir:
+ *                         - id: Kullanıcı ID'si
+ *                         - username: Kullanıcı adı
+ *                         - permissions: Kullanıcının şirket bazlı yetkileri (array)
+ *                         - max_companies: Kullanıcının oluşturabileceği maksimum şirket sayısı
+ *                         - rememberMe: Beni hatırla durumu
  *                       example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *             examples:
+ *               successWithPermissions:
+ *                 summary: Yetkili kullanıcı girişi
+ *                 value:
+ *                   success: true
+ *                   message: "Giriş başarılı"
+ *                   data:
+ *                     message: "Giriş başarılı"
+ *                     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                     tokenPayload:
+ *                       id: "USR_abc123"
+ *                       username: "john_doe"
+ *                       permissions:
+ *                         - companyId: "COM_xyz789"
+ *                           permissions: "abcdefgh"
+ *                         - companyId: "COM_def456"
+ *                           permissions: "xyz"
+ *                       max_companies: 5
+ *                       rememberMe: false
+ *               successWithoutPermissions:
+ *                 summary: Yetkisiz kullanıcı girişi
+ *                 value:
+ *                   success: true
+ *                   message: "Giriş başarılı"
+ *                   data:
+ *                     message: "Giriş başarılı"
+ *                     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                     tokenPayload:
+ *                       id: "USR_abc123"
+ *                       username: "john_doe"
+ *                       permissions: []
+ *                       max_companies: 5
+ *                       rememberMe: false
  *       400:
  *         description: Gerekli alanlar eksik
  *         content:
@@ -125,7 +165,7 @@ router.post('/', async (req, res) => {
     try {
         // Kullanıcıyı veritabanında ara
         const query = `
-            SELECT id, username, password, permissions, max_companies, emailverified
+            SELECT id, username, password, max_companies, emailverified
             FROM users
             WHERE username = ?
             LIMIT 1
@@ -149,14 +189,19 @@ router.post('/', async (req, res) => {
             return responseHelper.error(res, 'E-posta adresiniz doğrulanmamış. Lütfen e-postanızı kontrol edin ve hesabınızı onaylayın.', 403);
         }
 
+        // Kullanıcının tüm şirketlerdeki yetkilerini çek
+        const userPermissionsData = await readUserPermissions(user.id);
+        const permissions = userPermissionsData.permissions || [];
+
         // Token oluştur
         const tokenPayload = {
             id: user.id,
             username: user.username,
-            permissions: user.permissions,
+            permissions: permissions, 
             max_companies: user.max_companies,
             rememberMe: !!rememberMe
         };
+        
         const tokenLifetime = rememberMe ? process.env.REMEMBER_ME_TOKEN_LIFETIME : process.env.DEFAULT_TOKEN_LIFETIME;
         const token = await createToken(tokenPayload, tokenLifetime);
 
