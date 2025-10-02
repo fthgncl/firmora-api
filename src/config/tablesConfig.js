@@ -8,6 +8,7 @@ module.exports = {
         emailverified: 'BOOLEAN NOT NULL DEFAULT FALSE',
         phone: 'VARCHAR(20) NOT NULL UNIQUE',
         password: 'VARCHAR(255)',
+        max_companies: 'INT NOT NULL DEFAULT 0',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP'
     },
     companies: {

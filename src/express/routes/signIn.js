@@ -4,7 +4,7 @@ const router = express.Router();
 const {queryAsync} = require('../../database/utils/connection');
 const {createToken} = require("../../auth/jwt");
 const responseHelper = require('../utils/responseHelper');
-const { t } = require('../../config/i18nConfig');
+const {t} = require('../../config/i18nConfig');
 
 /**
  * @swagger
@@ -125,7 +125,7 @@ router.post('/', async (req, res) => {
     try {
         // Kullanıcıyı veritabanında ara
         const query = `
-            SELECT id, username, password, permissions, emailverified
+            SELECT id, username, password, permissions, max_companies, emailverified
             FROM users
             WHERE username = ?
             LIMIT 1
@@ -150,7 +150,13 @@ router.post('/', async (req, res) => {
         }
 
         // Token oluştur
-        const tokenPayload = {id: user.id, username: user.username, permissions: user.permissions, rememberMe: !!rememberMe};
+        const tokenPayload = {
+            id: user.id,
+            username: user.username,
+            permissions: user.permissions,
+            max_companies: user.max_companies,
+            rememberMe: !!rememberMe
+        };
         const tokenLifetime = rememberMe ? process.env.REMEMBER_ME_TOKEN_LIFETIME : process.env.DEFAULT_TOKEN_LIFETIME;
         const token = await createToken(tokenPayload, tokenLifetime);
 
