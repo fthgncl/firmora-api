@@ -87,6 +87,19 @@ const { t } = require('../../config/i18nConfig');
  *                 message:
  *                   type: string
  *                   example: "Geçersiz kullanıcı adı veya şifre"
+ *       403:
+ *         description: E-posta doğrulanmamış
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "E-posta adresiniz doğrulanmamış. Lütfen e-postanızı kontrol edin ve hesabınızı onaylayın."
  *       500:
  *         description: Sunucu hatası
  *         content:
@@ -112,7 +125,7 @@ router.post('/', async (req, res) => {
     try {
         // Kullanıcıyı veritabanında ara
         const query = `
-            SELECT id, username, password, permissions
+            SELECT id, username, password, permissions, emailverified
             FROM users
             WHERE username = ?
             LIMIT 1
@@ -129,6 +142,11 @@ router.post('/', async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return responseHelper.error(res, t('auth.signIn.invalidCredentials'), 401);
+        }
+
+        // E-posta doğrulanmış mı kontrol et
+        if (!user.emailverified) {
+            return responseHelper.error(res, 'E-posta adresiniz doğrulanmamış. Lütfen e-postanızı kontrol edin ve hesabınızı onaylayın.', 403);
         }
 
         // Token oluştur
