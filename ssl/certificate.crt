@@ -1,0 +1,10 @@
+-----BEGIN CERTIFICATE-----
+BURAYA GERÇEK SERTIFIKANIZI KOYUN
+Production ortamında bu dosyayı SSL sağlayıcınızdan aldığınız
+gerçek certificate.crt dosyası ile değiştirin.
+
+Örnek yapı:
+MIIFazCCBFOgAwIBAgISA+wF5i0mJyKM3FgZ5sC3XJxvMA0GCSqGSIb3DQEBCwUA...
+...
+...
+-----END CERTIFICATE-----

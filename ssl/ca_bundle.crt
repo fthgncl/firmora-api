@@ -1,0 +1,17 @@
+-----BEGIN CERTIFICATE-----
+BURAYA CA BUNDLE SERTIFIKANIZI KOYUN (OPSIYONEL)
+Production ortamında bu dosyayı SSL sağlayıcınızdan aldığınız
+gerçek ca_bundle.crt dosyası ile değiştirin.
+
+Bu dosya opsiyoneldir ve genellikle ara sertifikaları içerir.
+
+Örnek yapı:
+MIIFFjCCAv6gAwIBAgIRAJErCErPDBinU/bWLiWnX1owDQYJKoZIhvcNAQELBQAw...
+...
+...
+-----END CERTIFICATE-----
+
+-----BEGIN CERTIFICATE-----
+(Birden fazla sertifika içerebilir)
+...
+-----END CERTIFICATE-----
