@@ -1,6 +1,7 @@
 const permissions = require('../config/permissionsConfig');
 const {queryAsync} = require("../database/utils/connection");
 const { t } = require('../config/i18nConfig');
+const getCompaniesByOwnerId = require('../database/companies/getCompaniesByOwnerId');
 
 async function readUserPermissions (userId, companyId = null){
     try {
@@ -193,4 +194,55 @@ function alfabetikSirala(metin) {
     return siralanmisDizi.join('');
 }
 
-module.exports = {readUserPermissions, checkUserRoles, addUserPermissions,removeUserPermissions};
+/**
+ * Kullanıcının yeni firma oluşturma hakkını kontrol eder
+ * @param {string} userId - Kullanıcı ID
+ * @returns {Promise<Object>} Kullanıcının firma oluşturabilme durumu
+ */
+async function canUserCreateCompany(userId) {
+    try {
+        if (!userId) {
+            throw new Error(t('permissions.canCreateCompany.userIdRequired') || 'Kullanıcı ID gereklidir');
+        }
+
+        // Users tablosundan max_companies değerini al
+        const userQuery = `SELECT max_companies FROM users WHERE id = ?`;
+        const userResults = await queryAsync(userQuery, [userId]);
+
+        if (!userResults || userResults.length === 0) {
+            throw {
+                status: 404,
+                message: t('permissions.canCreateCompany.userNotFound') || 'Kullanıcı bulunamadı'
+            };
+        }
+
+        const maxCompanies = userResults[0].max_companies || 0;
+
+        // Kullanıcının mevcut firma sayısını al
+        const userCompanies = await getCompaniesByOwnerId(userId);
+        const currentCompanyCount = userCompanies.length;
+
+        // Karşılaştırma yap
+        const canCreate = currentCompanyCount < maxCompanies;
+
+        return {
+            status: 200,
+            message: canCreate 
+                ? t('permissions.canCreateCompany.canCreate') || 'Kullanıcı yeni firma oluşturabilir'
+                : t('permissions.canCreateCompany.cannotCreate') || 'Kullanıcı firma oluşturma limitine ulaştı',
+            canCreate: canCreate,
+            maxCompanies: maxCompanies,
+            currentCompanyCount: currentCompanyCount,
+            remainingSlots: maxCompanies - currentCompanyCount
+        };
+
+    } catch (error) {
+        throw {
+            status: error.status || 500,
+            message: error.message || t('permissions.canCreateCompany.error') || 'Firma oluşturma hakkı kontrolünde hata',
+            error
+        };
+    }
+}
+
+module.exports = {readUserPermissions, checkUserRoles, addUserPermissions, removeUserPermissions, canUserCreateCompany};

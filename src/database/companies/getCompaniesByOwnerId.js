@@ -10,7 +10,7 @@ const { t } = require('../../config/i18nConfig');
  * @returns {Promise<Array>} Şirket listesi
  * @throws {Error} Geçerli alan belirtilmezse veya alan doğrulaması başarısız olursa
  */
-async function getCompaniesByOwnerId(ownerId, fields) {
+async function getCompaniesByOwnerId(ownerId, fields = ["id"]) {
   if (!ownerId) {
     throw new Error(t('companies.getCompaniesByOwnerId.ownerIdRequired'));
   }

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const createCompany = require('../../../database/companies/createCompany');
-const { checkUserRoles } = require('../../../utils/permissionsManager');
+const { canUserCreateCompany } = require('../../../utils/permissionsManager');
 const responseHelper = require('../../utils/responseHelper');
 const { t } = require('../../../config/i18nConfig');
 
@@ -84,9 +84,18 @@ router.post('/', async (req, res) => {
             return responseHelper.error(res, t('auth.tokenRequired'), 401);
         }
 
-        const hasPermission = await checkUserRoles(userId, ['create_company']);
-        if (!hasPermission) {
-            return responseHelper.error(res, t('permissions.insufficientPermissions'), 403);
+        // Kullanıcının firma oluşturma hakkını kontrol et
+        const canCreate = await canUserCreateCompany(userId);
+        if (!canCreate.canCreate) {
+            return responseHelper.error(res, 
+                canCreate.message || t('companies.create.limitReached'), 
+                403,
+                {
+                    maxCompanies: canCreate.maxCompanies,
+                    currentCompanyCount: canCreate.currentCompanyCount,
+                    remainingSlots: canCreate.remainingSlots
+                }
+            );
         }
 
         // Gerekli alanları kontrol et
