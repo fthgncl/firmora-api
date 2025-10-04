@@ -21,7 +21,7 @@ async function readUserPermissions (userId, companyId = null){
         const results = await queryAsync(query, params);
 
         // Sonuç kontrolü
-        if (!results || results.length === 0) {
+        if (!results) {
             if (companyId) {
                 throw {
                     status: 404,
