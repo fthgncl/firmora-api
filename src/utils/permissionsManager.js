@@ -2,6 +2,7 @@ const permissions = require('../config/permissionsConfig');
 const {queryAsync} = require("../database/utils/connection");
 const { t } = require('../config/i18nConfig');
 const getCompaniesByOwnerId = require('../database/companies/getCompaniesByOwnerId');
+const sortAlphabetically = require('./sortAlphabetically');
 
 async function readUserPermissions (userId, companyId = null){
     try {
@@ -57,7 +58,7 @@ async function readUserPermissions (userId, companyId = null){
 
 async function setUserPermissions(userId, companyId, permissions) {
     try {
-        const sortedPermissions = alfabetikSirala(permissions);
+        const sortedPermissions = sortAlphabetically(permissions);
 
         // Önce kayıt var mı kontrol et
         const checkQuery = `SELECT * FROM user_company_permissions WHERE user_id = ? AND company_id = ?`;
@@ -178,20 +179,6 @@ async function checkUserRoles(userId, companyId, roles = ['sys_admin'], fullMatc
     } catch (error) {
         console.error(t('permissions.checkUserRoles.error', { userId }), error);
     }
-}
-
-function alfabetikSirala(metin) {
-    // Metni diziye dönüştür
-    let dizi = metin.split('');
-
-    // Diziyi Set'e dönüştürerek tekrar eden karakterleri kaldır
-    let benzersizDizi = Array.from(new Set(dizi));
-
-    // Diziyi alfabetik olarak sırala
-    let siralanmisDizi = benzersizDizi.sort();
-
-    // Alfabetik sıralanmış diziyi birleştirerek sonucu oluştur
-    return siralanmisDizi.join('');
 }
 
 /**
