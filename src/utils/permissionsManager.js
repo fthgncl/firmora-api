@@ -232,4 +232,64 @@ async function canUserCreateCompany(userId) {
     }
 }
 
-module.exports = {readUserPermissions, checkUserRoles, addUserPermissions, removeUserPermissions, canUserCreateCompany};
+/**
+ * Kullanıcının diğer kullanıcıları arama yetkisini kontrol eder
+ * @param {string} userId - Kullanıcı ID
+ * @param {string} companyId - Firma ID
+ * @returns {Promise<Object>} Kullanıcının arama yapabilme durumu ve kapsamı
+ */
+async function canUserSearchUsers(userId, companyId) {
+    try {
+        if (!userId || !companyId) {
+            throw new Error(t('permissions.canSearchUsers.userIdAndCompanyIdRequired') || 'Kullanıcı ID ve Firma ID gereklidir');
+        }
+
+        // Kullanıcının firma sahibi olup olmadığını kontrol et
+        const ownerQuery = `SELECT id FROM companies WHERE owner_id = ? AND id = ?`;
+        const ownerResults = await queryAsync(ownerQuery, [userId, companyId]);
+        const isOwner = ownerResults && ownerResults.length > 0;
+
+        // Eğer firma sahibiyse tüm kullanıcılara erişebilir
+        if (isOwner) {
+            return {
+                status: 200,
+                message: t('permissions.canSearchUsers.canSearchAll') || 'Tüm kullanıcıları arayabilir',
+                canSearch: true,
+                searchScope: 'all', // 'all': Tüm kullanıcılar, 'company': Sadece firma içi, 'none': Hiçbiri
+                reason: 'owner'
+            };
+        }
+
+        // Kullanıcının yetkilerini kontrol et (personnel_manager VEYA can_transfer_external)
+        const hasSearchAllPermission = await checkUserRoles(userId, companyId, ['personnel_manager', 'can_transfer_external'], false);
+
+        // Personel yöneticisi veya firma dışı para aktarma yetkisi varsa tüm kullanıcılara erişebilir
+        if (hasSearchAllPermission) {
+            return {
+                status: 200,
+                message: t('permissions.canSearchUsers.canSearchAll') || 'Tüm kullanıcıları arayabilir',
+                canSearch: true,
+                searchScope: 'all',
+                reason: 'has_search_permission'
+            };
+        }
+
+        // Yukarıdaki koşullar sağlanmıyorsa sadece kendi firmasındaki kullanıcıları arayabilir
+        return {
+            status: 200,
+            message: t('permissions.canSearchUsers.canSearchCompanyOnly') || 'Sadece firma içi kullanıcıları arayabilir',
+            canSearch: true,
+            searchScope: 'company',
+            reason: 'default'
+        };
+
+    } catch (error) {
+        throw {
+            status: error.status || 500,
+            message: error.message || t('permissions.canSearchUsers.error') || 'Kullanıcı arama yetkisi kontrolünde hata',
+            error
+        };
+    }
+}
+
+module.exports = {readUserPermissions, checkUserRoles, addUserPermissions, removeUserPermissions, canUserCreateCompany, canUserSearchUsers};
