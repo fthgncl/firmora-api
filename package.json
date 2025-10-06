@@ -7,8 +7,12 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "start:dev": "nodemon app.js"
+    "start": "pm2 start app.js --name firmora-api",
+    "dev": "nodemon app.js",
+    "stop": "pm2 stop firmora-api",
+    "restart": "pm2 restart firmora-api",
+    "delete": "pm2 delete firmora-api",
+    "logs": "pm2 logs firmora-api"
   },
   "dependencies": {
     "ansi-colors": "^4.1.3",
