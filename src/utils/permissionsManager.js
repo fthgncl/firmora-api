@@ -292,4 +292,63 @@ async function canUserSearchUsers(userId, companyId) {
     }
 }
 
-module.exports = {readUserPermissions, checkUserRoles, addUserPermissions, removeUserPermissions, canUserCreateCompany, canUserSearchUsers};
+/**
+ * Kullanıcının firmanın ayarlar sayfasına erişim yetkisini kontrol eder
+ * @param {string} userId - Kullanıcı ID
+ * @param {string} companyId - Firma ID
+ * @returns {Promise<Object>} Kullanıcının ayarlar sayfasına erişim durumu
+ */
+async function canUserAccessCompanySettings(userId, companyId) {
+    try {
+        if (!userId || !companyId) {
+            throw new Error(t('permissions.canAccessSettings.userIdAndCompanyIdRequired') || 'Kullanıcı ID ve Firma ID gereklidir');
+        }
+
+        // Kullanıcının firma sahibi olup olmadığını kontrol et
+        const ownerQuery = `SELECT id FROM companies WHERE owner_id = ? AND id = ?`;
+        const ownerResults = await queryAsync(ownerQuery, [userId, companyId]);
+        const isOwner = ownerResults && ownerResults.length > 0;
+
+        // Eğer firma sahibiyse ayarlar sayfasına erişebilir
+        if (isOwner) {
+            return {
+                status: 200,
+                message: t('permissions.canAccessSettings.canAccess') || 'Ayarlar sayfasına erişebilir',
+                canAccess: true,
+                reason: 'owner'
+            };
+        }
+
+        // Kullanıcının yetkilerini kontrol et (sys_admin VEYA personnel_manager)
+        const hasSettingsPermission = await checkUserRoles(userId, companyId, ['sys_admin', 'personnel_manager'], false);
+
+        // sys_admin veya personnel_manager yetkisi varsa ayarlar sayfasına erişebilir
+        if (hasSettingsPermission) {
+            return {
+                status: 200,
+                message: t('permissions.canAccessSettings.canAccess') || 'Ayarlar sayfasına erişebilir',
+                canAccess: true,
+                reason: 'has_permission'
+            };
+        }
+
+        // Yukarıdaki koşullar sağlanmıyorsa erişemez
+        return {
+            status: 403,
+            message: t('permissions.canAccessSettings.cannotAccess') || 'Ayarlar sayfasına erişim yetkiniz yok',
+            canAccess: false,
+            reason: 'no_permission'
+        };
+
+    } catch (error) {
+        throw {
+            status: error.status || 500,
+            message: error.message || t('permissions.canAccessSettings.error') || 'Ayarlar sayfası erişim kontrolünde hata',
+            error
+        };
+    }
+}
+
+
+
+module.exports = {readUserPermissions, checkUserRoles, addUserPermissions, removeUserPermissions, canUserCreateCompany, canUserSearchUsers, canUserAccessCompanySettings};

@@ -4,6 +4,8 @@ const { queryAsync } = require('../../../database/utils/connection');
 const { t } = require('../../../config/i18nConfig');
 require('../../../utils/validation');
 const {isValidCompanyId} = require("../../../utils/validation");
+const responseHelper = require("../../utils/responseHelper");
+const { canUserAccessCompanySettings } = require('../../../utils/permissionsManager');
 
 /**
  * @swagger
@@ -24,8 +26,12 @@ const {isValidCompanyId} = require("../../../utils/validation");
  *       
  *       ## Yetkilendirme
  *       
- *       Bu endpoint kimlik doğrulaması gerektirir. Kullanıcı sadece yetkili olduğu firmaların 
- *       bilgilerine erişebilir.
+ *       Bu endpoint kimlik doğrulaması gerektirir. Kullanıcı sadece aşağıdaki durumlarda 
+ *       firma bilgilerine erişebilir:
+ *       
+ *       - Firmanın sahibi ise
+ *       - Firmada `sys_admin` yetkisine sahipse
+ *       - Firmada `personnel_manager` yetkisine sahipse
  *       
  *       ## Kullanım Senaryoları
  *       
@@ -193,6 +199,25 @@ const {isValidCompanyId} = require("../../../utils/validation");
  *                 message:
  *                   type: string
  *                   example: "Yetkilendirme gerekli"
+ *       403:
+ *         description: Erişim Engellendi - Kullanıcının firma ayarlarına erişim yetkisi yok
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Ayarlar sayfasına erişim yetkiniz yok"
+ *             examples:
+ *               noPermission:
+ *                 summary: Yetkisiz erişim
+ *                 value:
+ *                   success: false
+ *                   message: "Ayarlar sayfasına erişim yetkiniz yok"
  *       404:
  *         description: Bulunamadı - Belirtilen ID'ye sahip firma bulunamadı
  *         content:
@@ -231,6 +256,12 @@ const {isValidCompanyId} = require("../../../utils/validation");
  */
 router.post('/get', async (req, res) => {
     try {
+
+        const userId = req.tokenPayload?.id;
+        if (!userId) {
+            return responseHelper.error(res, t('auth.tokenRequired'), 401);
+        }
+
         const { companyId } = req.body;
 
         // Firma ID kontrolü
@@ -245,6 +276,15 @@ router.post('/get', async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: t('companies.get.invalidCompanyId') || 'Geçersiz firma ID formatı'
+            });
+        }
+
+        // Kullanıcının firma ayarlarına erişim yetkisi kontrolü
+        const accessCheck = await canUserAccessCompanySettings(userId, companyId);
+        if (!accessCheck.canAccess) {
+            return res.status(403).json({
+                success: false,
+                message: accessCheck.message
             });
         }
 
