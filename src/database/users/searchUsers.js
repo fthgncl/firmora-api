@@ -85,6 +85,7 @@ async function searchUsers(options = {}) {
                 users.email,
                 users.phone,
                 users.username,
+                users.emailverified,
                 users.created_at
             FROM users
             ${joins}

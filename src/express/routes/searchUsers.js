@@ -231,6 +231,10 @@ const { t } = require('../../config/i18nConfig');
  *                             type: string
  *                             description: Kullanıcı adı (username)
  *                             example: "ahmetyilmaz"
+ *                           emailverified:
+ *                             type: boolean
+ *                             description: E-posta doğrulama durumu
+ *                             example: true
  *                           created_at:
  *                             type: string
  *                             format: date-time
@@ -312,6 +316,7 @@ const { t } = require('../../config/i18nConfig');
  *                         email: "ahmet.yilmaz@example.com"
  *                         phone: "+905551234567"
  *                         username: "ahmetyilmaz"
+ *                         emailverified: true
  *                         created_at: "2024-01-15T10:30:00.000Z"
  *                       - id: "223e4567-e89b-12d3-a456-426614174001"
  *                         name: "Mehmet"
@@ -319,6 +324,7 @@ const { t } = require('../../config/i18nConfig');
  *                         email: "mehmet.demir@example.com"
  *                         phone: "+905551234568"
  *                         username: "mehmetdemir"
+ *                         emailverified: false
  *                         created_at: "2024-01-16T11:30:00.000Z"
  *                     pagination:
  *                       total: 150
