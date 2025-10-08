@@ -462,7 +462,8 @@ router.post('/', async (req, res) => {
             limit = 20, 
             offset = 0,
             sortBy = 'name',
-            sortOrder = 'ASC'
+            sortOrder = 'ASC',
+            searchScope = 'all'
         } = req.body;
 
         // Kullanıcı ID kontrolü
@@ -502,11 +503,12 @@ router.post('/', async (req, res) => {
 
         let result;
 
+
         // Arama kapsamına göre işlem yap
-        if (searchPermission.searchScope === 'all') {
+        if (searchPermission.searchScope === 'all' && searchScope === 'all') {
             // Tüm kullanıcılarda ara
             result = await searchAllUsers(searchOptions);
-        } else if (searchPermission.searchScope === 'company') {
+        } else if (searchPermission.searchScope === 'company' || searchScope === 'company') {
             // Sadece firma içinde ara
             result = await searchUsersInCompany(companyId, searchOptions);
         } else {
@@ -527,8 +529,6 @@ router.post('/', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Search users error:', error);
-
         const statusCode = error.status || 500;
         const message = error.message || t('users.search.error') || 'Kullanıcı arama sırasında hata oluştu';
 
