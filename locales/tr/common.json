@@ -55,9 +55,26 @@
   },
   "permissions": {
     "insufficientPermissions": "Bu işlem için yeterli yetkiniz bulunmamaktadır.",
+    "categories": {
+      "system": "Sistem",
+      "personnel": "Personel",
+      "financial": "Finansal"
+    },
     "sys_admin": {
       "name": "Sistem Yöneticisi",
       "description": "Tüm sistem işlemlerine tam erişim yetkisi"
+    },
+    "personnel_manager": {
+      "name": "Personel Yöneticisi",
+      "description": "Personel yönetimi ve işlemlerine erişim yetkisi"
+    },
+    "can_transfer_money": {
+      "name": "Para Transfer",
+      "description": "Para transfer işlemleri yapma yetkisi"
+    },
+    "can_transfer_external": {
+      "name": "Harici Transfer",
+      "description": "Harici hesaplara para transfer etme yetkisi"
     },
     "create_company": {
       "name": "Şirket Oluşturma",

@@ -1,28 +1,48 @@
 
+const { t } = require('./i18nConfig');
+
 const permissions = {
     "sys_admin": {
         "code": "a",
-        "category": "system",
-        "name_key": "permissions.sys_admin.name",
-        "description_key": "permissions.sys_admin.description"
+        "category": "permissions.categories.system",
+        "name": "permissions.sys_admin.name",
+        "description": "permissions.sys_admin.description"
     },
     "personnel_manager": {
         "code": "b",
-        "category": "personnel",
-        "name_key": "permissions.personnel_manager.name",
-        "description_key": "permissions.personnel_manager.description"
+        "category": "permissions.categories.personnel",
+        "name": "permissions.personnel_manager.name",
+        "description": "permissions.personnel_manager.description"
     },
     "can_transfer_money": {
         "code": "c",
-        "category": "financial",
-        "name_key": "permissions.can_transfer_money.name",
-        "description_key": "permissions.can_transfer_money.description"
+        "category": "permissions.categories.financial",
+        "name": "permissions.can_transfer_money.name",
+        "description": "permissions.can_transfer_money.description"
     },
     "can_transfer_external": {
         "code": "d",
-        "category": "financial",
-        "name_key": "permissions.can_transfer_external.name",
-        "description_key": "permissions.can_transfer_external.description"
+        "category": "permissions.categories.financial",
+        "name": "permissions.can_transfer_external.name",
+        "description": "permissions.can_transfer_external.description"
     }
 }
-module.exports = permissions;
+
+function getTranslatedPermissions(lang = process.env.DEFAULT_LANGUAGE) {
+    const translatedPermissions = {};
+
+    for (const [key, permission] of Object.entries(permissions)) {
+        translatedPermissions[key] = {
+            code: permission.code,
+            category: t(permission.category, { lng: lang }),
+            name: t(permission.name, { lng: lang }),
+            description: t(permission.description, { lng: lang })
+        };
+    }
+
+    return translatedPermissions;
+}
+
+
+
+module.exports = getTranslatedPermissions;

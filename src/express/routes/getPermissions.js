@@ -182,7 +182,7 @@ router.get('/', async (req, res) => {
 
         // Permissions config'i döndür
         return responseHelper.success(res, {
-            permissions: permissions
+            permissions: permissions(req.language)
         });
 
     } catch (error) {
