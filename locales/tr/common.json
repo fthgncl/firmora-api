@@ -138,6 +138,13 @@
       "fieldsRequired": "En az bir alan belirtilmelidir",
       "validFieldsRequired": "En az bir geçerli alan belirtilmelidir",
       "invalidFieldsLog": "getCompaniesByOwnerId fonksiyonunda geçersiz alanlar talep edildi"
+    },
+    "addUser": {
+      "success": "Kullanıcı başarıyla firmaya eklendi!",
+      "fieldsRequired": "Firma ID, Kullanıcı ID ve yetki alanları zorunludur.",
+      "userNotFound": "Kullanıcı bulunamadı.",
+      "companyNotFound": "Firma bulunamadı.",
+      "error": "Kullanıcı firmaya eklenirken hata oluştu"
     }
   }
 }

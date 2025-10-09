@@ -117,6 +117,13 @@
       "fieldsRequired": "At least one field must be specified",
       "validFieldsRequired": "At least one valid field must be specified",
       "invalidFieldsLog": "Invalid fields requested in getCompaniesByOwnerId function"
+    },
+    "addUser": {
+      "success": "User successfully added to company!",
+      "fieldsRequired": "Company ID, User ID and permissions are required.",
+      "userNotFound": "User not found.",
+      "companyNotFound": "Company not found.",
+      "error": "Error occurred while adding user to company"
     }
   }
 }
