@@ -126,6 +126,11 @@ router.post('/add-user', async (req, res) => {
             return responseHelper.error(res, t('companies.addUser.fieldsRequired'), 400);
         }
 
+        // Kullanıcının kendisini firmaya eklemeye çalışıp çalışmadığını kontrol et
+        if (userId === newEmployeeId) {
+            return responseHelper.error(res, t('companies.addUser.cannotAddSelf'), 400);
+        }
+
         // TODO: kullanıcı kendisinde olmayan yetkiyi oluşturduğu kullanıcıya veremesin
         const hasPermission = await checkUserRoles(userId, companyId,['personnel_manager']);
         if (!hasPermission) {
