@@ -161,7 +161,7 @@ router.post('/add-user', async (req, res) => {
         const result = await setUserPermissions(newEmployeeId, companyId, permissions);
 
         return responseHelper.success(res, {
-            message: result.message,
+            message: "Kullanıcı başarıyla eklendi.",
             companyId: result.companyId,
             userId: newEmployeeId,
             permissions: result.newPermissions

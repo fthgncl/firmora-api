@@ -5,7 +5,7 @@ const getCompaniesByOwnerId = require('../database/companies/getCompaniesByOwner
 const sortAlphabetically = require('./sortAlphabetically');
 
 async function readUserPermissions (userId, companyId = null){
-    try {
+    try { // TODO: kullanıcı firma sahibi ise doğrudan "a" yetkisi verilebilir. Bu sayede diğer fonksiyonlardaki sahiplik kontrolü kaldırılabilir.
         let query, params;
 
         if (companyId) {
@@ -157,6 +157,16 @@ function checkRoles(permissionsString) {
 
 async function checkUserRoles(userId, companyId, roles = ['sys_admin'], fullMatch = false) {
     try {
+        // Kullanıcının firma sahibi olup olmadığını kontrol et
+        const ownerQuery = `SELECT id FROM companies WHERE owner_id = ? AND id = ?`;
+        const ownerResults = await queryAsync(ownerQuery, [userId, companyId]);
+        const isOwner = ownerResults && ownerResults.length > 0;
+
+        // Eğer firma sahibiyse doğrudan true döndür
+        if (isOwner) {
+            return true;
+        }
+
         const data = await readUserPermissions(userId, companyId);
 
         let userPermissions = '';
@@ -167,7 +177,7 @@ async function checkUserRoles(userId, companyId, roles = ['sys_admin'], fullMatc
         }
 
         const userRoles = checkRoles(userPermissions);
-        console.log("userRoles :",userRoles);
+
         if (userRoles.includes('sys_admin'))
             return true;
 
@@ -351,4 +361,4 @@ async function canUserAccessCompanySettings(userId, companyId) {
 
 
 
-module.exports = {readUserPermissions, checkUserRoles, addUserPermissions, removeUserPermissions, canUserCreateCompany, canUserSearchUsers, canUserAccessCompanySettings};
+module.exports = {readUserPermissions, checkUserRoles, addUserPermissions, setUserPermissions, removeUserPermissions, canUserCreateCompany, canUserSearchUsers, canUserAccessCompanySettings};
