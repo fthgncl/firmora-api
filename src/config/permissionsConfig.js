@@ -14,17 +14,23 @@ const permissions = {
         "name": "permissions.personnel_manager.name",
         "description": "permissions.personnel_manager.description"
     },
-    "can_transfer_money": {
+    "can_transfer_internal": {
         "code": "c",
         "category": "permissions.categories.financial",
-        "name": "permissions.can_transfer_money.name",
-        "description": "permissions.can_transfer_money.description"
+        "name": "permissions.can_transfer_internal.name",
+        "description": "permissions.can_transfer_internal.description"
     },
     "can_transfer_external": {
         "code": "d",
         "category": "permissions.categories.financial",
         "name": "permissions.can_transfer_external.name",
         "description": "permissions.can_transfer_external.description"
+    },
+    "can_record_expense": {
+        "code": "f",
+        "category": "permissions.categories.financial",
+        "name": "permissions.can_record_expense.name",
+        "description": "permissions.can_record_expense.description"
     }
 }
 

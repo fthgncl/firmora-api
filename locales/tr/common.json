@@ -68,7 +68,7 @@
       "name": "Personel Yöneticisi",
       "description": "Personel yönetimi ve işlemlerine erişim yetkisi"
     },
-    "can_transfer_money": {
+    "can_transfer_internal": {
       "name": "Para Transfer",
       "description": "Para transfer işlemleri yapma yetkisi"
     },

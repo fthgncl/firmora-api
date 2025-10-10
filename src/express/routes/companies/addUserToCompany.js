@@ -36,7 +36,7 @@ const {createAccount} = require("../../../database/accounts");
  *                 example: "USR_f1eb361f6dcd6ba4"
  *               permissions:
  *                 type: string
- *                 description: Kullanıcı yetkileri (a=sys_admin, b=personnel_manager, c=can_transfer_money, d=can_transfer_external)
+ *                 description: Kullanıcı yetkileri (a=sys_admin, b=personnel_manager, c=can_transfer_internal, d=can_transfer_external)
  *                 example: "a"
  *     responses:
  *       200:

@@ -29,65 +29,77 @@ module.exports = {
         // ALTER TABLE user_company_permissions ADD UNIQUE uq_user_company (user_id, company_id);
     },
     user_accounts: {
-        id: 'VARCHAR(36) NOT NULL UNIQUE',      // 🔑 Hesap ID (UUID)
-        user_id: 'VARCHAR(36) NOT NULL',        // 👤 Kullanıcı ID (users.id)
-        company_id: 'VARCHAR(36) NOT NULL',     // 🏢 Hesabın bağlı olduğu firma (companies.id)
-        currency: "VARCHAR(3) NOT NULL CHECK (currency REGEXP '^[A-Z]{3}$')",   // 💵 Hesap para birimi (varsayılan: şirket para birimi)
-        balance: 'DECIMAL(15,2) NOT NULL DEFAULT 0',    // 💰 Anlık bakiye (materialized). Pozitif/negatif olabilir.
+        id: 'VARCHAR(36) NOT NULL UNIQUE',
+        user_id: 'VARCHAR(36) NOT NULL',
+        company_id: 'VARCHAR(36) NOT NULL',
+        currency: "VARCHAR(3) NOT NULL CHECK (currency REGEXP '^[A-Z]{3}$')",
+        balance: 'DECIMAL(15,2) NOT NULL DEFAULT 0',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
     },
     transfers: {
-        // 🔑 Benzersiz işlem ID (UUID)
+        // 🔑 Benzersiz işlem kimliği
         id: 'VARCHAR(36) NOT NULL UNIQUE',
 
-        // 🏢 İşlemi BAŞLATAN şirketin ID'si (paranın çıktığı şirket)
+        // 🏢 İşlemi kaydeden (paranın çıktığı veya geldiği) firma
         company_id: 'VARCHAR(36) NOT NULL',
 
-        // 👤 Gönderen kullanıcı (company_id içindeki user)
-        from_user_id: 'VARCHAR(36) NOT NULL',
+        // 👤 İşlemi başlatan kullanıcı (örneğin gönderici)
+        // incoming_manual türünde NULL olabilir (çünkü para dışarıdan geldi)
+        from_user_id: 'VARCHAR(36) NULL',
 
-        // 🔭 Hedef türü (4 senaryo)
-        // - user_same_company  : Aynı firmada başka kullanıcı
-        // - user_other_company : Farklı firmada kullanıcı
-        // - external           : Sistemde hesabı olmayan kişi
-        // - expense            : Gider ödemesi
-        to_kind: "ENUM('user_same_company','user_other_company','external','expense') NOT NULL",
-
-        // 🎯 Hedef kullanıcı ID'si (user_same_company veya user_other_company ikisinde de kullanılır)
+        // 👥 Alıcı kullanıcı ID (varsa)
+        // user_same_company veya user_other_company durumlarında dolu olur
         to_user_id: 'VARCHAR(36) NULL',
 
-        // 🏢 Hedef kullanıcının firması (SADECE user_other_company için zorunlu)
+        // 🏢 Alıcı kullanıcının firması (sadece user_other_company için dolu olur)
         to_user_company_id: 'VARCHAR(36) NULL',
 
-        // 🧾 External alıcı adı (SADECE to_kind='external' iken zorunlu)
-        to_external_name: 'VARCHAR(120) NULL',
-
-        // 💼 Gider adı veya kategori etiketi (SADECE to_kind='expense' iken zorunlu)
-        to_expense_name: 'VARCHAR(100) NULL',
-
-        // 💰 Tutar (pozitif)
+        // 💰 İşlem tutarı (pozitif)
         amount: 'DECIMAL(15,2) NOT NULL',
 
-        // 💵 Para birimi (ISO-4217 3 harf)
-        currency: "VARCHAR(3) NOT NULL DEFAULT 'EUR' CHECK (currency REGEXP '^[A-Z]{3}$')",
+        // 💵 Para birimi (3 harfli ISO kodu, örn: EUR, USD, TRY)
+        currency: "VARCHAR(3) NOT NULL CHECK (currency REGEXP '^[A-Z]{3}$')",
 
-        // 📝 Not/Açıklama
+        // 📝 Açıklama (transfer notu, örnek: “Mart ayı kirası”)
         description: 'VARCHAR(255) NULL',
 
-        // ⚙️ Durum
+        // ⚙️ İşlem durumu
+        // pending   = onay bekliyor
+        // completed = tamamlandı
+        // failed    = başarısız
+        // reversed  = iptal edildi
         status: "ENUM('pending','completed','failed','reversed') NOT NULL DEFAULT 'completed'",
 
-        // 🔄 Çift kayıt/entegrasyon için eşleme anahtarı (opsiyonel)
-        correlation_id: 'VARCHAR(64) NULL',
+        // 🔭 İşlem türü (5 senaryo)
+        // - user_same_company  : Aynı firmadaki başka kullanıcıya para gönderimi
+        // - user_other_company : Farklı firmadaki kullanıcıya para gönderimi
+        // - external           : Sistemde hesabı olmayan kişiye ödeme
+        // - expense            : Firma gideri ödemesi
+        // - incoming_manual    : Sistemde olmayan birinden gelen para (kayıt eden kullanıcı tarafından girilir)
+        to_kind: "ENUM('user_same_company','user_other_company','external','expense','incoming_manual') NOT NULL",
 
-        // ⏱️ Oluşturulma zamanı
+        // 🧾 Sistemde olmayan kişiye ödeme yapılıyorsa alıcının adı
+        // (SADECE to_kind='external' iken zorunlu)
+        to_external_name: 'VARCHAR(120) NULL',
+
+        // 💼 Firma gideri ödemesiyse giderin adı veya kategori etiketi
+        // (SADECE to_kind='expense' iken zorunlu)
+        to_expense_name: 'VARCHAR(100) NULL',
+
+        // ⏱️ Kayıt tarihi
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
 
-        // 🔎 Önerilen indeksler (DDL tarafında ekle)
-        // KEY idx_company_time (company_id, created_at DESC),
-        // KEY idx_from_user (company_id, from_user_id, created_at DESC),
-        // KEY idx_to_user (to_user_id, created_at DESC),
-        // KEY idx_to_user_company (to_user_company_id, created_at DESC),
-        // KEY idx_correlation (correlation_id)
+        /*
+         * 🔒 Validasyon kuralları (backend veya trigger tarafında kontrol edilmesi önerilir)
+         * -------------------------------------------------------------
+         * 1. amount > 0
+         * 2. currency ISO formatında olmalı (3 büyük harf)
+         * 3. to_kind = 'user_same_company'  -> to_user_id zorunlu
+         * 4. to_kind = 'user_other_company' -> to_user_id + to_user_company_id zorunlu
+         * 5. to_kind = 'external'           -> to_external_name zorunlu
+         * 6. to_kind = 'expense'            -> to_expense_name zorunlu
+         * 7. to_kind = 'incoming_manual'    -> from_user_id NULL olmalı
+         */
     }
+
 };

@@ -5,6 +5,7 @@ const statusRouter = require('../routes/serverStatus');
 const signInRouter = require('../routes/signIn');
 const signUp = require('../routes/signUp');
 const companiesRouter = require('../routes/companies');
+const transfersRouter = require('../routes/transfers');
 const verifyEmail = require('../routes/verifyEmail');
 const searchUsersRouter = require('../routes/searchUsers');
 const getPermissionsRouter = require('../routes/getPermissions');
@@ -28,6 +29,7 @@ const setupRoutes = (app) => {
 
     // Korumalı rotalar
     app.use('/companies', strictRateLimit, companiesRouter);
+    app.use('/transfers', strictRateLimit, transfersRouter);
     app.use('/search-users', strictRateLimit, searchUsersRouter);
     app.use('/permissions', strictRateLimit, getPermissionsRouter);
 

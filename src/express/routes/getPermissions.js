@@ -41,12 +41,12 @@ const permissions = require('../../config/permissionsConfig');
  *       
  *       - **system**: Sistem yönetimi yetkileri (örn: sys_admin)
  *       - **personnel**: Personel yönetimi yetkileri (örn: personnel_manager)
- *       - **financial**: Finansal işlem yetkileri (örn: can_transfer_money, can_transfer_external)
+ *       - **financial**: Finansal işlem yetkileri (örn: can_transfer_internal, can_transfer_external)
  *       
  *       ## Yetki Kodları Nasıl Kullanılır?
  *       
  *       Yetki kodları string olarak birleştirilerek saklanır:
- *       - Kullanıcı sys_admin ve can_transfer_money yetkilerine sahipse: `"ac"`
+ *       - Kullanıcı sys_admin ve can_transfer_internal yetkilerine sahipse: `"ac"`
  *       - Sadece personnel_manager yetkisi varsa: `"b"`
  *       
  *     tags:
@@ -116,11 +116,11 @@ const permissions = require('../../config/permissionsConfig');
  *                         category: "personnel"
  *                         name_key: "permissions.personnel_manager.name"
  *                         description_key: "permissions.personnel_manager.description"
- *                       can_transfer_money:
+ *                       can_transfer_internal:
  *                         code: "c"
  *                         category: "financial"
- *                         name_key: "permissions.can_transfer_money.name"
- *                         description_key: "permissions.can_transfer_money.description"
+ *                         name_key: "permissions.can_transfer_internal.name"
+ *                         description_key: "permissions.can_transfer_internal.description"
  *                       can_transfer_external:
  *                         code: "d"
  *                         category: "financial"
