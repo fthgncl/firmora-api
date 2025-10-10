@@ -2,12 +2,21 @@ const { queryAsync } = require('../utils/connection');
 const { generateUniqueId } = require('../../utils/idUtils');
 const capitalizeFirstLetters = require('../../utils/capitalizeFirstLetters');
 const { t } = require('../../config/i18nConfig');
+const createAccount = require('../accounts/createAccount');
 
 const createCompany = async (companyData) => {
     try {
         const companyId = await generateUniqueId('COM', 'companies');
         const processedCompanyData = await prepareCompanyData(companyData, companyId);
         await insertCompanyToDatabase(processedCompanyData);
+
+        // Firma sahibi için otomatik hesap oluştur
+        await createAccount({
+            user_id: processedCompanyData.owner_id,
+            company_id: companyId,
+            currency: processedCompanyData.currency,
+            balance: 0
+        });
 
         return {
             status: 'success',
