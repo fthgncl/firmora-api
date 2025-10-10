@@ -5,6 +5,7 @@ const responseHelper = require('../../utils/responseHelper');
 const { t } = require('../../../config/i18nConfig');
 const {checkUserRoles, setUserPermissions, readUserPermissions} = require("../../../utils/permissionsManager");
 const getUserById = require("../../../database/users/getUserById");
+const {createAccount} = require("../../../database/accounts");
 
 /**
  * @swagger
@@ -146,7 +147,7 @@ router.post('/add-user', async (req, res) => {
         }
 
         // Firmanın var olup olmadığını kontrol et
-        const company = await getCompanyById(companyId, ['id']);
+        const company = await getCompanyById(companyId, ['id', 'currency']);
         if (!company) {
             return responseHelper.error(res, t('companies.addUser.companyNotFound'), 404);
         }
@@ -159,6 +160,14 @@ router.post('/add-user', async (req, res) => {
 
         // Kullanıcıyı firmaya ekle ve yetkilerini ayarla
         const result = await setUserPermissions(newEmployeeId, companyId, permissions);
+
+        // Kullanıcı için otomatik hesap oluştur
+        await createAccount({
+            user_id: newEmployeeId,
+            company_id: companyId,
+            currency: company.currency,
+            balance: 0
+        });
 
         return responseHelper.success(res, {
             message: "Kullanıcı başarıyla eklendi.",
