@@ -7,7 +7,7 @@ const { t } = require('../../../config/i18nConfig');
 /**
  * @swagger
  * /accounts:
- *   post:
+ *   get:
  *     summary: Kullanıcının hesaplarını listele
  *     description: Token'dan alınan kullanıcıya ait tüm hesapları getirir. İsteğe bağlı olarak firma filtresi uygulanabilir.
  *     tags:
@@ -96,16 +96,14 @@ router.get('/', async (req, res) => {
     try {
         // Token'dan userId'yi al
         const userId = req.tokenPayload?.id;
-
         if (!userId) {
             return responseHelper.error(res, t('auth.tokenRequired'), 401);
         }
 
         // Opsiyonel firma ID filtresi
-        const { companyId } = req.body;
 
         // Kullanıcının hesaplarını getir
-        const result = await getAccountsByUserId(userId, null, companyId || null);
+        const result = await getAccountsByUserId(userId, null, null);
 
         return responseHelper.success(res, {
             message: result.message,
