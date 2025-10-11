@@ -40,6 +40,16 @@ const { t } = require('../../../config/i18nConfig');
  *                 data:
  *                   type: object
  *                   properties:
+ *                     user:
+ *                       type: object
+ *                       description: Kullanıcı bilgileri
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           example: "Ahmet"
+ *                         surname:
+ *                           type: string
+ *                           example: "Yılmaz"
  *                     accounts:
  *                       type: array
  *                       items:
@@ -136,7 +146,8 @@ router.get('/', async (req, res) => {
 
         return responseHelper.success(res, {
             message: result.message,
-            accounts: result.accounts
+            accounts: result.accounts,
+            user: result.user
         });
 
     } catch (error) {

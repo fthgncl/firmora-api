@@ -3,6 +3,7 @@ const { t } = require('../../config/i18nConfig');
 const tablesConfig = require('../../config/tablesConfig');
 const logError = require('../../utils/logger');
 const getCompanyById = require('../companies/getCompanyById');
+const getUserById = require('../users/getUserById');
 
 /**
  * Kullanıcının hesaplarını getirir
@@ -57,6 +58,7 @@ const getAccountsByUserId = async (userId, fields = null, companyId = null) => {
 
         // Sorguyu çalıştır
         const accounts = await queryAsync(sql, params);
+        const user = await getUserById(userId, ['name', 'surname']);
 
         // Her hesap için firma bilgilerini getir
         const accountsWithCompany = await Promise.all(
@@ -89,6 +91,7 @@ const getAccountsByUserId = async (userId, fields = null, companyId = null) => {
         return {
             status: 'success',
             message: t('accounts.getByUserId.success'),
+            user,
             accounts: accountsWithCompany || []
         };
     } catch (error) {
