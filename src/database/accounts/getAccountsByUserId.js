@@ -2,6 +2,7 @@ const { queryAsync } = require('../utils/connection');
 const { t } = require('../../config/i18nConfig');
 const tablesConfig = require('../../config/tablesConfig');
 const logError = require('../../utils/logger');
+const getCompanyById = require('../companies/getCompanyById');
 
 /**
  * Kullanıcının hesaplarını getirir
@@ -37,6 +38,11 @@ const getAccountsByUserId = async (userId, fields = null, companyId = null) => {
             if (validFields.length === 0) {
                 throw new Error(t('accounts.getByUserId.validFieldsRequired'));
             }
+
+            // Firma bilgilerini getirmek için company_id'nin mutlaka çekilmesi gerekiyor
+            if (!validFields.includes('company_id')) {
+                validFields.push('company_id');
+            }
         }
 
         // SQL sorgusunu oluştur
@@ -52,10 +58,38 @@ const getAccountsByUserId = async (userId, fields = null, companyId = null) => {
         // Sorguyu çalıştır
         const accounts = await queryAsync(sql, params);
 
+        // Her hesap için firma bilgilerini getir
+        const accountsWithCompany = await Promise.all(
+            accounts.map(async (account) => {
+                // Eğer hesabın company_id'si varsa firma bilgilerini getir
+                if (account.company_id) {
+                    try {
+                        const company = await getCompanyById(account.company_id, ['id', 'company_name', 'sector', 'currency']);
+                        delete account.company_id;
+                        return {
+                            ...account,
+                            company: company || null
+                        };
+                    } catch (error) {
+                        // Firma bilgisi alınamazsa null olarak ekle
+                        await logError(`${t('accounts.getByUserId.companyFetchError')}: ${error.message}`);
+                        return {
+                            ...account,
+                            company: null
+                        };
+                    }
+                }
+                return {
+                    ...account,
+                    company: null
+                };
+            })
+        );
+
         return {
             status: 'success',
             message: t('accounts.getByUserId.success'),
-            accounts: accounts || []
+            accounts: accountsWithCompany || []
         };
     } catch (error) {
         throw {

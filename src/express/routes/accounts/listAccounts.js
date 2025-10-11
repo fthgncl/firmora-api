@@ -103,7 +103,7 @@ router.get('/', async (req, res) => {
         // Opsiyonel firma ID filtresi
 
         // Kullanıcının hesaplarını getir
-        const result = await getAccountsByUserId(userId, null, null);
+        const result = await getAccountsByUserId(userId);
 
         return responseHelper.success(res, {
             message: result.message,
