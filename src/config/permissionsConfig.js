@@ -31,6 +31,18 @@ const permissions = {
         "category": "permissions.categories.financial",
         "name": "permissions.can_record_expense.name",
         "description": "permissions.can_record_expense.description"
+    },
+    "can_withdraw_from_company": {
+        "code": "g",
+        "category": "permissions.categories.financial",
+        "name": "permissions.can_withdraw_from_company.name",
+        "description": "permissions.can_withdraw_from_company.description"
+    },
+    "can_record_income": {
+        "code": "h",
+        "category": "permissions.categories.financial",
+        "name": "permissions.can_record_income.name",
+        "description": "permissions.can_record_income.description"
     }
 }
 

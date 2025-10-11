@@ -9,7 +9,15 @@ const { t } = require('../../../config/i18nConfig');
  * /transfers:
  *   post:
  *     summary: Yeni para transferi oluştur
- *     description: Yeni bir para transferi kaydı oluşturur (transfer yetkisi gerekli)
+ *     description: |
+ *       Yeni bir para transferi kaydı oluşturur. Transfer tiplerine göre farklı yetkiler gereklidir:
+ *       - user_same_company: can_transfer_internal
+ *       - user_other_company: can_transfer_external
+ *       - external: can_transfer_external
+ *       - expense: can_record_expense
+ *       - incoming_manual: can_record_income
+ *       
+ *       Ayrıca from_scope='company' ise can_withdraw_from_company yetkisi gerekir.
  *     tags:
  *       - Transfers
  *     requestBody:
@@ -19,22 +27,37 @@ const { t } = require('../../../config/i18nConfig');
  *           schema:
  *             type: object
  *             required:
- *               - type
+ *               - to_kind
  *               - amount
  *               - currency
+ *               - from_scope
  *             properties:
- *               type:
+ *               to_kind:
  *                 type: string
- *                 enum: [internal, external_company, external_person, expense]
- *                 description: Transfer tipi
- *                 example: "internal"
+ *                 enum: [user_same_company, user_other_company, external, expense, incoming_manual]
+ *                 description: |
+ *                   Transfer tipi:
+ *                   - user_same_company: Aynı firmadaki kullanıcıya
+ *                   - user_other_company: Farklı firmadaki kullanıcıya
+ *                   - external: Sistemde olmayan kişiye ödeme
+ *                   - expense: Gider ödemesi
+ *                   - incoming_manual: Dışarıdan gelen para kaydı
+ *                 example: "user_same_company"
+ *               from_scope:
+ *                 type: string
+ *                 enum: [user, company]
+ *                 description: |
+ *                   Para çıkış kaynağı:
+ *                   - user: Kullanıcının hesabından
+ *                   - company: Firma hesabından
+ *                 example: "user"
  *               amount:
  *                 type: number
- *                 description: Transfer miktarı
+ *                 description: Transfer miktarı (pozitif sayı)
  *                 example: 1000.50
  *               currency:
  *                 type: string
- *                 description: Para birimi
+ *                 description: Para birimi (ISO-4217, 3 büyük harf)
  *                 example: "USD"
  *               description:
  *                 type: string
@@ -42,20 +65,20 @@ const { t } = require('../../../config/i18nConfig');
  *                 example: "Aylık maaş ödemesi"
  *               to_user_id:
  *                 type: string
- *                 description: Alıcı kullanıcı ID (internal veya external_company için gerekli)
+ *                 description: Alıcı kullanıcı ID (user_same_company veya user_other_company için gerekli)
  *                 example: "USR123456"
- *               from_user_id:
+ *               to_user_company_id:
  *                 type: string
- *                 description: Gönderen kullanıcı ID (internal veya external_company için gerekli)
- *                 example: "USR789012"
- *               external_person_name:
+ *                 description: Alıcı kullanıcının firma ID'si (sadece user_other_company için gerekli)
+ *                 example: "CMP789012"
+ *               to_external_name:
  *                 type: string
- *                 description: Harici kişi adı (external_person için gerekli)
- *                 example: "John Doe"
- *               expense_category:
+ *                 description: Harici kişi/kurum adı (external veya incoming_manual için gerekli)
+ *                 example: "Tedarikçi A.Ş."
+ *               to_expense_name:
  *                 type: string
- *                 description: Gider kategorisi (expense için gerekli)
- *                 example: "Office Supplies"
+ *                 description: Gider adı/kategorisi (expense için gerekli)
+ *                 example: "Ofis Malzemeleri"
  *     responses:
  *       200:
  *         description: Transfer başarıyla oluşturuldu
@@ -79,9 +102,9 @@ const { t } = require('../../../config/i18nConfig');
  *                         id:
  *                           type: string
  *                           example: "TRF123456"
- *                         type:
+ *                         to_kind:
  *                           type: string
- *                           example: "internal"
+ *                           example: "user_same_company"
  *                         amount:
  *                           type: number
  *                           example: 1000.50
@@ -94,7 +117,7 @@ const { t } = require('../../../config/i18nConfig');
  *       400:
  *         description: Gerekli alanlar eksik veya geçersiz
  *       403:
- *         description: Yetki yetersiz (transfer yetkisi gerekli)
+ *         description: Yetki yetersiz
  *       500:
  *         description: Sunucu hatası
  */
@@ -113,8 +136,8 @@ router.post('/', async (req, res) => {
         }
 
         // Gerekli alanları kontrol et
-        const { type, amount, currency } = req.body;
-        if (!type || !amount || !currency) {
+        const { to_kind, amount, currency, from_scope } = req.body;
+        if (!to_kind || !amount || !currency || !from_scope) {
             return responseHelper.error(res, t('transfers.create.missingFields'), 400);
         }
 
