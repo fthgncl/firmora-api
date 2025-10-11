@@ -65,6 +65,35 @@ const { t } = require('../../../config/i18nConfig');
  *                             type: string
  *                             format: date-time
  *                             example: "2025-01-15T10:30:00Z"
+ *                           company:
+ *                             type: object
+ *                             nullable: true
+ *                             description: Hesaba ait firma bilgileri
+ *                             properties:
+ *                               id:
+ *                                 type: string
+ *                                 example: "COM_547dc37210f0157d"
+ *                               company_name:
+ *                                 type: string
+ *                                 example: "Örnek Teknoloji A.Ş."
+ *                               sector:
+ *                                 type: string
+ *                                 nullable: true
+ *                                 example: "Teknoloji"
+ *                               currency:
+ *                                 type: string
+ *                                 example: "EUR"
+ *                               balance:
+ *                                 type: number
+ *                                 format: decimal
+ *                                 example: 50000.00
+ *                               owner_id:
+ *                                 type: string
+ *                                 example: "USR_f1eb361f6dcd6ba4"
+ *                               created_at:
+ *                                 type: string
+ *                                 format: date-time
+ *                                 example: "2025-01-10T08:00:00Z"
  *       401:
  *         description: Token geçersiz veya eksik
  *         content:
