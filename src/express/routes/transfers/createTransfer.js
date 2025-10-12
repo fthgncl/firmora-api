@@ -125,24 +125,24 @@ router.post('/', async (req, res) => {
     try {
         // Kullanıcı bilgilerini al
         const userId = req.tokenPayload?.id;
-        const companyId = req.headers['x-company-id'];
+        const { to_kind, amount, company_id, currency, from_scope } = req.body;
 
         if (!userId) {
             return responseHelper.error(res, t('auth.tokenRequired'), 401);
         }
 
-        if (!companyId) {
+        if (!company_id) {
+            console.log('companyId', company_id);
             return responseHelper.error(res, t('companies.companyIdRequired'), 400);
         }
 
         // Gerekli alanları kontrol et
-        const { to_kind, amount, currency, from_scope } = req.body;
         if (!to_kind || !amount || !currency || !from_scope) {
             return responseHelper.error(res, t('transfers.create.missingFields'), 400);
         }
 
         // Transfer oluştur
-        const result = await createTransfer(req.body, userId, companyId);
+        const result = await createTransfer(req.body, userId, company_id);
 
         return responseHelper.success(res, {
             message: result.message,
