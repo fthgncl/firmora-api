@@ -37,75 +37,55 @@ module.exports = {
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
     },
     transfers: {
-        // 🔑 Benzersiz işlem kimliği
+        // id : transfer no
         id: 'VARCHAR(36) NOT NULL UNIQUE',
 
-        // 🏢 İşlemi kaydeden / para hareketinin bağlamı olan firma
+        // user_id: işlemi kimin yaptığı (operatör)
+        user_id: 'VARCHAR(36) NOT NULL',
+
+        // company_id : hangi firma veya hangi firmanın kullanıcısı gönderecek (kaynak firma)
         company_id: 'VARCHAR(36) NOT NULL',
 
-        // 🧭 Kaynak kapsamı:
-        // user    = para kullanıcının hesabından çıkar
-        // company = para şirketin hesabından çıkar (operatör yine from_user_id)
-        from_scope: "ENUM('user','company') NOT NULL",
-
-        // 👤 İşlemi başlatan/operatör kullanıcı
-        // incoming_manual türünde NULL olabilir (çünkü para dışarıdan geldi)
-        from_user_id: 'VARCHAR(36) NULL',
-
-        // 👥 Alıcı kullanıcı (varsa)
-        // user_same_company veya user_other_company durumlarında dolu olur
+        // to_user_id : hangi kullanıcının hesabına gideceği (varsa)
         to_user_id: 'VARCHAR(36) NULL',
 
-        // 🏢 Alıcı kullanıcının firması (sadece user_other_company için dolu)
+        // to_user_company_id: hangi firmaya veya hangi firmanın kullanıcısına gidecek
+        // (kullanıcı hedefi: hedef kullanıcının firması | firma hedefi: doğrudan hedef firma)
         to_user_company_id: 'VARCHAR(36) NULL',
 
-        // 💰 Tutar (pozitif)
+        // from_scope : para çıkışının nereden olacağı ("user" veya "company")
+        from_scope: "ENUM('user','company') NOT NULL",
+
+        // to_scope : para girişinin nereye olacağı ("user" veya "company")
+        to_scope: "ENUM('user','company') NOT NULL",
+
+        // amount: para miktarı (pozitif)
         amount: 'DECIMAL(15,2) NOT NULL',
 
-        // 💵 Para birimi (ISO-4217)
+        // currency: para birimi (ISO-4217)
         currency: "VARCHAR(3) NOT NULL CHECK (currency REGEXP '^[A-Z]{3}$')",
 
-        // 📝 Açıklama (örn: “Mart ayı kirası”)
+        // description: açıklama
         description: 'VARCHAR(255) NULL',
 
-        // ⚙️ İşlem durumu
+        // status: işlem durumu
         status: "ENUM('pending','completed','failed','reversed') NOT NULL DEFAULT 'completed'",
 
-        // 🔭 İşlem türü (5 senaryo)
-        // - user_same_company  : Aynı firmadaki başka kullanıcıya para gönderimi
-        // - user_other_company : Farklı firmadaki kullanıcıya para gönderimi
-        // - external           : Sistemde hesabı olmayan kişiye ödeme
-        // - expense            : Firma gideri ödemesi
-        // - incoming_manual    : Sistemde olmayan birinden gelen para (manuel kayıt)
-        to_kind: "ENUM('user_same_company','user_other_company','external','expense','incoming_manual') NOT NULL",
-
-        // 🧾 External alıcı adı (SADECE to_kind='external')
+        // to_external_name: Sistem dışı kullanıcı için paranın gönderileceği kişi/firma adı
+        // (hedef sistemde yoksa bu alanı doldur; to_user_id/to_user_company_id boş kalabilir)
         to_external_name: 'VARCHAR(120) NULL',
 
-        // 💼 Gider adı/kategori (SADECE to_kind='expense')
-        to_expense_name: 'VARCHAR(100) NULL',
-
-        // ⏱️ Kayıt tarihi
+        // created_at: oluşturulma tarihi
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
 
-        /*
-         * 🔒 Validasyon (backend veya trigger):
-         * ------------------------------------
-         * amount > 0
-         * currency: 3 büyük harf
-         *
-         * to_kind = 'user_same_company'  -> to_user_id zorunlu, to_user_company_id NULL
-         * to_kind = 'user_other_company' -> to_user_id + to_user_company_id zorunlu
-         * to_kind = 'external'           -> to_external_name zorunlu
-         * to_kind = 'expense'            -> to_expense_name zorunlu
-         * to_kind = 'incoming_manual'    -> from_user_id NULL, from_scope 'company' veya 'user' olabilir (genelde 'company')
-         *
-         * from_scope = 'user'    -> from_user_id ZORUNLU (kimin hesabından çıktığını bilmeliyiz)
-         * from_scope = 'company' -> from_user_id ZORUNLU (işlemi kim başlattı / yetkili kim)
-         *
-         * Ek iş kuralı (öneri): from_scope='company' ise, from_user_id'nin company_id üzerinde
-         * 'can_transfer_money' veya 'can_transfer_external' gibi yetkileri olmalı.
-         */
+        // transfer_type: transfer türü
+        // - company_to_user_same      – Firma hesabından aynı firmadaki bir kullanıcıya
+        // - company_to_user_other     – Firma hesabından başka firmadaki bir kullanıcıya
+        // - company_to_company_other  – Firma hesabından başka bir firmaya
+        // - user_to_user_same         – Kullanıcı hesabından aynı firmadaki başka bir kullanıcıya
+        // - user_to_user_other        – Kullanıcı hesabından başka firmadaki bir kullanıcıya
+        // - user_to_company_same      – Kullanıcı hesabından kendi firmasına
+        // - user_to_company_other     – Kullanıcı hesabından başka firmaya
+        transfer_type: "ENUM('company_to_user_same','company_to_user_other','company_to_company_other','user_to_user_same','user_to_user_other','user_to_company_same','user_to_company_other') NOT NULL",
     }
-
 };
