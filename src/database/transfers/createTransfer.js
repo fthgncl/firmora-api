@@ -6,7 +6,7 @@ const getUserById = require('../users/getUserById');
 
 const createTransfer = async (transferData, userId, companyId) => {
     try {
-
+        // TODO: gönderilen ve alınan para birimleri aynı olmalı. Öyle mi çalışıyor kontrol et.
         const { to_kind, amount, currency, from_scope } = transferData;
 
         // Zorunlu alanlar kontrolü
