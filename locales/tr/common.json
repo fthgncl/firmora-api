@@ -68,13 +68,33 @@
       "name": "Personel Yöneticisi",
       "description": "Personel yönetimi ve işlemlerine erişim yetkisi"
     },
-    "can_transfer_internal": {
-      "name": "Para Transfer",
-      "description": "Para transfer işlemleri yapma yetkisi"
+    "can_transfer_company_to_same_company_user": {
+      "name": "Firma > Aynı Firmadaki Kullanıcı Transferi",
+      "description": "Firma hesabından aynı firmadaki bir kullanıcıya transfer yetkisi"
     },
-    "can_transfer_external": {
-      "name": "Harici Transfer",
-      "description": "Harici hesaplara para transfer etme yetkisi"
+    "can_transfer_company_to_other_company_user": {
+      "name": "Firma > Başka Firmadaki Kullanıcı Transferi",
+      "description": "Firma hesabından başka firmadaki bir kullanıcıya transfer yetkisi"
+    },
+    "can_transfer_company_to_other_company": {
+      "name": "Firma > Başka Firma Transferi",
+      "description": "Firma hesabından başka bir firmaya transfer yetkisi"
+    },
+    "can_transfer_user_to_same_company_user": {
+      "name": "Kullanıcı > Aynı Firmadaki Kullanıcı Transferi",
+      "description": "Kullanıcı hesabından aynı firmadaki başka bir kullanıcıya transfer yetkisi"
+    },
+    "can_transfer_user_to_other_company_user": {
+      "name": "Kullanıcı > Başka Firmadaki Kullanıcı Transferi",
+      "description": "Kullanıcı hesabından başka firmadaki bir kullanıcıya transfer yetkisi"
+    },
+    "can_transfer_user_to_own_company": {
+      "name": "Kullanıcı > Kendi Firması Transferi",
+      "description": "Kullanıcı hesabından kendi firmasına transfer yetkisi"
+    },
+    "can_transfer_user_to_other_company": {
+      "name": "Kullanıcı > Başka Firma Transferi",
+      "description": "Kullanıcı hesabından başka firmaya transfer yetkisi"
     },
     "create_company": {
       "name": "Şirket Oluşturma",

@@ -53,9 +53,47 @@
     "expressStart": "Error occurred while starting Express application"
   },
   "permissions": {
+    "insufficientPermissions": "You do not have sufficient permissions for this operation.",
+    "categories": {
+      "system": "System",
+      "personnel": "Personnel",
+      "financial": "Financial"
+    },
     "sys_admin": {
       "name": "System Administrator",
       "description": "Full access to all system operations"
+    },
+    "personnel_manager": {
+      "name": "Personnel Manager",
+      "description": "Permission to access personnel management and operations"
+    },
+    "can_transfer_company_to_same_company_user": {
+      "name": "Company > Same Company User Transfer",
+      "description": "Permission to transfer from company account to a user in the same company"
+    },
+    "can_transfer_company_to_other_company_user": {
+      "name": "Company > Other Company User Transfer",
+      "description": "Permission to transfer from company account to a user in another company"
+    },
+    "can_transfer_company_to_other_company": {
+      "name": "Company > Other Company Transfer",
+      "description": "Permission to transfer from company account to another company"
+    },
+    "can_transfer_user_to_same_company_user": {
+      "name": "User > Same Company User Transfer",
+      "description": "Permission to transfer from user account to another user in the same company"
+    },
+    "can_transfer_user_to_other_company_user": {
+      "name": "User > Other Company User Transfer",
+      "description": "Permission to transfer from user account to a user in another company"
+    },
+    "can_transfer_user_to_own_company": {
+      "name": "User > Own Company Transfer",
+      "description": "Permission to transfer from user account to their own company"
+    },
+    "can_transfer_user_to_other_company": {
+      "name": "User > Other Company Transfer",
+      "description": "Permission to transfer from user account to another company"
     },
     "create_company": {
       "name": "Create Company",

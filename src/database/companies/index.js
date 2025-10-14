@@ -4,6 +4,8 @@ const getCompaniesByOwnerId = require('./getCompaniesByOwnerId');
 const getEmployeesByCompanyId = require('./getEmployeesByCompanyId');
 //const updateCompany = require('./updateCompany');
 const deleteCompany = require('./deleteCompany');
+const addCompanyBalance = require('./addCompanyBalance');
+const deductCompanyBalance = require('./deductCompanyBalance');
 
 module.exports = {
     createCompany,
@@ -11,5 +13,7 @@ module.exports = {
     getCompaniesByOwnerId,
     getEmployeesByCompanyId,
     //updateCompany,
-    deleteCompany
+    deleteCompany,
+    addCompanyBalance,
+    deductCompanyBalance
 };

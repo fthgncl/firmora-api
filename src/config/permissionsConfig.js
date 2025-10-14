@@ -14,35 +14,47 @@ const permissions = {
         "name": "permissions.personnel_manager.name",
         "description": "permissions.personnel_manager.description"
     },
-    "can_transfer_internal": {
+    "can_transfer_company_to_same_company_user": {
         "code": "c",
         "category": "permissions.categories.financial",
-        "name": "permissions.can_transfer_internal.name",
-        "description": "permissions.can_transfer_internal.description"
+        "name": "permissions.can_transfer_company_to_same_company_user.name",
+        "description": "permissions.can_transfer_company_to_same_company_user.description"
     },
-    "can_transfer_external": {
+    "can_transfer_company_to_other_company_user": {
         "code": "d",
         "category": "permissions.categories.financial",
-        "name": "permissions.can_transfer_external.name",
-        "description": "permissions.can_transfer_external.description"
+        "name": "permissions.can_transfer_company_to_other_company_user.name",
+        "description": "permissions.can_transfer_company_to_other_company_user.description"
     },
-    "can_record_expense": {
+    "can_transfer_company_to_other_company": {
         "code": "e",
         "category": "permissions.categories.financial",
-        "name": "permissions.can_record_expense.name",
-        "description": "permissions.can_record_expense.description"
+        "name": "permissions.can_transfer_company_to_other_company.name",
+        "description": "permissions.can_transfer_company_to_other_company.description"
     },
-    "can_withdraw_from_company": {
+    "can_transfer_user_to_same_company_user": {
         "code": "f",
         "category": "permissions.categories.financial",
-        "name": "permissions.can_withdraw_from_company.name",
-        "description": "permissions.can_withdraw_from_company.description"
+        "name": "permissions.can_transfer_user_to_same_company_user.name",
+        "description": "permissions.can_transfer_user_to_same_company_user.description"
     },
-    "can_record_income": {
+    "can_transfer_user_to_other_company_user": {
         "code": "g",
         "category": "permissions.categories.financial",
-        "name": "permissions.can_record_income.name",
-        "description": "permissions.can_record_income.description"
+        "name": "permissions.can_transfer_user_to_other_company_user.name",
+        "description": "permissions.can_transfer_user_to_other_company_user.description"
+    },
+    "can_transfer_user_to_own_company": {
+        "code": "h",
+        "category": "permissions.categories.financial",
+        "name": "permissions.can_transfer_user_to_own_company.name",
+        "description": "permissions.can_transfer_user_to_own_company.description"
+    },
+    "can_transfer_user_to_other_company": {
+        "code": "i",
+        "category": "permissions.categories.financial",
+        "name": "permissions.can_transfer_user_to_other_company.name",
+        "description": "permissions.can_transfer_user_to_other_company.description"
     }
 }
 
