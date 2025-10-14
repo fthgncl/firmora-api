@@ -57,7 +57,7 @@ module.exports = {
         from_scope: "ENUM('user','company') NOT NULL",
 
         // to_scope : para girişinin nereye olacağı ("user" veya "company")
-        to_scope: "ENUM('user','company') NOT NULL",
+        to_scope: "ENUM('user','company','external') NOT NULL",
 
         // amount: para miktarı (pozitif)
         amount: 'DECIMAL(15,2) NOT NULL',
@@ -66,14 +66,14 @@ module.exports = {
         currency: "VARCHAR(3) NOT NULL CHECK (currency REGEXP '^[A-Z]{3}$')",
 
         // description: açıklama
-        description: 'VARCHAR(255) NULL',
+        description: 'VARCHAR(255) NULL DEFAULT NULL',
 
         // status: işlem durumu
         status: "ENUM('pending','completed','failed','reversed') NOT NULL DEFAULT 'completed'",
 
         // to_external_name: Sistem dışı kullanıcı için paranın gönderileceği kişi/firma adı
         // (hedef sistemde yoksa bu alanı doldur; to_user_id/to_user_company_id boş kalabilir)
-        to_external_name: 'VARCHAR(120) NULL',
+        to_external_name: 'VARCHAR(120) NULL DEFAULT NULL',
 
         // created_at: oluşturulma tarihi
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
@@ -86,6 +86,8 @@ module.exports = {
         // - user_to_user_other        – Kullanıcı hesabından başka firmadaki bir kullanıcıya
         // - user_to_company_same      – Kullanıcı hesabından kendi firmasına
         // - user_to_company_other     – Kullanıcı hesabından başka firmaya
-        transfer_type: "ENUM('company_to_user_same','company_to_user_other','company_to_company_other','user_to_user_same','user_to_user_other','user_to_company_same','user_to_company_other') NOT NULL",
+        // - user_to_external        – Kullanıcı hesabından sistem dışı bir alıcıya (to_external_name ile)
+        // - company_to_external     – Firma hesabından sistem dışı bir alıcıya (to_external_name ile)
+        transfer_type: "ENUM('company_to_user_same','company_to_user_other','company_to_company_other','user_to_user_same','user_to_user_other','user_to_company_same','user_to_company_other','user_to_external','company_to_external') NOT NULL",
     }
 };

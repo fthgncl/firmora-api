@@ -57,6 +57,14 @@ const createTransfer = async (transferData, userId, companyId) => {
                 result = await handleUserToCompanyOther(transferData);
                 break;
 
+            case 'user_to_external':
+                result = await handleUserToExternal(transferData);
+                break;
+
+            case 'company_to_external':
+                result = await handleCompanyToExternal(transferData);
+                break;
+
             default:
                 throw new Error(t('errors.invalid_transfer_type'));
         }
@@ -109,8 +117,8 @@ async function handleCompanyToUserSame(transferData) {
         const insertQuery = `
             INSERT INTO transfers (
                 id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+                from_scope, to_scope, amount, currency, transfer_type, description, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
         `;
 
         await queryAsync(insertQuery, [
@@ -123,7 +131,8 @@ async function handleCompanyToUserSame(transferData) {
             to_scope,
             amount,
             currency,
-            'company_to_user_same'
+            'company_to_user_same',
+            transferData.description || null
         ]);
 
         return {
@@ -182,8 +191,8 @@ async function handleCompanyToUserOther(transferData) {
         const insertQuery = `
             INSERT INTO transfers (
                 id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+                from_scope, to_scope, amount, currency, transfer_type, description, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
         `;
 
         await queryAsync(insertQuery, [
@@ -196,7 +205,8 @@ async function handleCompanyToUserOther(transferData) {
             to_scope,
             amount,
             currency,
-            'company_to_user_other'
+            'company_to_user_other',
+            transferData.description || null
         ]);
 
         return {
@@ -251,8 +261,8 @@ async function handleCompanyToCompanyOther(transferData) {
         const insertQuery = `
             INSERT INTO transfers (
                 id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+                from_scope, to_scope, amount, currency, transfer_type, description, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
         `;
 
         await queryAsync(insertQuery, [
@@ -265,7 +275,8 @@ async function handleCompanyToCompanyOther(transferData) {
             to_scope,
             amount,
             currency,
-            'company_to_company_other'
+            'company_to_company_other',
+            transferData.description || null
         ]);
 
         return {
@@ -321,8 +332,8 @@ async function handleUserToUserSame(transferData) {
         const insertQuery = `
             INSERT INTO transfers (
                 id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+                from_scope, to_scope, amount, currency, transfer_type, description, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
         `;
 
         await queryAsync(insertQuery, [
@@ -335,7 +346,8 @@ async function handleUserToUserSame(transferData) {
             to_scope,
             amount,
             currency,
-            'user_to_user_same'
+            'user_to_user_same',
+            transferData.description || null
         ]);
 
         return {
@@ -399,8 +411,8 @@ async function handleUserToUserOther(transferData) {
         const insertQuery = `
             INSERT INTO transfers (
                 id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+                from_scope, to_scope, amount, currency, transfer_type, description, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
         `;
 
         await queryAsync(insertQuery, [
@@ -413,7 +425,8 @@ async function handleUserToUserOther(transferData) {
             to_scope,
             amount,
             currency,
-            'user_to_user_other'
+            'user_to_user_other',
+            transferData.description || null
         ]);
 
         return {
@@ -458,8 +471,8 @@ async function handleUserToCompanySame(transferData) {
         const insertQuery = `
             INSERT INTO transfers (
                 id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+                from_scope, to_scope, amount, currency, transfer_type, description, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
         `;
 
         await queryAsync(insertQuery, [
@@ -472,7 +485,8 @@ async function handleUserToCompanySame(transferData) {
             to_scope,
             amount,
             currency,
-            'user_to_company_same'
+            'user_to_company_same',
+            transferData.description || null
         ]);
 
         return {
@@ -526,8 +540,8 @@ async function handleUserToCompanyOther(transferData) {
         const insertQuery = `
             INSERT INTO transfers (
                 id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+                from_scope, to_scope, amount, currency, transfer_type, description, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
         `;
 
         await queryAsync(insertQuery, [
@@ -540,7 +554,139 @@ async function handleUserToCompanyOther(transferData) {
             to_scope,
             amount,
             currency,
-            'user_to_company_other'
+            'user_to_company_other',
+            transferData.description || null
+        ]);
+
+        return {
+            success: true,
+            transferId: transferData.id,
+            message: t('transfers.create.success')
+        };
+
+    } catch (error) {
+        throw {
+            success: false,
+            message: error.message || t('transfers.create.failed')
+        };
+    }
+}
+
+async function handleUserToExternal(transferData) {
+    // Kullanıcı hesabından sistem dışı bir alıcıya transfer
+
+    try {
+        const { user_id, company_id } = transferData;
+        const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_user_to_external']);
+        if (!hasPermissions) {
+            throw new Error(t('permissions.insufficientPermissions'));
+        }
+
+        const { to_external_name, from_scope, to_scope, amount, currency } = transferData;
+        if (from_scope !== 'user' || to_scope !== 'external') {
+            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+        }
+
+        if (!to_external_name || to_external_name.trim().length === 0) {
+            throw new Error(t('errors.to_external_name_required'));
+        }
+
+        if (!currency || currency !== await getUserAccountCurrency(user_id, company_id)) {
+            throw new Error(t('errors.invalid_currency'));
+        }
+
+        validateAmount(amount);
+
+        // Kullanıcı hesabından bakiye düş (sistem dışı transfer, alıcı tarafta işlem yok)
+        await deductAccountBalance(user_id, company_id, amount);
+
+        // Transfer kaydını veritabanına ekle
+        const insertQuery = `
+            INSERT INTO transfers (
+                id, user_id, company_id, to_user_id, to_user_company_id,
+                from_scope, to_scope, amount, currency, transfer_type, to_external_name, description, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+        `;
+
+        await queryAsync(insertQuery, [
+            transferData.id,
+            user_id,
+            company_id,
+            null, // to_user_id yok, external transfer
+            null, // to_user_company_id yok, external transfer
+            from_scope,
+            to_scope,
+            amount,
+            currency,
+            'user_to_external',
+            to_external_name,
+            transferData.description || null
+        ]);
+
+        return {
+            success: true,
+            transferId: transferData.id,
+            message: t('transfers.create.success')
+        };
+
+    } catch (error) {
+        throw {
+            success: false,
+            message: error.message || t('transfers.create.failed')
+        };
+    }
+}
+
+async function handleCompanyToExternal(transferData) {
+    // Firma hesabından sistem dışı bir alıcıya transfer
+
+    try {
+        const { user_id, company_id } = transferData;
+        const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_company_to_external']);
+        if (!hasPermissions) {
+            throw new Error(t('permissions.insufficientPermissions'));
+        }
+
+        const { to_external_name, from_scope, to_scope, amount, currency } = transferData;
+        if (from_scope !== 'company' || to_scope !== 'external') {
+            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+        }
+
+        if (!to_external_name || to_external_name.trim().length === 0) {
+            throw new Error(t('errors.to_external_name_required'));
+        }
+
+        if (!currency || currency !== await getCompanyCurrency(company_id)) {
+            throw new Error(t('errors.invalid_currency'));
+        }
+
+        validateAmount(amount);
+        await validateCompanyBalance(company_id, amount);
+
+        // Firma hesabından bakiye düş (sistem dışı transfer, alıcı tarafta işlem yok)
+        await deductCompanyBalance(company_id, amount);
+
+        // Transfer kaydını veritabanına ekle
+        const insertQuery = `
+            INSERT INTO transfers (
+                id, user_id, company_id, to_user_id, to_user_company_id,
+                from_scope, to_scope, amount, currency, transfer_type, to_external_name, description, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+        `;
+
+        await queryAsync(insertQuery, [
+            transferData.id,
+            user_id,
+            company_id,
+            null, // to_user_id yok, external transfer
+            null, // to_user_company_id yok, external transfer
+            from_scope,
+            to_scope,
+            amount,
+            currency,
+            'company_to_external',
+            to_external_name,
+            transferData.description || null
         ]);
 
         return {
