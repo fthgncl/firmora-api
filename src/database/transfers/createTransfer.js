@@ -6,7 +6,6 @@ const {getCompanyCurrency, getUserAccountCurrency, validateUserInCompany, valida
 const {deductCompanyBalance, addCompanyBalance} = require("../companies");
 const {addAccountBalance, deductAccountBalance} = require("../accounts");
 
-
 const createTransfer = async (transferData, userId, companyId) => {
 
     const { transfer_type, currency } = transferData;
@@ -557,3 +556,5 @@ async function handleUserToCompanyOther(transferData) {
         };
     }
 }
+
+module.exports = createTransfer;

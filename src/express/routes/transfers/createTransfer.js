@@ -8,16 +8,8 @@ const { t } = require('../../../config/i18nConfig');
  * @swagger
  * /transfers:
  *   post:
- *     summary: Yeni para transferi oluştur
- *     description: |
- *       Yeni bir para transferi kaydı oluşturur. Transfer tiplerine göre farklı yetkiler gereklidir:
- *       - user_same_company: can_transfer_internal
- *       - user_other_company: can_transfer_external
- *       - external: can_transfer_external
- *       - expense: can_record_expense
- *       - incoming_manual: can_record_income
- *       
- *       Ayrıca from_scope='company' ise can_withdraw_from_company yetkisi gerekir.
+ *     summary: Yeni transfer oluştur
+ *     description: Farklı transfer tipleri ile para transferi gerçekleştirir (ilgili yetki gerekli)
  *     tags:
  *       - Transfers
  *     requestBody:
@@ -27,58 +19,75 @@ const { t } = require('../../../config/i18nConfig');
  *           schema:
  *             type: object
  *             required:
- *               - to_kind
+ *               - company_id
+ *               - transfer_type
+ *               - from_scope
+ *               - to_scope
  *               - amount
  *               - currency
- *               - from_scope
  *             properties:
- *               to_kind:
+ *               company_id:
  *                 type: string
- *                 enum: [user_same_company, user_other_company, external, expense, incoming_manual]
+ *                 description: İşlemi yapan kullanıcının firma ID'si (kaynak firma)
+ *                 example: "COM123456"
+ *               transfer_type:
+ *                 type: string
+ *                 enum:
+ *                   - company_to_user_same
+ *                   - company_to_user_other
+ *                   - company_to_company_other
+ *                   - user_to_user_same
+ *                   - user_to_user_other
+ *                   - user_to_company_same
+ *                   - user_to_company_other
  *                 description: |
  *                   Transfer tipi:
- *                   - user_same_company: Aynı firmadaki kullanıcıya
- *                   - user_other_company: Farklı firmadaki kullanıcıya
- *                   - external: Sistemde olmayan kişiye ödeme
- *                   - expense: Gider ödemesi
- *                   - incoming_manual: Dışarıdan gelen para kaydı
- *                 example: "user_same_company"
+ *                   - company_to_user_same: Firma hesabından aynı firmadaki kullanıcıya
+ *                   - company_to_user_other: Firma hesabından başka firmadaki kullanıcıya
+ *                   - company_to_company_other: Firma hesabından başka firmaya
+ *                   - user_to_user_same: Kullanıcı hesabından aynı firmadaki kullanıcıya
+ *                   - user_to_user_other: Kullanıcı hesabından başka firmadaki kullanıcıya
+ *                   - user_to_company_same: Kullanıcı hesabından kendi firmasına
+ *                   - user_to_company_other: Kullanıcı hesabından başka firmaya
+ *                 example: "company_to_user_same"
  *               from_scope:
  *                 type: string
  *                 enum: [user, company]
- *                 description: |
- *                   Para çıkış kaynağı:
- *                   - user: Kullanıcının hesabından
- *                   - company: Firma hesabından
+ *                 description: Para çıkışının kaynağı
+ *                 example: "company"
+ *               to_scope:
+ *                 type: string
+ *                 enum: [user, company]
+ *                 description: Para girişinin hedefi
  *                 example: "user"
  *               amount:
  *                 type: number
- *                 description: Transfer miktarı (pozitif sayı)
+ *                 format: decimal
+ *                 description: Transfer miktarı (pozitif, maksimum 2 ondalık basamak)
  *                 example: 1000.50
  *               currency:
  *                 type: string
- *                 description: Para birimi (ISO-4217, 3 büyük harf)
+ *                 description: Para birimi (ISO 4217 formatında, 3 büyük harf)
+ *                 pattern: "^[A-Z]{3}$"
  *                 example: "USD"
- *               description:
- *                 type: string
- *                 description: Transfer açıklaması
- *                 example: "Aylık maaş ödemesi"
  *               to_user_id:
  *                 type: string
- *                 description: Alıcı kullanıcı ID (user_same_company veya user_other_company için gerekli)
- *                 example: "USR123456"
+ *                 description: Hedef kullanıcı ID'si (user hedefli transferlerde zorunlu)
+ *                 example: "USR789012"
  *               to_user_company_id:
  *                 type: string
- *                 description: Alıcı kullanıcının firma ID'si (sadece user_other_company için gerekli)
- *                 example: "CMP789012"
+ *                 description: Hedef firma ID'si (başka firmaya yapılan transferlerde zorunlu)
+ *                 example: "COM654321"
+ *               description:
+ *                 type: string
+ *                 description: Transfer açıklaması (opsiyonel)
+ *                 maxLength: 255
+ *                 example: "Aylık maaş ödemesi"
  *               to_external_name:
  *                 type: string
- *                 description: Harici kişi/kurum adı (external veya incoming_manual için gerekli)
- *                 example: "Tedarikçi A.Ş."
- *               to_expense_name:
- *                 type: string
- *                 description: Gider adı/kategorisi (expense için gerekli)
- *                 example: "Ofis Malzemeleri"
+ *                 description: Sistem dışı alıcı adı (opsiyonel)
+ *                 maxLength: 120
+ *                 example: "Harici Tedarikçi A.Ş."
  *     responses:
  *       200:
  *         description: Transfer başarıyla oluşturuldu
@@ -96,28 +105,26 @@ const { t } = require('../../../config/i18nConfig');
  *                 data:
  *                   type: object
  *                   properties:
- *                     transfer:
- *                       type: object
- *                       properties:
- *                         id:
- *                           type: string
- *                           example: "TRF123456"
- *                         to_kind:
- *                           type: string
- *                           example: "user_same_company"
- *                         amount:
- *                           type: number
- *                           example: 1000.50
- *                         currency:
- *                           type: string
- *                           example: "USD"
- *                         description:
- *                           type: string
- *                           example: "Aylık maaş ödemesi"
+ *                     transferId:
+ *                       type: string
+ *                       example: "TRF123456"
  *       400:
- *         description: Gerekli alanlar eksik veya geçersiz
+ *         description: Gerekli alanlar eksik veya geçersiz veri
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Geçersiz miktar veya yetersiz bakiye"
+ *       401:
+ *         description: Token gerekli veya geçersiz
  *       403:
- *         description: Yetki yetersiz
+ *         description: Yetki yetersiz (ilgili transfer yetkisi gerekli)
  *       500:
  *         description: Sunucu hatası
  */
@@ -125,31 +132,26 @@ router.post('/', async (req, res) => {
     try {
         // Kullanıcı bilgilerini al
         const userId = req.tokenPayload?.id;
-        const { to_kind, amount, company_id, currency, from_scope } = req.body;
+        const transferData = req.body;
 
         if (!userId) {
             return responseHelper.error(res, t('auth.tokenRequired'), 401);
         }
 
-        if (!company_id) {
-            console.log('companyId', company_id);
+        if (!transferData.company_id) {
             return responseHelper.error(res, t('companies.companyIdRequired'), 400);
         }
 
-        // Gerekli alanları kontrol et
-        if (!to_kind || !amount || !currency || !from_scope) {
-            return responseHelper.error(res, t('transfers.create.missingFields'), 400);
-        }
-
         // Transfer oluştur
-        const result = await createTransfer(req.body, userId, company_id);
+        const result = await createTransfer(req.body, userId, transferData.company_id);
 
         return responseHelper.success(res, {
             message: result.message,
-            transfer: result.transfer
+            transferId: result.transferId
         });
 
     } catch (error) {
+        console.error('Transfer oluşturma hatası:', error);
 
         // Özel hata durumlarını kontrol et
         if (error.status) {
