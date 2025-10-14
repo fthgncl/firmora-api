@@ -6,6 +6,7 @@ const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 const phoneRegex = /^\d{2,4}\d{10}$/;
 const usernameRegex = /^[a-zA-ZığüşöçİĞÜŞÖÇ][a-zA-ZığüşöçİĞÜŞÖÇ0-9]{5,14}$/;
 const companyIdRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const amountRegex = /^(?!0\d)\d+(\.\d{1,2})?$/;
 
 
 const email = (email) => {
@@ -47,6 +48,10 @@ const isValidCompanyId = (Id) => {
     return Id && companyIdRegex.test(Id);
 };
 
+const isValidAmount = (amount) => {
+    return amount && amountRegex.test(amount);
+};
+
 module.exports = {
     email,
     password,
@@ -55,5 +60,6 @@ module.exports = {
     isValidHexColor,
     isValidPhone,
     isValidUsername,
-    isValidCompanyId
+    isValidCompanyId,
+    isValidAmount
 };
