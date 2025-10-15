@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const responseHelper = require('../../utils/responseHelper');
 const { t } = require('../../../config/i18nConfig');
-const getCompaniesByOwnerId = require('../../../database/companies/getCompaniesByOwnerId');
 const { queryAsync } = require('../../../database/utils/connection');
 const { readUserPermissions } = require('../../../utils/permissionsManager');
 const permissions = require('../../../config/permissionsConfig');
@@ -181,10 +180,6 @@ router.get('/', async (req, res) => {
             return responseHelper.error(res, t('auth.tokenRequired'), 401);
         }
 
-        // Kullanıcının sahip olduğu şirketleri getir
-        const fields = ['id', 'company_name', 'sector', 'currency', 'balance', 'owner_id', 'created_at'];
-        const ownedCompanies = await getCompaniesByOwnerId(userId, fields);
-
         // Kullanıcının sys_admin veya personnel_manager yetkisine sahip olduğu şirketleri getir
         const userPermissionsData = await readUserPermissions(userId);
         const authorizedCompanyIds = [];
@@ -224,11 +219,6 @@ router.get('/', async (req, res) => {
 
         // İki listeyi birleştir ve duplicate'leri temizle
         const companyMap = new Map();
-
-        // Sahip olunan şirketleri ekle
-        ownedCompanies.forEach(company => {
-            companyMap.set(company.id, company);
-        });
 
         // Yetkili olunan şirketleri ekle (duplicate'ler otomatik olarak üzerine yazılır)
         authorizedCompanies.forEach(company => {
