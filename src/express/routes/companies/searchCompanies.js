@@ -42,7 +42,7 @@ const { t } = require('../../../config/i18nConfig');
  *         name: sortBy
  *         schema:
  *           type: string
- *           enum: [company_name, sector, currency, balance, created_at]
+ *           enum: [company_name, sector, currency, created_at]
  *           default: company_name
  *         description: Sıralama alanı
  *       - in: query
@@ -82,8 +82,6 @@ const { t } = require('../../../config/i18nConfig');
  *                             type: string
  *                           currency:
  *                             type: string
- *                           balance:
- *                             type: number
  *                           owner_id:
  *                             type: string
  *                           created_at:

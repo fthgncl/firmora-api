@@ -27,7 +27,7 @@ async function searchCompanies(options = {}) {
         const validSortOrder = ['ASC', 'DESC'].includes(sortOrder.toUpperCase()) ? sortOrder.toUpperCase() : 'ASC';
 
         // İzin verilen sıralama alanları
-        const validSortFields = ['company_name', 'sector', 'currency', 'balance', 'created_at'];
+        const validSortFields = ['company_name', 'sector', 'currency', 'created_at'];
         const validSortBy = validSortFields.includes(sortBy) ? sortBy : 'company_name';
 
         let whereConditions = [];
@@ -65,7 +65,6 @@ async function searchCompanies(options = {}) {
                 companies.company_name,
                 companies.sector,
                 companies.currency,
-                companies.balance,
                 companies.owner_id,
                 companies.created_at
             FROM companies
