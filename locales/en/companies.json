@@ -1,0 +1,38 @@
+{
+  "create": {
+    "success": "Company created successfully!",
+    "error": "Error occurred while creating company"
+  },
+  "delete": {
+    "success": "Company deleted successfully!",
+    "notFound": "Company not found",
+    "error": "Company could not be deleted"
+  },
+  "update": {
+    "success": "Company updated successfully!",
+    "notFound": "Company not found",
+    "error": "Error occurred while updating company",
+    "noValidFields": "No valid fields found to update"
+  },
+  "getCompanyById": {
+    "companyIdRequired": "Company ID must be specified",
+    "fieldsRequired": "At least one field must be specified",
+    "validFieldsRequired": "At least one valid field must be specified",
+    "invalidFieldsLog": "Invalid fields requested in getCompanyById function"
+  },
+  "getCompaniesByOwnerId": {
+    "ownerIdRequired": "Owner ID must be specified",
+    "fieldsRequired": "At least one field must be specified",
+    "validFieldsRequired": "At least one valid field must be specified",
+    "invalidFieldsLog": "Invalid fields requested in getCompaniesByOwnerId function"
+  },
+  "addUser": {
+    "success": "User added to company successfully!",
+    "fieldsRequired": "Company ID, user ID, and permissions are required.",
+    "cannotAddSelf": "You cannot add yourself to the company.",
+    "userNotFound": "User not found.",
+    "companyNotFound": "Company not found.",
+    "userAlreadyExists": "User already exists in the company.",
+    "error": "Error occurred while adding user to company"
+  }
+}

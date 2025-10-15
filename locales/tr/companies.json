@@ -1,0 +1,38 @@
+{
+  "create": {
+    "success": "Firma başarıyla oluşturuldu!",
+    "error": "Firma oluşturulurken hata oluştu"
+  },
+  "delete": {
+    "success": "Firma başarıyla silindi!",
+    "notFound": "Firma bulunamadı",
+    "error": "Firma silinemedi"
+  },
+  "update": {
+    "success": "Firma başarıyla güncellendi!",
+    "notFound": "Firma bulunamadı",
+    "error": "Firma güncellenirken hata oluştu",
+    "noValidFields": "Güncellenecek geçerli alan bulunamadı"
+  },
+  "getCompanyById": {
+    "companyIdRequired": "Firma ID'si belirtilmelidir",
+    "fieldsRequired": "En az bir alan belirtilmelidir",
+    "validFieldsRequired": "En az bir geçerli alan belirtilmelidir",
+    "invalidFieldsLog": "getCompanyById fonksiyonunda geçersiz alanlar istendi"
+  },
+  "getCompaniesByOwnerId": {
+    "ownerIdRequired": "Sahip ID'si belirtilmelidir",
+    "fieldsRequired": "En az bir alan belirtilmelidir",
+    "validFieldsRequired": "En az bir geçerli alan belirtilmelidir",
+    "invalidFieldsLog": "getCompaniesByOwnerId fonksiyonunda geçersiz alanlar istendi"
+  },
+  "addUser": {
+    "success": "Kullanıcı başarıyla firmaya eklendi!",
+    "fieldsRequired": "Firma ID'si, kullanıcı ID'si ve yetkiler gereklidir.",
+    "cannotAddSelf": "Kendinizi firmaya ekleyemezsiniz.",
+    "userNotFound": "Kullanıcı bulunamadı.",
+    "companyNotFound": "Firma bulunamadı.",
+    "userAlreadyExists": "Kullanıcı zaten firmada mevcut.",
+    "error": "Kullanıcı firmaya eklenirken hata oluştu"
+  }
+}

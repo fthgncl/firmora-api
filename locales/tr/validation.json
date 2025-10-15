@@ -1,0 +1,45 @@
+{
+  "permissions": {
+    "sys_admin": {
+      "name": "Sistem Yöneticisi",
+      "description": "Tüm sistem işlemlerine tam erişim"
+    },
+    "personnel_manager": {
+      "name": "Personel Yöneticisi",
+      "description": "Personel yönetimi yetkisi"
+    },
+    "create_company": {
+      "name": "Firma Oluşturma",
+      "description": "Yeni firma oluşturma yetkisi"
+    },
+    "user_management": {
+      "name": "Kullanıcı Yönetimi",
+      "description": "Kullanıcı bilgilerini görüntüleme ve düzenleme yetkisi"
+    },
+    "create_user": {
+      "name": "Kullanıcı Oluşturma",
+      "description": "Yeni kullanıcı oluşturma yetkisi"
+    },
+    "delete_user": {
+      "name": "Kullanıcı Silme",
+      "description": "Mevcut kullanıcıları silme yetkisi"
+    },
+    "modify_permissions": {
+      "name": "Yetki Değiştirme",
+      "description": "Kullanıcı yetkilerini düzenleme yetkisi"
+    },
+    "insufficientPermissions": "Bu işlem için yetkiniz bulunmamaktadır",
+    "readUser": {
+      "userNotFound": "Kullanıcı bulunamadı",
+      "success": "Kullanıcı yetkileri başarıyla okundu",
+      "error": "Kullanıcı yetkileri okunurken hata oluştu"
+    },
+    "setUser": {
+      "success": "Kullanıcı yetkileri başarıyla güncellendi",
+      "error": "Kullanıcı yetkileri güncellenirken hata oluştu"
+    },
+    "checkUserRoles": {
+      "error": "Kullanıcı (id:{{userId}}) için yetki kontrolü yapılırken hata oluştu"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "create": {
+    "success": "Benutzer erfolgreich erstellt!",
+    "error": "Fehler beim Erstellen des Benutzers"
+  },
+  "delete": {
+    "success": "Benutzer erfolgreich gelöscht!",
+    "notFound": "Benutzer nicht gefunden.",
+    "error": "Benutzer konnte nicht gelöscht werden"
+  },
+  "getUserById": {
+    "userIdRequired": "Benutzer-ID muss angegeben werden",
+    "fieldsRequired": "Mindestens ein Feld muss angegeben werden",
+    "validFieldsRequired": "Mindestens ein gültiges Feld muss angegeben werden",
+    "invalidFieldsLog": "Ungültige Felder in getUserById-Funktion angefordert"
+  },
+  "getPhoneNumberByUserId": {
+    "userNotFound": "Benutzer nicht gefunden",
+    "phoneNotRegistered": "Telefonnummer des Benutzers ist nicht registriert"
+  }
+}

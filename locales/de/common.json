@@ -1,129 +1,19 @@
 {
-  "server": {
-    "starting": "Anwendung startet",
-    "started": "Anwendung gestartet!",
-    "failed": "Anwendung konnte nicht gestartet werden!",
-    "running": "Server läuft"
-  },
-  "env": {
-    "loaded": "Umgebungsvariablen geladen"
-  },
-  "database": {
-    "initialized": "Datenbank initialisiert"
-  },
-  "express": {
-    "started": "Express-Anwendung gestartet"
-  },
-  "backup": {
-    "started": "Backup-Service gestartet"
-  },
-  "auth": {
-    "signIn": {
-      "fieldsRequired": "Benutzername und Passwort sind erforderlich.",
-      "invalidCredentials": "Ungültiger Benutzername oder Passwort.",
-      "success": "Anmeldung erfolgreich!"
-    }
-  },
-  "users": {
-    "create": {
-      "success": "Benutzer erfolgreich erstellt!",
-      "error": "Fehler beim Erstellen des Benutzers"
-    },
-    "delete": {
-      "success": "Benutzer erfolgreich gelöscht!",
-      "notFound": "Benutzer nicht gefunden.",
-      "error": "Benutzer konnte nicht gelöscht werden:"
-    },
-    "getUserById": {
-      "userIdRequired": "Benutzer-ID muss angegeben werden",
-      "fieldsRequired": "Mindestens ein Feld muss angegeben werden",
-      "validFieldsRequired": "Mindestens ein gültiges Feld muss angegeben werden",
-      "invalidFieldsLog": "Ungültige Felder in getUserById-Funktion angefordert"
-    },
-    "getPhoneNumberByUserId": {
-      "userNotFound": "Benutzer nicht gefunden",
-      "phoneNotRegistered": "Telefonnummer des Benutzers ist nicht registriert"
-    }
-  },
-  "responses": {
-    "serverError": "Serverfehler. Bitte versuchen Sie es später erneut.",
-    "unknownError": "Unbekannter Fehler"
-  },
-  "errors": {
-    "expressStart": "Fehler beim Starten der Express-Anwendung"
-  },
-  "permissions": {
-    "sys_admin": {
-      "name": "Systemadministrator",
-      "description": "Vollzugriff auf alle Systemoperationen"
-    },
-    "create_company": {
-      "name": "Unternehmen erstellen",
-      "description": "Berechtigung zum Erstellen neuer Unternehmen"
-    },
-    "user_management": {
-      "name": "Benutzerverwaltung",
-      "description": "Berechtigung zum Anzeigen und Bearbeiten von Benutzerinformationen"
-    },
-    "create_user": {
-      "name": "Benutzer erstellen",
-      "description": "Berechtigung zum Erstellen neuer Benutzer"
-    },
-    "delete_user": {
-      "name": "Benutzer löschen",
-      "description": "Berechtigung zum Löschen vorhandener Benutzer"
-    },
-    "modify_permissions": {
-      "name": "Berechtigungen ändern",
-      "description": "Berechtigung zum Bearbeiten von Benutzerberechtigungen"
-    },
-    "readUser": {
-      "userNotFound": "Benutzer nicht gefunden",
-      "success": "Benutzerberechtigungen erfolgreich gelesen",
-      "error": "Fehler beim Lesen der Benutzerberechtigungen"
-    },
-    "setUser": {
-      "success": "Benutzerberechtigungen erfolgreich aktualisiert",
-      "error": "Fehler beim Aktualisieren der Benutzerberechtigungen"
-    },
-    "checkUserRoles": {
-      "error": "Fehler beim Überprüfen der Berechtigungen für Benutzer (id:{{userId}})"
-    }
-  },
-  "companies": {
-    "create": {
-      "success": "Unternehmen erfolgreich erstellt!",
-      "error": "Fehler beim Erstellen des Unternehmens"
-    },
-    "delete": {
-      "success": "Unternehmen erfolgreich gelöscht!",
-      "notFound": "Unternehmen nicht gefunden",
-      "error": "Unternehmen konnte nicht gelöscht werden"
-    },
-    "update": {
-      "success": "Unternehmen erfolgreich aktualisiert!",
-      "notFound": "Unternehmen nicht gefunden",
-      "error": "Fehler beim Aktualisieren des Unternehmens",
-      "noValidFields": "Keine gültigen Felder zum Aktualisieren gefunden"
-    },
-    "getCompanyById": {
-      "companyIdRequired": "Unternehmens-ID muss angegeben werden",
-      "fieldsRequired": "Mindestens ein Feld muss angegeben werden",
-      "validFieldsRequired": "Mindestens ein gültiges Feld muss angegeben werden",
-      "invalidFieldsLog": "Ungültige Felder in getCompanyById-Funktion angefordert"
-    },
-    "getCompaniesByOwnerId": {
-      "ownerIdRequired": "Eigentümer-ID muss angegeben werden",
-      "fieldsRequired": "Mindestens ein Feld muss angegeben werden",
-      "validFieldsRequired": "Mindestens ein gültiges Feld muss angegeben werden",
-      "invalidFieldsLog": "Ungültige Felder in getCompaniesByOwnerId-Funktion angefordert"
-    },
-    "addUser": {
-      "success": "Benutzer erfolgreich zum Unternehmen hinzugefügt!",
-      "fieldsRequired": "Unternehmens-ID, Benutzer-ID und Berechtigungen sind erforderlich.",
-      "userNotFound": "Benutzer nicht gefunden.",
-      "companyNotFound": "Unternehmen nicht gefunden.",
-      "error": "Fehler beim Hinzufügen des Benutzers zum Unternehmen"
-    }
-  }
+  "success": "Vorgang erfolgreich",
+  "error": "Ein Fehler ist aufgetreten",
+  "warning": "Warnung",
+  "info": "Information",
+  "confirm": "Bestätigen Sie?",
+  "cancel": "Abbrechen",
+  "save": "Speichern",
+  "delete": "Löschen",
+  "edit": "Bearbeiten",
+  "create": "Erstellen",
+  "update": "Aktualisieren",
+  "yes": "Ja",
+  "no": "Nein",
+  "ok": "OK",
+  "close": "Schließen",
+  "loading": "Lädt...",
+  "pleaseWait": "Bitte warten..."
 }

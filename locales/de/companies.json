@@ -1,0 +1,38 @@
+{
+  "create": {
+    "success": "Unternehmen erfolgreich erstellt!",
+    "error": "Fehler beim Erstellen des Unternehmens"
+  },
+  "delete": {
+    "success": "Unternehmen erfolgreich gelöscht!",
+    "notFound": "Unternehmen nicht gefunden",
+    "error": "Unternehmen konnte nicht gelöscht werden"
+  },
+  "update": {
+    "success": "Unternehmen erfolgreich aktualisiert!",
+    "notFound": "Unternehmen nicht gefunden",
+    "error": "Fehler beim Aktualisieren des Unternehmens",
+    "noValidFields": "Keine gültigen Felder zum Aktualisieren gefunden"
+  },
+  "getCompanyById": {
+    "companyIdRequired": "Unternehmens-ID muss angegeben werden",
+    "fieldsRequired": "Mindestens ein Feld muss angegeben werden",
+    "validFieldsRequired": "Mindestens ein gültiges Feld muss angegeben werden",
+    "invalidFieldsLog": "Ungültige Felder in getCompanyById-Funktion angefordert"
+  },
+  "getCompaniesByOwnerId": {
+    "ownerIdRequired": "Eigentümer-ID muss angegeben werden",
+    "fieldsRequired": "Mindestens ein Feld muss angegeben werden",
+    "validFieldsRequired": "Mindestens ein gültiges Feld muss angegeben werden",
+    "invalidFieldsLog": "Ungültige Felder in getCompaniesByOwnerId-Funktion angefordert"
+  },
+  "addUser": {
+    "success": "Benutzer erfolgreich zum Unternehmen hinzugefügt!",
+    "fieldsRequired": "Unternehmens-ID, Benutzer-ID und Berechtigungen sind erforderlich.",
+    "cannotAddSelf": "Sie können sich nicht selbst zum Unternehmen hinzufügen.",
+    "userNotFound": "Benutzer nicht gefunden.",
+    "companyNotFound": "Unternehmen nicht gefunden.",
+    "userAlreadyExists": "Benutzer existiert bereits im Unternehmen.",
+    "error": "Fehler beim Hinzufügen des Benutzers zum Unternehmen"
+  }
+}

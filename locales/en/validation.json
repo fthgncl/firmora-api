@@ -1,0 +1,45 @@
+{
+  "permissions": {
+    "sys_admin": {
+      "name": "System Administrator",
+      "description": "Full access to all system operations"
+    },
+    "personnel_manager": {
+      "name": "Personnel Manager",
+      "description": "Personnel management authority"
+    },
+    "create_company": {
+      "name": "Create Company",
+      "description": "Permission to create new companies"
+    },
+    "user_management": {
+      "name": "User Management",
+      "description": "Permission to view and edit user information"
+    },
+    "create_user": {
+      "name": "Create User",
+      "description": "Permission to create new users"
+    },
+    "delete_user": {
+      "name": "Delete User",
+      "description": "Permission to delete existing users"
+    },
+    "modify_permissions": {
+      "name": "Modify Permissions",
+      "description": "Permission to edit user permissions"
+    },
+    "insufficientPermissions": "You do not have permission for this operation",
+    "readUser": {
+      "userNotFound": "User not found",
+      "success": "User permissions read successfully",
+      "error": "Error occurred while reading user permissions"
+    },
+    "setUser": {
+      "success": "User permissions updated successfully",
+      "error": "Error occurred while updating user permissions"
+    },
+    "checkUserRoles": {
+      "error": "Error occurred while checking permissions for user (id:{{userId}})"
+    }
+  }
+}

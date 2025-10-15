@@ -1,0 +1,21 @@
+{
+  "create": {
+    "success": "Kullanıcı başarıyla oluşturuldu!",
+    "error": "Kullanıcı oluşturulurken hata oluştu"
+  },
+  "delete": {
+    "success": "Kullanıcı başarıyla silindi!",
+    "notFound": "Kullanıcı bulunamadı.",
+    "error": "Kullanıcı silinemedi"
+  },
+  "getUserById": {
+    "userIdRequired": "Kullanıcı ID'si belirtilmelidir",
+    "fieldsRequired": "En az bir alan belirtilmelidir",
+    "validFieldsRequired": "En az bir geçerli alan belirtilmelidir",
+    "invalidFieldsLog": "getUserById fonksiyonunda geçersiz alanlar istendi"
+  },
+  "getPhoneNumberByUserId": {
+    "userNotFound": "Kullanıcı bulunamadı",
+    "phoneNotRegistered": "Kullanıcının telefon numarası kayıtlı değil"
+  }
+}

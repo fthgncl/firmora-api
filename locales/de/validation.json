@@ -1,0 +1,45 @@
+{
+  "permissions": {
+    "sys_admin": {
+      "name": "Systemadministrator",
+      "description": "Vollzugriff auf alle Systemoperationen"
+    },
+    "personnel_manager": {
+      "name": "Personalmanager",
+      "description": "Personalverwaltungsberechtigung"
+    },
+    "create_company": {
+      "name": "Unternehmen erstellen",
+      "description": "Berechtigung zum Erstellen neuer Unternehmen"
+    },
+    "user_management": {
+      "name": "Benutzerverwaltung",
+      "description": "Berechtigung zum Anzeigen und Bearbeiten von Benutzerinformationen"
+    },
+    "create_user": {
+      "name": "Benutzer erstellen",
+      "description": "Berechtigung zum Erstellen neuer Benutzer"
+    },
+    "delete_user": {
+      "name": "Benutzer löschen",
+      "description": "Berechtigung zum Löschen vorhandener Benutzer"
+    },
+    "modify_permissions": {
+      "name": "Berechtigungen ändern",
+      "description": "Berechtigung zum Bearbeiten von Benutzerberechtigungen"
+    },
+    "insufficientPermissions": "Sie haben keine Berechtigung für diesen Vorgang",
+    "readUser": {
+      "userNotFound": "Benutzer nicht gefunden",
+      "success": "Benutzerberechtigungen erfolgreich gelesen",
+      "error": "Fehler beim Lesen der Benutzerberechtigungen"
+    },
+    "setUser": {
+      "success": "Benutzerberechtigungen erfolgreich aktualisiert",
+      "error": "Fehler beim Aktualisieren der Benutzerberechtigungen"
+    },
+    "checkUserRoles": {
+      "error": "Fehler beim Überprüfen der Berechtigungen für Benutzer (id:{{userId}})"
+    }
+  }
+}
