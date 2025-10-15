@@ -1,6 +1,9 @@
 const tablesConfig = require('../../config/tablesConfig');
 const { queryAsync } = require('../utils/connection');
 
+
+// TODO: Veri tabanı yönetimini güncelleştir. Düzgün çalışmıyor !
+
 // Sütun tipini normalleştir (boşlukları temizle, büyük harfe çevir)
 const normalizeColumnType = (type) => {
     return type
@@ -126,6 +129,38 @@ const checkTables = async () => {
                 } catch (columnError) {
                     console.error(`${tableName}.${colName} sütunu işlenirken hata:`, columnError.message);
                     // Sütun hatası durumunda diğer sütunları işlemeye devam et
+                    continue;
+                }
+            }
+
+            // UNIQUE index kontrolü ve eklenmesi
+            for (const [colName, colDef] of Object.entries(columns)) {
+                try {
+                    // Sütun tanımında UNIQUE var mı kontrol et
+                    if (colDef.toUpperCase().includes('UNIQUE')) {
+                        // Mevcut UNIQUE index'i kontrol et
+                        const existingIndex = await queryAsync(`
+                            SELECT INDEX_NAME
+                            FROM INFORMATION_SCHEMA.STATISTICS
+                            WHERE TABLE_NAME = '${tableName}' 
+                            AND COLUMN_NAME = '${colName}' 
+                            AND TABLE_SCHEMA = DATABASE()
+                            AND NON_UNIQUE = 0;
+                        `);
+
+                        if (existingIndex.length === 0) {
+                            // UNIQUE index yoksa ekle
+                            const indexName = `uq_${tableName}_${colName}`;
+                            console.log(`${tableName} tablosuna ${colName} için UNIQUE index ekleniyor...`);
+                            await queryAsync(`ALTER TABLE ${tableName} ADD UNIQUE INDEX \`${indexName}\` (\`${colName}\`);`);
+                            console.log(`${tableName} tablosuna ${colName} için UNIQUE index başarıyla eklendi.`);
+                        }
+                    }
+                } catch (indexError) {
+                    // Index zaten varsa veya başka bir hata oluşursa
+                    if (indexError.code !== 'ER_DUP_KEYNAME') {
+                        console.error(`${tableName}.${colName} için UNIQUE index eklenirken hata:`, indexError.message);
+                    }
                     continue;
                 }
             }
