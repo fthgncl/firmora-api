@@ -1,0 +1,9 @@
+{
+  "general": {
+    "serverError": "Server error occurred",
+    "notFound": "Record not found",
+    "unauthorized": "Unauthorized access",
+    "forbidden": "You do not have permission for this operation",
+    "badRequest": "Invalid request"
+  }
+}

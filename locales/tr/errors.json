@@ -1,0 +1,9 @@
+{
+  "general": {
+    "serverError": "Sunucu hatası oluştu",
+    "notFound": "Kayıt bulunamadı",
+    "unauthorized": "Yetkisiz erişim",
+    "forbidden": "Bu işlem için yetkiniz bulunmamaktadır",
+    "badRequest": "Geçersiz istek"
+  }
+}

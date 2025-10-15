@@ -1,0 +1,10 @@
+{
+  "starting": "Sunucu başlatılıyor...",
+  "started": "Sunucu başarıyla başlatıldı!",
+  "failed": "Uygulama başlatılamadı!",
+  "envLoaded": "Ortam değişkenleri yüklendi",
+  "i18nLoaded": "Çok dilli destek yüklendi",
+  "databaseConnected": "Veritabanı bağlantısı başarılı",
+  "expressStarted": "Express sunucusu başlatıldı",
+  "backupServiceStarted": "Yedekleme servisi başlatıldı"
+}

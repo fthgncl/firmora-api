@@ -1,0 +1,10 @@
+{
+  "starting": "Server wird gestartet...",
+  "started": "Server erfolgreich gestartet!",
+  "failed": "Anwendung konnte nicht gestartet werden!",
+  "envLoaded": "Umgebungsvariablen geladen",
+  "i18nLoaded": "Mehrsprachige Unterstützung geladen",
+  "databaseConnected": "Datenbankverbindung erfolgreich",
+  "expressStarted": "Express-Server gestartet",
+  "backupServiceStarted": "Backup-Dienst gestartet"
+}

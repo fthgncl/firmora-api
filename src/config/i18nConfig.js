@@ -63,14 +63,14 @@ async function initializeI18n() {
         await i18next
             .use(Backend)
             .init({
-                lng: process.env.DEFAULT_LANGUAGE || 'tr', // Varsayılan dil
-                fallbackLng: 'tr', // Fallback dil
+                lng: process.env.DEFAULT_LANGUAGE, // Varsayılan dil
+                fallbackLng: 'en', // Fallback dil
 
                 backend: {
                     loadPath: path.join(__dirname, '../../locales/{{lng}}/{{ns}}.json'),
                 },
 
-                ns: ['common'], // namespace'ler
+                ns: ['common', 'server', 'errors', 'validation', 'companies', 'users', 'accounts', 'transfers', 'auth'], // namespace'ler
                 defaultNS: 'common',
 
                 interpolation: {

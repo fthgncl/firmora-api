@@ -1,0 +1,10 @@
+{
+  "starting": "Server is starting...",
+  "started": "Server started successfully!",
+  "failed": "Application failed to start!",
+  "envLoaded": "Environment variables loaded",
+  "i18nLoaded": "Multi-language support loaded",
+  "databaseConnected": "Database connection successful",
+  "expressStarted": "Express server started",
+  "backupServiceStarted": "Backup service started"
+}

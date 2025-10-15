@@ -19,7 +19,7 @@ const colors = require('ansi-colors');
         const i18nModule = require('./src/config/i18nConfig');
         t = i18nModule.t;
 
-        console.log(colors.bgGreen.black(`~~~ ${t('server.starting')} ~~~`));
+        console.log(colors.bgGreen.black(`~~~ ${t('server:starting')} ~~~`));
         console.log(colors.bgYellow.black(envResult.message));
         console.log(colors.bgYellow.black(i18nResult.message));
 
@@ -40,11 +40,11 @@ const colors = require('ansi-colors');
         const backupResult = await startBackupService();
         console.log(colors.bgYellow.black(backupResult.message));
 
-        console.log(colors.bgGreen.black(`~~~ ${t('server.started')} ~~~`));
+        console.log(colors.bgGreen.black(`~~~ ${t('server:started')} ~~~`));
     } catch (error) {
         await logError(error.message, error);
         // t fonksiyonu yüklenmediyse basit mesaj kullan
-        const failedMessage = t ? t('server.failed') : 'Uygulama başlatılamadı!';
+        const failedMessage = t ? t('server:failed') : 'Uygulama başlatılamadı!';
         console.log(colors.bgRed.black(`~~~ ${failedMessage} ~~~`));
         process.exit(1);
     }

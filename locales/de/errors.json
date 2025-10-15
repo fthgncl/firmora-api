@@ -1,0 +1,9 @@
+{
+  "general": {
+    "serverError": "Serverfehler aufgetreten",
+    "notFound": "Datensatz nicht gefunden",
+    "unauthorized": "Unbefugter Zugriff",
+    "forbidden": "Sie haben keine Berechtigung für diesen Vorgang",
+    "badRequest": "Ungültige Anfrage"
+  }
+}
