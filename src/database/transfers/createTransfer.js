@@ -65,6 +65,14 @@ const createTransfer = async (transferData, userId, companyId) => {
                 result = await handleCompanyToExternal(transferData);
                 break;
 
+            case 'external_to_user':
+                result = await handleExternalToUser(transferData);
+                break;
+
+            case 'external_to_company':
+                result = await handleExternalToCompany(transferData);
+                break;
+
             default:
                 throw new Error(t('errors.invalid_transfer_type'));
         }
@@ -686,6 +694,141 @@ async function handleCompanyToExternal(transferData) {
             currency,
             'company_to_external',
             to_external_name,
+            transferData.description || null
+        ]);
+
+        return {
+            success: true,
+            transferId: transferData.id,
+            message: t('transfers.create.success')
+        };
+
+    } catch (error) {
+        throw {
+            success: false,
+            message: error.message || t('transfers.create.failed')
+        };
+    }
+}
+
+async function handleExternalToUser(transferData) {
+    // Sistem dışı kaynaktan kullanıcı hesabına transfer
+
+    try {
+        const { user_id, company_id } = transferData;
+        const hasPermissions = await checkUserRoles(user_id, company_id, ['can_receive_external_to_user']);
+        if (!hasPermissions) {
+            throw new Error(t('permissions.insufficientPermissions'));
+        }
+
+        const { to_user_id, from_external_name, from_scope, to_scope, amount, currency } = transferData;
+        if (from_scope !== 'external' || to_scope !== 'user') {
+            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+        }
+
+        if (!to_user_id) {
+            throw new Error(t('errors.to_user_id_required'));
+        }
+
+        if (!from_external_name || from_external_name.trim().length === 0) {
+            throw new Error(t('errors.from_external_name_required'));
+        }
+
+        if (!currency || currency !== await getUserAccountCurrency(to_user_id, company_id)) {
+            throw new Error(t('errors.invalid_currency'));
+        }
+
+        validateAmount(amount);
+        await validateUserInCompany(to_user_id, company_id);
+
+        // Kullanıcı hesabına bakiye ekle (sistem dışı giriş, kaynak tarafta işlem yok)
+        await addAccountBalance(to_user_id, company_id, amount);
+
+        // Transfer kaydını veritabanına ekle
+        const insertQuery = `
+            INSERT INTO transfers (
+                id, user_id, company_id, to_user_id, to_user_company_id,
+                from_scope, to_scope, amount, currency, transfer_type, from_external_name, description, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+        `;
+
+        await queryAsync(insertQuery, [
+            transferData.id,
+            user_id,
+            company_id,
+            to_user_id,
+            company_id,
+            from_scope,
+            to_scope,
+            amount,
+            currency,
+            'external_to_user',
+            from_external_name,
+            transferData.description || null
+        ]);
+
+        return {
+            success: true,
+            transferId: transferData.id,
+            message: t('transfers.create.success')
+        };
+
+    } catch (error) {
+        throw {
+            success: false,
+            message: error.message || t('transfers.create.failed')
+        };
+    }
+}
+
+async function handleExternalToCompany(transferData) {
+    // Sistem dışı kaynaktan firma hesabına transfer
+
+    try {
+        const { user_id, company_id } = transferData;
+        const hasPermissions = await checkUserRoles(user_id, company_id, ['can_receive_external_to_company']);
+        if (!hasPermissions) {
+            throw new Error(t('permissions.insufficientPermissions'));
+        }
+
+        const { from_external_name, from_scope, to_scope, amount, currency } = transferData;
+        if (from_scope !== 'external' || to_scope !== 'company') {
+            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+        }
+
+        if (!from_external_name || from_external_name.trim().length === 0) {
+            throw new Error(t('errors.from_external_name_required'));
+        }
+
+        if (!currency || currency !== await getCompanyCurrency(company_id)) {
+            throw new Error(t('errors.invalid_currency'));
+        }
+
+        validateAmount(amount);
+
+        // Firma hesabına bakiye ekle (sistem dışı giriş, kaynak tarafta işlem yok)
+        await addCompanyBalance(company_id, amount);
+
+        // Transfer kaydını veritabanına ekle
+        const insertQuery = `
+            INSERT INTO transfers (
+                id, user_id, company_id, to_user_id, to_user_company_id,
+                from_scope, to_scope, amount, currency, transfer_type, from_external_name, description, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+        `;
+
+        await queryAsync(insertQuery, [
+            transferData.id,
+            user_id,
+            company_id,
+            null, // to_user_id yok, firmaya giriş
+            company_id,
+            from_scope,
+            to_scope,
+            amount,
+            currency,
+            'external_to_company',
+            from_external_name,
             transferData.description || null
         ]);
 
