@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const createCompany = require('../../../database/companies/createCompany');
-const { canUserCreateCompany } = require('../../../utils/permissionsManager');
+const { canUserCreateCompany, setUserPermissions} = require('../../../utils/permissionsManager');
 const responseHelper = require('../../utils/responseHelper');
 const { t } = require('../../../config/i18nConfig');
+const { beginTransaction, commit, rollback } = require('../../../database/utils/connection');
 
 /**
  * @swagger
@@ -104,17 +105,34 @@ router.post('/', async (req, res) => {
             return responseHelper.error(res, t('companies.create.fieldsRequired'), 400);
         }
 
-        // Şirket oluştur - owner_id token'dan alınan userId olarak atanır
-        const companyData = {
-            ...req.body,
-            owner_id: userId
-        };
-        const result = await createCompany(companyData);
+        try {
+            // Transaction başlat
+            await beginTransaction();
 
-        return responseHelper.success(res, {
-            message: result.message,
-            company: result.company
-        });
+            // Şirket oluştur - owner_id token'dan alınan userId olarak atanır
+            const companyData = {
+                ...req.body,
+                owner_id: userId
+            };
+            const result = await createCompany(companyData);
+
+            // Kullanıcıya firma sahibi yetkisi ver
+            await setUserPermissions(userId, result.company.id, 'a');
+
+            // Transaction'ı onayla
+            await commit();
+
+            return responseHelper.success(res, {
+                message: result.message,
+                company: result.company
+            });
+
+        } catch (transactionError) {
+            // Hata durumunda rollback yap
+            await rollback();
+            console.error('Transaction rollback yapıldı:', transactionError);
+            throw transactionError;
+        }
 
     } catch (error) {
         console.error('Şirket oluşturma hatası:', error);
