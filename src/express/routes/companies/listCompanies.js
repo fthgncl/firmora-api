@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const responseHelper = require('../../utils/responseHelper');
-const { t } = require('../../../config/i18nConfig');
-const { queryAsync } = require('../../../database/utils/connection');
-const { readUserPermissions } = require('../../../utils/permissionsManager');
-const permissions = require('../../../config/permissionsConfig');
+const {t} = require('../../../config/i18nConfig');
+const {queryAsync} = require('../../../database/utils/connection');
+const {readUserPermissions, checkUserRoles} = require('../../../utils/permissionsManager');
 
 /**
  * @swagger
@@ -13,33 +12,33 @@ const permissions = require('../../../config/permissionsConfig');
  *     summary: Kullanıcının şirketlerini listele
  *     description: |
  *       Giriş yapmış kullanıcının erişebildiği tüm şirketleri listeler.
- *       
+ *
  *       ## Listelenen Şirketler
- *       
+ *
  *       Aşağıdaki kriterlere uyan şirketler listelenir:
- *       
+ *
  *       - Kullanıcının sahip olduğu şirketler
  *       - Kullanıcının `sys_admin` yetkisine sahip olduğu şirketler
  *       - Kullanıcının `personnel_manager` yetkisine sahip olduğu şirketler
- *       
+ *
  *       ## Dönen Bilgiler
- *       
+ *
  *       Her şirket için aşağıdaki bilgiler döndürülür:
- *       
+ *
  *       - Şirket ID ve adı
  *       - Sektör bilgisi
  *       - Para birimi
  *       - Güncel bakiye
  *       - Şirket sahibi ID
  *       - Oluşturulma tarihi
- *       
+ *
  *       ## Kullanım Senaryoları
- *       
+ *
  *       - Ana sayfa şirket listesi
  *       - Şirket seçim dropdown'ı
  *       - Dashboard şirket geçişi
  *       - Kullanıcı erişim yönetimi
- *       
+ *
  *     tags:
  *       - Companies
  *     security:
@@ -176,41 +175,34 @@ router.get('/', async (req, res) => {
     try {
         // Kullanıcı ID'sini al
         const userId = req.tokenPayload?.id;
+
         if (!userId) {
             return responseHelper.error(res, t('auth.tokenRequired'), 401);
         }
 
-        // Kullanıcının sys_admin veya personnel_manager yetkisine sahip olduğu şirketleri getir
-        const userPermissionsData = await readUserPermissions(userId);
+
         const authorizedCompanyIds = [];
+        const userPermissionsData = await readUserPermissions(userId);
 
-        // sys_admin ve personnel_manager kodlarını al
-        const sysAdminCode = permissions.sys_admin?.code;
-        const personnelManagerCode = permissions.personnel_manager?.code;
-
-        // Yetkileri kontrol et ve uygun şirket ID'lerini topla
-        if (userPermissionsData.permissions && Array.isArray(userPermissionsData.permissions)) {
-            for (const perm of userPermissionsData.permissions) {
-                const permString = perm.permissions || '';
-                if (permString.includes(sysAdminCode) || permString.includes(personnelManagerCode)) {
-                    authorizedCompanyIds.push(perm.companyId);
-                }
+        for (const {companyId} of userPermissionsData.permissions) {
+            if (await checkUserRoles(userId, companyId, ['personnel_manager'])) {
+                authorizedCompanyIds.push(companyId);
             }
         }
+
 
         // Yetkili olunan şirketlerin detaylarını getir
         let authorizedCompanies = [];
         if (authorizedCompanyIds.length > 0) {
             const placeholders = authorizedCompanyIds.map(() => '?').join(',');
             const query = `
-                SELECT 
-                    id,
-                    company_name,
-                    sector,
-                    currency,
-                    balance,
-                    owner_id,
-                    created_at
+                SELECT id,
+                       company_name,
+                       sector,
+                       currency,
+                       balance,
+                       owner_id,
+                       created_at
                 FROM companies
                 WHERE id IN (${placeholders})
             `;

@@ -143,12 +143,20 @@ function removeUserPermissions(userId, companyId, removePermissions) {
 }
 
 function checkRoles(permissionsString) {
+
+    if (!permissionsString || typeof permissionsString !== 'string') {
+        return [];
+    }
+
+    const perms = permissions();
     const roles = [];
-    for (const key in permissions) {
-        if (permissions.hasOwnProperty(key)) {
-            if (permissionsString.includes(permissions[key].code)) {
-                roles.push(key);
-            }
+
+    // Tüm permission tanımlarını dön
+    for (const [key, value] of Object.entries(perms)) {
+        console.log(value.code)
+        // Eğer permissionsString içinde bu kod varsa ekle
+        if (permissionsString.indexOf(value.code) !== -1) {
+            roles.push(key);
         }
     }
 
