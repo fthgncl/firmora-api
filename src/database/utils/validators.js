@@ -101,7 +101,7 @@ const validateAmount = (amount) => {
         throw Object.assign(new Error(t('transfers.create.invalidAmount')), { status: 400 });
 
     // Format kontrolü
-    if (!isValidAmount())
+    if (!isValidAmount(amount))
         throw Object.assign(new Error(t('transfers.create.invalidAmountFormat')), { status: 400 });
 
     return true;
