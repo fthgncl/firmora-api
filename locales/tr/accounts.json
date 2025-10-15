@@ -1,0 +1,22 @@
+{
+  "invalidAmount": "Geçersiz miktar. Pozitif bir değer giriniz.",
+  "accountNotFound": "Kullanıcı hesabı bulunamadı",
+  "insufficientBalance": "Yetersiz bakiye",
+  "balanceAdded": "Hesap bakiyesi başarıyla eklendi",
+  "balanceDeducted": "Hesap bakiyesi başarıyla düşürüldü",
+  "balanceAddError": "Hesap bakiyesi eklenirken bir hata oluştu",
+  "balanceDeductError": "Hesap bakiyesi düşürülürken bir hata oluştu",
+  "createSuccess": "Hesap başarıyla oluşturuldu",
+  "createError": "Hesap oluşturulurken bir hata oluştu",
+  "create": {
+    "success": "Kullanıcı hesabı başarıyla oluşturuldu",
+    "error": "Kullanıcı hesabı oluşturulurken hata oluştu",
+    "requiredFields": "Kullanıcı ID, firma ID ve para birimi gereklidir",
+    "alreadyExists": "Bu kullanıcı için bu firmada zaten hesap var"
+  },
+  "get": {
+    "userIdRequired": "Kullanıcı ID'si gereklidir",
+    "noAccountsFound": "Kullanıcıya ait hesap bulunamadı",
+    "error": "Hesaplar getirilirken hata oluştu"
+  }
+}

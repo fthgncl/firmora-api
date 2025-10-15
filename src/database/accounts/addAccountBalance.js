@@ -1,4 +1,5 @@
 const { queryAsync } = require('../utils/connection');
+const { t } = require('../../config/i18nConfig');
 
 /**
  * Kullanıcının belirli bir firmadaki hesabına para ekler
@@ -12,7 +13,7 @@ const addAccountBalance = async (userId, companyId, amount) => {
     try {
         // Miktar kontrolü
         if (!amount || amount <= 0) {
-            throw new Error('Geçersiz miktar. Pozitif bir değer giriniz.');
+            throw new Error(t('accounts:invalidAmount'));
         }
 
         // Kullanıcı hesabını kontrol et
@@ -22,7 +23,7 @@ const addAccountBalance = async (userId, companyId, amount) => {
         );
 
         if (account.length === 0) {
-            throw new Error('Kullanıcı hesabı bulunamadı');
+            throw new Error(t('accounts:accountNotFound'));
         }
 
         // Bakiyeyi güncelle
@@ -43,13 +44,13 @@ const addAccountBalance = async (userId, companyId, amount) => {
             companyId: companyId,
             addedAmount: amount,
             newBalance: updatedAccount[0].balance,
-            message: 'Hesap bakiyesi başarıyla eklendi'
+            message: t('accounts:balanceAdded')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || 'Hesap bakiyesi eklenirken bir hata oluştu'
+            message: error.message || t('accounts:balanceAddError')
         };
     }
 };

@@ -1,0 +1,22 @@
+{
+  "invalidAmount": "Ungültiger Betrag. Bitte geben Sie einen positiven Wert ein.",
+  "accountNotFound": "Benutzerkonto nicht gefunden",
+  "insufficientBalance": "Unzureichendes Guthaben",
+  "balanceAdded": "Kontoguthaben erfolgreich hinzugefügt",
+  "balanceDeducted": "Kontoguthaben erfolgreich abgezogen",
+  "balanceAddError": "Fehler beim Hinzufügen des Kontoguthabens",
+  "balanceDeductError": "Fehler beim Abziehen des Kontoguthabens",
+  "createSuccess": "Konto erfolgreich erstellt",
+  "createError": "Fehler beim Erstellen des Kontos",
+  "create": {
+    "success": "Benutzerkonto erfolgreich erstellt",
+    "error": "Fehler beim Erstellen des Benutzerkontos",
+    "requiredFields": "Benutzer-ID, Unternehmens-ID und Währung sind erforderlich",
+    "alreadyExists": "Für diesen Benutzer existiert bereits ein Konto in diesem Unternehmen"
+  },
+  "get": {
+    "userIdRequired": "Benutzer-ID ist erforderlich",
+    "noAccountsFound": "Keine Konten für Benutzer gefunden",
+    "error": "Fehler beim Abrufen der Konten"
+  }
+}

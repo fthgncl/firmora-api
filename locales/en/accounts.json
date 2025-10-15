@@ -1,0 +1,22 @@
+{
+  "invalidAmount": "Invalid amount. Please enter a positive value.",
+  "accountNotFound": "User account not found",
+  "insufficientBalance": "Insufficient balance",
+  "balanceAdded": "Account balance added successfully",
+  "balanceDeducted": "Account balance deducted successfully",
+  "balanceAddError": "An error occurred while adding account balance",
+  "balanceDeductError": "An error occurred while deducting account balance",
+  "createSuccess": "Account created successfully",
+  "createError": "An error occurred while creating account",
+  "create": {
+    "success": "User account created successfully",
+    "error": "Error occurred while creating user account",
+    "requiredFields": "User ID, company ID and currency are required",
+    "alreadyExists": "An account already exists for this user in this company"
+  },
+  "get": {
+    "userIdRequired": "User ID is required",
+    "noAccountsFound": "No accounts found for user",
+    "error": "Error occurred while retrieving accounts"
+  }
+}
