@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "start": "pm2 start app.js --name minima-master-api",
+    "start": "pm2 start app.js --name firmora-api",
     "start:dev": "nodemon app.js",
     "stop": "pm2 stop firmora-api",
     "restart": "pm2 restart firmora-api",
