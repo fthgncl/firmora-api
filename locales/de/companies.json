@@ -26,6 +26,12 @@
     "validFieldsRequired": "Mindestens ein gültiges Feld muss angegeben werden",
     "invalidFieldsLog": "Ungültige Felder in getCompaniesByOwnerId-Funktion angefordert"
   },
+  "getEmployeesByCompanyId": {
+    "companyIdRequired": "Unternehmens-ID muss angegeben werden.",
+    "fieldsRequired": "Die abzurufenden Felder müssen angegeben werden.",
+    "validFieldsRequired": "Mindestens ein gültiges Feld muss angegeben werden.",
+    "invalidFieldsLog": "Ungültige Felder in der Funktion getEmployeesByCompanyId angefordert"
+  },
   "addUser": {
     "success": "Benutzer erfolgreich zum Unternehmen hinzugefügt!",
     "fieldsRequired": "Unternehmens-ID, Benutzer-ID und Berechtigungen sind erforderlich.",
@@ -34,5 +40,22 @@
     "companyNotFound": "Unternehmen nicht gefunden.",
     "userAlreadyExists": "Benutzer existiert bereits im Unternehmen.",
     "error": "Fehler beim Hinzufügen des Benutzers zum Unternehmen"
+  },
+  "addBalance": {
+    "invalidAmount": "Ungültiger Betrag. Bitte geben Sie einen positiven Wert ein.",
+    "notFound": "Firma nicht gefunden.",
+    "balanceAdded": "Guthaben wurde erfolgreich hinzugefügt.",
+    "balanceAddError": "Beim Hinzufügen des Guthabens ist ein Fehler aufgetreten."
+  },
+  "deductBalance": {
+    "invalidAmount": "Ungültiger Betrag. Bitte geben Sie einen positiven Wert ein.",
+    "notFound": "Firma nicht gefunden.",
+    "insufficientBalance": "Unzureichendes Guthaben.",
+    "success": "Guthaben wurde erfolgreich abgezogen.",
+    "error": "Beim Abziehen des Guthabens ist ein Fehler aufgetreten."
+  },
+  "search": {
+    "success": "Unternehmen wurden erfolgreich abgerufen.",
+    "error": "Beim Suchen nach Unternehmen ist ein Fehler aufgetreten."
   }
 }

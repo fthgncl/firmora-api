@@ -14,14 +14,14 @@ const updateCompany = async (companyId, updateData) => {
         // Şirketin var olup olmadığını kontrol et
         const existingCompany = await getCompanyById(companyId, ['id']);
         if (!existingCompany) {
-            throw new Error(t('companies.update.notFound'));
+            throw new Error(t('companies:update.notFound'));
         }
 
         // Güncelleme verilerini hazırla
         const processedData = await prepareUpdateData(updateData);
 
         if (Object.keys(processedData).length === 0) {
-            throw new Error(t('companies.update.noValidFields'));
+            throw new Error(t('companies:update.noValidFields'));
         }
 
         // Veritabanında güncelle
@@ -29,12 +29,12 @@ const updateCompany = async (companyId, updateData) => {
 
         return {
             status: 'success',
-            message: t('companies.update.success'),
-            companyId: companyId
+            message: t('companies:update.success'),
+            companyId
         };
     } catch (error) {
         if (error.code !== 'ER_DUP_ENTRY') {
-            error.message = `${t('companies.update.error')} - ${error.message}`;
+            error.message = `${t('companies:update.error')} - ${error.message}`;
         }
         throw error;
     }

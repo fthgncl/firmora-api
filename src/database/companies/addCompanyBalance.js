@@ -1,4 +1,5 @@
 const { queryAsync } = require('../utils/connection');
+const { t } = require('../../config/i18nConfig');
 
 /**
  * Firmaya belirli bir miktar para ekler
@@ -11,7 +12,7 @@ const addCompanyBalance = async (companyId, amount) => {
     try {
         // Miktar kontrolü
         if (!amount || amount <= 0) {
-            throw new Error('Geçersiz miktar. Pozitif bir değer giriniz.');
+            throw new Error(t('companies:invalidAmount'));
         }
 
         // Firmayı kontrol et
@@ -21,7 +22,7 @@ const addCompanyBalance = async (companyId, amount) => {
         );
 
         if (company.length === 0) {
-            throw new Error('Firma bulunamadı');
+            throw new Error(t('companies:notFound'));
         }
 
         // Bakiyeyi güncelle
@@ -38,16 +39,16 @@ const addCompanyBalance = async (companyId, amount) => {
 
         return {
             success: true,
-            companyId: companyId,
+            companyId,
             addedAmount: amount,
             newBalance: updatedCompany[0].balance,
-            message: 'Bakiye başarıyla eklendi'
+            message: t('companies:balanceAdded')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || 'Bakiye eklenirken bir hata oluştu'
+            message: error.message || t('companies:balanceAddError')
         };
     }
 };

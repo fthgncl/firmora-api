@@ -21,19 +21,16 @@ async function searchCompanies(options = {}) {
             sortOrder = 'ASC'
         } = options;
 
-        // Parametreleri validate et
-        const validLimit = Math.min(Math.max(parseInt(limit) || 20, 1), 100); // Max 100, min 1
+        const validLimit = Math.min(Math.max(parseInt(limit) || 20, 1), 100);
         const validOffset = Math.max(parseInt(offset) || 0, 0);
         const validSortOrder = ['ASC', 'DESC'].includes(sortOrder.toUpperCase()) ? sortOrder.toUpperCase() : 'ASC';
 
-        // İzin verilen sıralama alanları
         const validSortFields = ['company_name', 'sector', 'currency', 'created_at'];
         const validSortBy = validSortFields.includes(sortBy) ? sortBy : 'company_name';
 
         let whereConditions = [];
         let params = [];
 
-        // Arama terimi varsa
         if (searchTerm && searchTerm.trim() !== '') {
             const searchPattern = `%${searchTerm.trim()}%`;
             whereConditions.push(`(
@@ -43,24 +40,18 @@ async function searchCompanies(options = {}) {
             params.push(searchPattern, searchPattern);
         }
 
-        // WHERE clause'u oluştur
-        const whereClause = whereConditions.length > 0
-            ? `WHERE ${whereConditions.join(' AND ')}`
-            : '';
+        const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
 
-        // Toplam sonuç sayısını al
         const countQuery = `
             SELECT COUNT(companies.id) as total
             FROM companies
-            ${whereClause}
+                     ${whereClause}
         `;
-
         const countResult = await queryAsync(countQuery, params);
         const totalCount = countResult[0]?.total || 0;
 
-        // Firmaları getir
         const companiesQuery = `
-            SELECT 
+            SELECT
                 companies.id,
                 companies.company_name,
                 companies.sector,
@@ -68,39 +59,36 @@ async function searchCompanies(options = {}) {
                 companies.owner_id,
                 companies.created_at
             FROM companies
-            ${whereClause}
+                     ${whereClause}
             ORDER BY companies.${validSortBy} ${validSortOrder}
             LIMIT ? OFFSET ?
         `;
-
         const companiesParams = [...params, validLimit, validOffset];
         const companies = await queryAsync(companiesQuery, companiesParams);
 
-        // Sayfa bilgilerini hesapla
         const totalPages = Math.ceil(totalCount / validLimit);
         const currentPage = Math.floor(validOffset / validLimit) + 1;
 
         return {
             status: 200,
-            message: t('companies.search.success') || 'Firmalar başarıyla getirildi',
+            message: t('companies:search.success'),
             data: {
                 companies: companies || [],
                 pagination: {
                     total: totalCount,
                     limit: validLimit,
                     offset: validOffset,
-                    currentPage: currentPage,
-                    totalPages: totalPages,
+                    currentPage,
+                    totalPages,
                     hasNextPage: currentPage < totalPages,
                     hasPrevPage: currentPage > 1
                 }
             }
         };
-
     } catch (error) {
         throw {
             status: error.status || 500,
-            message: error.message || t('companies.search.error') || 'Firma arama sırasında hata oluştu',
+            message: error.message || t('companies:search.error'),
             error
         };
     }

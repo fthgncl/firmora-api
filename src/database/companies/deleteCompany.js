@@ -12,7 +12,7 @@ const deleteCompany = async (companyId) => {
         // Şirketin var olup olmadığını kontrol et
         const existingCompany = await getCompanyById(companyId, ['id', 'company_name']);
         if (!existingCompany) {
-            throw new Error(t('companies.delete.notFound'));
+            throw new Error(t('companies:delete.notFound'));
         }
 
         // Şirketi sil
@@ -20,14 +20,14 @@ const deleteCompany = async (companyId) => {
 
         return {
             status: 'success',
-            message: t('companies.delete.success'),
+            message: t('companies:delete.success'),
             deletedCompany: {
                 id: companyId,
                 company_name: existingCompany.company_name
             }
         };
     } catch (error) {
-        error.message = `${t('companies.delete.error')} - ${error.message}`;
+        error.message = `${t('companies:delete.error')} - ${error.message}`;
         throw error;
     }
 };
@@ -37,7 +37,7 @@ const deleteCompanyFromDatabase = async (companyId) => {
     const result = await queryAsync(sql, [companyId]);
 
     if (result.affectedRows === 0) {
-        throw new Error(t('companies.delete.notFound'));
+        throw new Error(t('companies:delete.notFound'));
     }
 };
 

@@ -26,6 +26,12 @@
     "validFieldsRequired": "At least one valid field must be specified",
     "invalidFieldsLog": "Invalid fields requested in getCompaniesByOwnerId function"
   },
+  "getEmployeesByCompanyId": {
+    "companyIdRequired": "Company ID is required.",
+    "fieldsRequired": "Fields to retrieve must be specified.",
+    "validFieldsRequired": "At least one valid field must be specified.",
+    "invalidFieldsLog": "Invalid fields requested in getEmployeesByCompanyId function"
+  },
   "addUser": {
     "success": "User added to company successfully!",
     "fieldsRequired": "Company ID, user ID, and permissions are required.",
@@ -34,5 +40,22 @@
     "companyNotFound": "Company not found.",
     "userAlreadyExists": "User already exists in the company.",
     "error": "Error occurred while adding user to company"
+  },
+  "addBalance": {
+    "invalidAmount": "Invalid amount. Please enter a positive value.",
+    "notFound": "Company not found.",
+    "balanceAdded": "Balance added successfully.",
+    "balanceAddError": "An error occurred while adding balance."
+  },
+  "deductBalance": {
+    "invalidAmount": "Invalid amount. Please enter a positive value.",
+    "notFound": "Company not found.",
+    "insufficientBalance": "Insufficient balance.",
+    "success": "Balance deducted successfully.",
+    "error": "An error occurred while deducting balance."
+  },
+  "search": {
+    "success": "Companies retrieved successfully.",
+    "error": "An error occurred while searching for companies."
   }
 }

@@ -12,38 +12,38 @@ const { t } = require('../../config/i18nConfig');
  */
 async function getCompanyById(companyId, fields) {
 
-  if (!companyId) {
-    throw new Error(t('companies.getCompanyById.companyIdRequired'));
-  }
+    if (!companyId) {
+        throw new Error(t('companies:getCompanyById.companyIdRequired'));
+    }
 
-  if (!Array.isArray(fields) || fields.length === 0) {
-    throw new Error(t('companies.getCompanyById.fieldsRequired'));
-  }
+    if (!Array.isArray(fields) || fields.length === 0) {
+        throw new Error(t('companies:getCompanyById.fieldsRequired'));
+    }
 
-  // Şirket tablosunda tanımlı tüm geçerli alanları al
-  const validTableFields = Object.keys(tablesConfig.companies);
+    // Şirket tablosunda tanımlı tüm geçerli alanları al
+    const validTableFields = Object.keys(tablesConfig.companies);
 
-  // Talep edilen alanları doğrula
-  const validFields = fields.filter(field => validTableFields.includes(field));
-  const invalidFields = fields.filter(field => !validTableFields.includes(field));
+    // Talep edilen alanları doğrula
+    const validFields = fields.filter(field => validTableFields.includes(field));
+    const invalidFields = fields.filter(field => !validTableFields.includes(field));
 
-  // Geçersiz alanları logla
-  if (invalidFields.length > 0) {
-    await logError(`${t('companies.getCompanyById.invalidFieldsLog')}: ${invalidFields.join(', ')}`);
-  }
+    // Geçersiz alanları logla
+    if (invalidFields.length > 0) {
+        await logError(`${t('companies:getCompanyById.invalidFieldsLog')}: ${invalidFields.join(', ')}`);
+    }
 
-  if (validFields.length === 0) {
-    throw new Error(t('companies.getCompanyById.validFieldsRequired'));
-  }
+    if (validFields.length === 0) {
+        throw new Error(t('companies:getCompanyById.validFieldsRequired'));
+    }
 
-  // SQL sorgusunu oluştur
-  const sql = `SELECT ${validFields.join(', ')} FROM companies WHERE id = ?`;
+    // SQL sorgusunu oluştur
+    const sql = `SELECT ${validFields.join(', ')} FROM companies WHERE id = ?`;
 
-  // Sorguyu çalıştır
-  const companies = await queryAsync(sql, [companyId]);
+    // Sorguyu çalıştır
+    const companies = await queryAsync(sql, [companyId]);
 
-  // Sonucu döndür
-  return companies.length > 0 ? companies[0] : null;
+    // Sonucu döndür
+    return companies.length > 0 ? companies[0] : null;
 }
 
 module.exports = getCompanyById;

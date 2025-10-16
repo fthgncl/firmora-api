@@ -26,6 +26,12 @@
     "validFieldsRequired": "En az bir geçerli alan belirtilmelidir",
     "invalidFieldsLog": "getCompaniesByOwnerId fonksiyonunda geçersiz alanlar istendi"
   },
+  "getEmployeesByCompanyId": {
+    "companyIdRequired": "Şirket ID belirtilmelidir.",
+    "fieldsRequired": "Çekilecek alanlar belirtilmelidir.",
+    "validFieldsRequired": "En az bir geçerli alan belirtilmelidir.",
+    "invalidFieldsLog": "getEmployeesByCompanyId fonksiyonunda geçersiz alanlar istendi"
+  },
   "addUser": {
     "success": "Kullanıcı başarıyla firmaya eklendi!",
     "fieldsRequired": "Firma ID'si, kullanıcı ID'si ve yetkiler gereklidir.",
@@ -34,5 +40,22 @@
     "companyNotFound": "Firma bulunamadı.",
     "userAlreadyExists": "Kullanıcı zaten firmada mevcut.",
     "error": "Kullanıcı firmaya eklenirken hata oluştu"
+  },
+  "addBalance": {
+    "invalidAmount": "Geçersiz miktar. Pozitif bir değer giriniz.",
+    "notFound": "Firma bulunamadı.",
+    "balanceAdded": "Bakiye başarıyla eklendi.",
+    "balanceAddError": "Bakiye eklenirken bir hata oluştu."
+  },
+  "deductBalance": {
+    "invalidAmount": "Geçersiz miktar. Pozitif bir değer giriniz.",
+    "notFound": "Firma bulunamadı.",
+    "insufficientBalance": "Yetersiz bakiye.",
+    "success": "Bakiye başarıyla düşürüldü.",
+    "error": "Bakiye düşürülürken bir hata oluştu."
+  },
+  "search": {
+    "success": "Firmalar başarıyla getirildi.",
+    "error": "Firma arama sırasında bir hata oluştu."
   }
 }

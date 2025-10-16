@@ -20,7 +20,7 @@ const createCompany = async (companyData) => {
 
         return {
             status: 'success',
-            message: t('companies.create.success'),
+            message: t('companies:create.success'),
             company: {
                 id: companyId,
                 company_name: processedCompanyData.company_name,
@@ -31,7 +31,7 @@ const createCompany = async (companyData) => {
         };
     } catch (error) {
         if (error.code !== 'ER_DUP_ENTRY') {
-            error.message = `${t('companies.create.error')} - ${error.message}`;
+            error.message = `${t('companies:create.error')} - ${error.message}`;
         }
         throw error;
     }
