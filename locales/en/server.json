@@ -12,5 +12,8 @@
   "errors": {
     "eacces": "requires elevated privileges.",
     "eaddrinuse": "is already in use."
+  },
+  "start": {
+    "success": "Express server is running over {{protocol}} on port {{port}}."
   }
 }

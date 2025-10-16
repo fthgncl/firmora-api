@@ -12,5 +12,8 @@
   "errors": {
     "eacces": "için yetkili erişim gerekli.",
     "eaddrinuse": "zaten kullanılıyor."
+  },
+  "start": {
+    "success": "Express sunucusu {{protocol}} ile {{port}} portunda çalışıyor."
   }
 }

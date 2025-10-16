@@ -12,5 +12,8 @@
   "errors": {
     "eacces": "erfordert Administratorrechte.",
     "eaddrinuse": "wird bereits verwendet."
+  },
+  "start": {
+    "success": "Express-Server läuft über {{protocol}} auf Port {{port}}."
   }
 }

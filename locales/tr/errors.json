@@ -33,5 +33,18 @@
     "transactionStartFailed": "Transaction başlatılamadı",
     "transactionCommitFailed": "Transaction commit edilemedi",
     "transactionRollbackFailed": "Transaction rollback yapılamadı"
+  },
+  "rateLimit": {
+    "tooManyRequests": "Çok fazla istek gönderdiniz. Lütfen daha sonra tekrar deneyin.",
+    "tooManyAttempts": "Bu işlem için çok fazla deneme yaptınız. Lütfen daha sonra tekrar deneyin.",
+    "retryAfter": "{{minutes}} dakika sonra tekrar deneyin."
+  },
+  "auth": {
+    "tokenMissing": "Token sağlanmadı.",
+    "tokenInvalid": "Token doğrulama başarısız."
+  },
+  "server": {
+    "sslLoadFailed": "SSL sertifikaları yüklenirken hata oluştu: {{error}}",
+    "startFailed": "Express sunucusu başlatılırken hata oluştu: {{error}}"
   }
 }

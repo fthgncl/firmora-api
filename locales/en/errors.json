@@ -33,5 +33,18 @@
     "transactionStartFailed": "Transaction could not be started",
     "transactionCommitFailed": "Transaction could not be committed",
     "transactionRollbackFailed": "Transaction could not be rolled back"
+  },
+  "rateLimit": {
+    "tooManyRequests": "Too many requests. Please try again later.",
+    "tooManyAttempts": "Too many attempts for this action. Please try again later.",
+    "retryAfter": "Please try again in {{minutes}} minutes."
+  },
+  "auth": {
+    "tokenMissing": "Token not provided.",
+    "tokenInvalid": "Token verification failed."
+  },
+  "server": {
+    "sslLoadFailed": "An error occurred while loading SSL certificates: {{error}}",
+    "startFailed": "An error occurred while starting the Express server: {{error}}"
   }
 }
