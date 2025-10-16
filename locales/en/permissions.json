@@ -1,0 +1,59 @@
+{
+  "categories": {
+    "system": "System",
+    "personnel": "Personnel",
+    "financial": "Financial"
+  },
+  "sys_admin": {
+    "name": "System Administrator",
+    "description": "Has full privileges over the entire system."
+  },
+  "personnel_manager": {
+    "name": "Personnel Manager",
+    "description": "Can manage, add, and remove company users."
+  },
+  "can_transfer_company_to_same_company_user": {
+    "name": "Company to same-company user transfer",
+    "description": "Can transfer from the company account to a user in the same company."
+  },
+  "can_transfer_company_to_other_company_user": {
+    "name": "Company to other-company user transfer",
+    "description": "Can transfer from the company account to a user in another company."
+  },
+  "can_transfer_company_to_other_company": {
+    "name": "Company to company transfer",
+    "description": "Can transfer from the company account to another company."
+  },
+  "can_transfer_user_to_same_company_user": {
+    "name": "User to same-company user transfer",
+    "description": "Can transfer from the user account to another user in the same company."
+  },
+  "can_transfer_user_to_other_company_user": {
+    "name": "User to other-company user transfer",
+    "description": "Can transfer from the user account to a user in another company."
+  },
+  "can_transfer_user_to_own_company": {
+    "name": "User to own company transfer",
+    "description": "Can transfer from the user account to their own company."
+  },
+  "can_transfer_user_to_other_company": {
+    "name": "User to other company transfer",
+    "description": "Can transfer from the user account to another company."
+  },
+  "can_transfer_user_to_external": {
+    "name": "User to external transfer",
+    "description": "Can transfer from the user account to an external recipient."
+  },
+  "can_transfer_company_to_external": {
+    "name": "Company to external transfer",
+    "description": "Can transfer from the company account to an external recipient."
+  },
+  "can_receive_external_to_user": {
+    "name": "Receive external to user",
+    "description": "Can receive transfers from external sources to a user account."
+  },
+  "can_receive_external_to_company": {
+    "name": "Receive external to company",
+    "description": "Can receive transfers from external sources to a company account."
+  }
+}

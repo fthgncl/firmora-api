@@ -1,0 +1,6 @@
+{
+  "create": {
+    "success": "Transfer completed successfully.",
+    "failed": "Transfer failed."
+  }
+}

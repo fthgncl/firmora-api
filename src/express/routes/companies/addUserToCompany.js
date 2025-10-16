@@ -135,7 +135,7 @@ router.post('/add-user', async (req, res) => {
         // TODO: kullanıcı kendisinde olmayan yetkiyi oluşturduğu kullanıcıya veremesin
         const hasPermission = await checkUserRoles(userId, companyId,['personnel_manager']);
         if (!hasPermission) {
-            return responseHelper.error(res, t('permissions.insufficientPermissions'), 403);
+            return responseHelper.error(res, t('errors:permissions.insufficientPermissions'), 403);
         }
 
 

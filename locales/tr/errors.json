@@ -5,5 +5,21 @@
     "unauthorized": "Yetkisiz erişim",
     "forbidden": "Bu işlem için yetkiniz bulunmamaktadır",
     "badRequest": "Geçersiz istek"
+  },
+  "transfer": {
+    "transfer_type_required": "Transfer tipi belirtilmelidir.",
+    "currency_required": "Para birimi belirtilmelidir.",
+    "invalid_transfer_type": "Geçersiz transfer tipi.",
+    "invalid_scopes_for_transfer_type": "Bu transfer tipi için geçersiz kaynak veya hedef türü.",
+    "to_user_id_required": "Hedef kullanıcı ID'si belirtilmelidir.",
+    "to_user_company_id_required": "Hedef kullanıcının şirket ID'si belirtilmelidir.",
+    "invalid_currency": "Geçersiz para birimi.",
+    "same_company_not_allowed_for_other_transfer": "Aynı şirketler arasında bu tür transfer yapılamaz.",
+    "cannot_transfer_to_self": "Kendinize transfer yapamazsınız.",
+    "to_external_name_required": "Harici alıcı adı belirtilmelidir.",
+    "from_external_name_required": "Harici gönderici adı belirtilmelidir."
+  },
+  "permissions": {
+    "insufficientPermissions": "Bu işlem için gerekli izne sahip değilsiniz."
   }
 }

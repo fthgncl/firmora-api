@@ -5,5 +5,21 @@
     "unauthorized": "Unbefugter Zugriff",
     "forbidden": "Sie haben keine Berechtigung für diesen Vorgang",
     "badRequest": "Ungültige Anfrage"
+  },
+  "transfer": {
+    "transfer_type_required": "Überweisungstyp ist erforderlich.",
+    "currency_required": "Währung ist erforderlich.",
+    "invalid_transfer_type": "Ungültiger Überweisungstyp.",
+    "invalid_scopes_for_transfer_type": "Ungültige Quelle oder Ziel für diesen Überweisungstyp.",
+    "to_user_id_required": "Zielbenutzer-ID ist erforderlich.",
+    "to_user_company_id_required": "Unternehmens-ID des Zielbenutzers ist erforderlich.",
+    "invalid_currency": "Ungültige Währung.",
+    "same_company_not_allowed_for_other_transfer": "Überweisungen zwischen demselben Unternehmen sind für diesen Typ nicht erlaubt.",
+    "cannot_transfer_to_self": "Sie können keine Überweisung an sich selbst tätigen.",
+    "to_external_name_required": "Externer Empfängername ist erforderlich.",
+    "from_external_name_required": "Externer Absendername ist erforderlich."
+  },
+  "permissions": {
+    "insufficientPermissions": "Sie haben keine Berechtigung, diese Aktion auszuführen."
   }
 }

@@ -1,90 +1,88 @@
-
 const { t } = require('./i18nConfig');
 
 const permissions = {
     "sys_admin": {
         "code": "a",
-        "category": "permissions.categories.system",
-        "name": "permissions.sys_admin.name",
-        "description": "permissions.sys_admin.description"
+        "category": "permissions:categories.system",
+        "name": "permissions:sys_admin.name",
+        "description": "permissions:sys_admin.description"
     },
     "personnel_manager": {
         "code": "b",
-        "category": "permissions.categories.personnel",
-        "name": "permissions.personnel_manager.name",
-        "description": "permissions.personnel_manager.description"
+        "category": "permissions:categories.personnel",
+        "name": "permissions:personnel_manager.name",
+        "description": "permissions:personnel_manager.description"
     },
     "can_transfer_company_to_same_company_user": {
         "code": "c",
-        "category": "permissions.categories.financial",
-        "name": "permissions.can_transfer_company_to_same_company_user.name",
-        "description": "permissions.can_transfer_company_to_same_company_user.description"
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_transfer_company_to_same_company_user.name",
+        "description": "permissions:can_transfer_company_to_same_company_user.description"
     },
     "can_transfer_company_to_other_company_user": {
         "code": "d",
-        "category": "permissions.categories.financial",
-        "name": "permissions.can_transfer_company_to_other_company_user.name",
-        "description": "permissions.can_transfer_company_to_other_company_user.description"
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_transfer_company_to_other_company_user.name",
+        "description": "permissions:can_transfer_company_to_other_company_user.description"
     },
     "can_transfer_company_to_other_company": {
         "code": "e",
-        "category": "permissions.categories.financial",
-        "name": "permissions.can_transfer_company_to_other_company.name",
-        "description": "permissions.can_transfer_company_to_other_company.description"
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_transfer_company_to_other_company.name",
+        "description": "permissions:can_transfer_company_to_other_company.description"
     },
     "can_transfer_user_to_same_company_user": {
         "code": "f",
-        "category": "permissions.categories.financial",
-        "name": "permissions.can_transfer_user_to_same_company_user.name",
-        "description": "permissions.can_transfer_user_to_same_company_user.description"
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_transfer_user_to_same_company_user.name",
+        "description": "permissions:can_transfer_user_to_same_company_user.description"
     },
     "can_transfer_user_to_other_company_user": {
         "code": "g",
-        "category": "permissions.categories.financial",
-        "name": "permissions.can_transfer_user_to_other_company_user.name",
-        "description": "permissions.can_transfer_user_to_other_company_user.description"
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_transfer_user_to_other_company_user.name",
+        "description": "permissions:can_transfer_user_to_other_company_user.description"
     },
     "can_transfer_user_to_own_company": {
         "code": "h",
-        "category": "permissions.categories.financial",
-        "name": "permissions.can_transfer_user_to_own_company.name",
-        "description": "permissions.can_transfer_user_to_own_company.description"
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_transfer_user_to_own_company.name",
+        "description": "permissions:can_transfer_user_to_own_company.description"
     },
     "can_transfer_user_to_other_company": {
         "code": "i",
-        "category": "permissions.categories.financial",
-        "name": "permissions.can_transfer_user_to_other_company.name",
-        "description": "permissions.can_transfer_user_to_other_company.description"
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_transfer_user_to_other_company.name",
+        "description": "permissions:can_transfer_user_to_other_company.description"
     },
     "can_transfer_user_to_external": {
         "code": "j",
-        "category": "permissions.categories.financial",
-        "name": "permissions.can_transfer_user_to_external.name",
-        "description": "permissions.can_transfer_user_to_external.description"
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_transfer_user_to_external.name",
+        "description": "permissions:can_transfer_user_to_external.description"
     },
     "can_transfer_company_to_external": {
         "code": "k",
-        "category": "permissions.categories.financial",
-        "name": "permissions.can_transfer_company_to_external.name",
-        "description": "permissions.can_transfer_company_to_external.description"
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_transfer_company_to_external.name",
+        "description": "permissions:can_transfer_company_to_external.description"
     },
     "can_receive_external_to_user": {
         "code": "l",
-        "category": "permissions.categories.financial",
-        "name": "permissions.can_receive_external_to_user.name",
-        "description": "permissions.can_receive_external_to_user.description"
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_receive_external_to_user.name",
+        "description": "permissions:can_receive_external_to_user.description"
     },
     "can_receive_external_to_company": {
         "code": "m",
-        "category": "permissions.categories.financial",
-        "name": "permissions.can_receive_external_to_company.name",
-        "description": "permissions.can_receive_external_to_company.description"
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_receive_external_to_company.name",
+        "description": "permissions:can_receive_external_to_company.description"
     }
-}
+};
 
 function getTranslatedPermissions(lang = process.env.DEFAULT_LANGUAGE) {
     const translatedPermissions = {};
-
     for (const [key, permission] of Object.entries(permissions)) {
         translatedPermissions[key] = {
             code: permission.code,
@@ -93,10 +91,7 @@ function getTranslatedPermissions(lang = process.env.DEFAULT_LANGUAGE) {
             description: t(permission.description, { lng: lang })
         };
     }
-
     return translatedPermissions;
 }
-
-
 
 module.exports = getTranslatedPermissions;

@@ -72,7 +72,7 @@ router.delete('/', async (req, res) => {
 
         // Kullanıcının firma sahibi olup olmadığını kontrol et
         if (company.owner_id !== userId) {
-            return responseHelper.error(res, t('permissions.insufficientPermissions'), 403);
+            return responseHelper.error(res, t('errors:permissions.insufficientPermissions'), 403);
         }
 
         // Şirketi sil

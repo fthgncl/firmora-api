@@ -11,11 +11,11 @@ const createTransfer = async (transferData, userId, companyId) => {
     const { transfer_type, currency } = transferData;
 
     if (!transfer_type) {
-        throw new Error(t('errors.transfer_type_required'));
+        throw new Error(t('errors:transfer.transfer_type_required'));
     }
 
     if (!currency){
-        throw new Error(t('errors.currency_required'));
+        throw new Error(t('errors:transfer.currency_required'));
     }
 
 
@@ -74,7 +74,7 @@ const createTransfer = async (transferData, userId, companyId) => {
                 break;
 
             default:
-                throw new Error(t('errors.invalid_transfer_type'));
+                throw new Error(t('errors:transfer.invalid_transfer_type'));
         }
 
         
@@ -98,20 +98,21 @@ async function handleCompanyToUserSame(transferData) {
         const { user_id, company_id } = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_company_to_same_company_user']);
         if (!hasPermissions) {
-            throw new Error(t('permissions.insufficientPermissions'));
+            throw new Error(t('errors:permissions.insufficientPermissions'));
+
         }
 
         const { to_user_id, from_scope, to_scope, amount, currency } = transferData;
         if (from_scope !== 'company' || to_scope !== 'user') {
-            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+            throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
 
         if (!to_user_id) {
-            throw new Error(t('errors.to_user_id_required'));
+            throw new Error(t('errors:transfer.to_user_id_required'));
         }
 
         if (!currency || currency !== await getCompanyCurrency(company_id) || currency !== await getUserAccountCurrency(to_user_id, company_id)) {
-            throw new Error(t('errors.invalid_currency'));
+            throw new Error(t('errors:transfer.invalid_currency'));
         }
 
         validateAmount(amount);
@@ -146,13 +147,13 @@ async function handleCompanyToUserSame(transferData) {
         return {
             success: true,
             transferId: transferData.id,
-            message: t('transfers.create.success')
+            message: t('transfers:create.success')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || t('transfers.create.failed')
+            message: error.message || t('transfers:create.failed')
         };
     }
 }
@@ -164,28 +165,29 @@ async function handleCompanyToUserOther(transferData) {
         const { user_id, company_id } = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_company_to_other_company_user']);
         if (!hasPermissions) {
-            throw new Error(t('permissions.insufficientPermissions'));
+            throw new Error(t('errors:permissions.insufficientPermissions'));
+
         }
 
         const { to_user_id, to_user_company_id, from_scope, to_scope, amount, currency } = transferData;
         if (from_scope !== 'company' || to_scope !== 'user') {
-            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+            throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
 
         if (!to_user_id) {
-            throw new Error(t('errors.to_user_id_required'));
+            throw new Error(t('errors:transfer.to_user_id_required'));
         }
 
         if (!to_user_company_id) {
-            throw new Error(t('errors.to_user_company_id_required'));
+            throw new Error(t('errors:transfer.to_user_company_id_required'));
         }
 
         if (company_id === to_user_company_id) {
-            throw new Error(t('errors.same_company_not_allowed_for_other_transfer'));
+            throw new Error(t('errors:transfer.same_company_not_allowed_for_other_transfer'));
         }
 
         if (!currency || currency !== await getCompanyCurrency(company_id) || currency !== await getUserAccountCurrency(to_user_id, to_user_company_id)) {
-            throw new Error(t('errors.invalid_currency'));
+            throw new Error(t('errors:transfer.invalid_currency'));
         }
 
         validateAmount(amount);
@@ -220,13 +222,13 @@ async function handleCompanyToUserOther(transferData) {
         return {
             success: true,
             transferId: transferData.id,
-            message: t('transfers.create.success')
+            message: t('transfers:create.success')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || t('transfers.create.failed')
+            message: error.message || t('transfers:create.failed')
         };
     }
 }
@@ -238,25 +240,26 @@ async function handleCompanyToCompanyOther(transferData) {
         const { user_id, company_id } = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_company_to_other_company']);
         if (!hasPermissions) {
-            throw new Error(t('permissions.insufficientPermissions'));
+            throw new Error(t('errors:permissions.insufficientPermissions'));
+
         }
 
         const { to_user_company_id, from_scope, to_scope, amount, currency } = transferData;
         if (from_scope !== 'company' || to_scope !== 'company') {
-            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+            throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
 
         if (!to_user_company_id) {
-            throw new Error(t('errors.to_user_company_id_required'));
+            throw new Error(t('errors:transfer.to_user_company_id_required'));
         }
 
         // Farklı firma olduğunu doğrula
         if (company_id === to_user_company_id) {
-            throw new Error(t('errors.same_company_not_allowed_for_other_transfer'));
+            throw new Error(t('errors:transfer.same_company_not_allowed_for_other_transfer'));
         }
 
         if (!currency || currency !== await getCompanyCurrency(company_id) || currency !== await getCompanyCurrency(to_user_company_id)) {
-            throw new Error(t('errors.invalid_currency'));
+            throw new Error(t('errors:transfer.invalid_currency'));
         }
 
         validateAmount(amount);
@@ -290,13 +293,13 @@ async function handleCompanyToCompanyOther(transferData) {
         return {
             success: true,
             transferId: transferData.id,
-            message: t('transfers.create.success')
+            message: t('transfers:create.success')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || t('transfers.create.failed')
+            message: error.message || t('transfers:create.failed')
         };
     }
 }
@@ -308,25 +311,26 @@ async function handleUserToUserSame(transferData) {
         const { user_id, company_id } = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_user_to_same_company_user']);
         if (!hasPermissions) {
-            throw new Error(t('permissions.insufficientPermissions'));
+            throw new Error(t('errors:permissions.insufficientPermissions'));
+
         }
 
         const { to_user_id, from_scope, to_scope, amount, currency } = transferData;
         if (from_scope !== 'user' || to_scope !== 'user') {
-            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+            throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
 
         if (!to_user_id) {
-            throw new Error(t('errors.to_user_id_required'));
+            throw new Error(t('errors:transfer.to_user_id_required'));
         }
 
         // Aynı kullanıcıya transfer yapılamaz
         if (user_id === to_user_id) {
-            throw new Error(t('errors.cannot_transfer_to_self'));
+            throw new Error(t('errors:transfer.cannot_transfer_to_self'));
         }
 
         if (!currency || currency !== await getUserAccountCurrency(user_id, company_id) || currency !== await getUserAccountCurrency(to_user_id, company_id)) {
-            throw new Error(t('errors.invalid_currency'));
+            throw new Error(t('errors:transfer.invalid_currency'));
         }
 
         validateAmount(amount);
@@ -361,13 +365,13 @@ async function handleUserToUserSame(transferData) {
         return {
             success: true,
             transferId: transferData.id,
-            message: t('transfers.create.success')
+            message: t('transfers:create.success')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || t('transfers.create.failed')
+            message: error.message || t('transfers:create.failed')
         };
     }
 }
@@ -379,34 +383,35 @@ async function handleUserToUserOther(transferData) {
         const { user_id, company_id } = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_user_to_other_company_user']);
         if (!hasPermissions) {
-            throw new Error(t('permissions.insufficientPermissions'));
+            throw new Error(t('errors:permissions.insufficientPermissions'));
+
         }
 
         const { to_user_id, to_user_company_id, from_scope, to_scope, amount, currency } = transferData;
         if (from_scope !== 'user' || to_scope !== 'user') {
-            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+            throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
 
         if (!to_user_id) {
-            throw new Error(t('errors.to_user_id_required'));
+            throw new Error(t('errors:transfer.to_user_id_required'));
         }
 
         if (!to_user_company_id) {
-            throw new Error(t('errors.to_user_company_id_required'));
+            throw new Error(t('errors:transfer.to_user_company_id_required'));
         }
 
         // Aynı kullanıcıya transfer yapılamaz
         if (user_id === to_user_id) {
-            throw new Error(t('errors.cannot_transfer_to_self'));
+            throw new Error(t('errors:transfer.cannot_transfer_to_self'));
         }
 
         // Farklı firma olduğunu doğrula
         if (company_id === to_user_company_id) {
-            throw new Error(t('errors.same_company_not_allowed_for_other_transfer'));
+            throw new Error(t('errors:transfer.same_company_not_allowed_for_other_transfer'));
         }
 
         if (!currency || currency !== await getUserAccountCurrency(user_id, company_id) || currency !== await getUserAccountCurrency(to_user_id, to_user_company_id)) {
-            throw new Error(t('errors.invalid_currency'));
+            throw new Error(t('errors:transfer.invalid_currency'));
         }
 
         validateAmount(amount);
@@ -440,13 +445,13 @@ async function handleUserToUserOther(transferData) {
         return {
             success: true,
             transferId: transferData.id,
-            message: t('transfers.create.success')
+            message: t('transfers:create.success')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || t('transfers.create.failed')
+            message: error.message || t('transfers:create.failed')
         };
     }
 }
@@ -458,16 +463,17 @@ async function handleUserToCompanySame(transferData) {
         const { user_id, company_id } = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_user_to_own_company']);
         if (!hasPermissions) {
-            throw new Error(t('permissions.insufficientPermissions'));
+            throw new Error(t('errors:permissions.insufficientPermissions'));
+
         }
 
         const { from_scope, to_scope, amount, currency } = transferData;
         if (from_scope !== 'user' || to_scope !== 'company') {
-            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+            throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
 
         if (!currency || currency !== await getUserAccountCurrency(user_id, company_id) || currency !== await getCompanyCurrency(company_id)) {
-            throw new Error(t('errors.invalid_currency'));
+            throw new Error(t('errors:transfer.invalid_currency'));
         }
 
         validateAmount(amount);
@@ -500,13 +506,13 @@ async function handleUserToCompanySame(transferData) {
         return {
             success: true,
             transferId: transferData.id,
-            message: t('transfers.create.success')
+            message: t('transfers:create.success')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || t('transfers.create.failed')
+            message: error.message || t('transfers:create.failed')
         };
     }
 }
@@ -518,25 +524,26 @@ async function handleUserToCompanyOther(transferData) {
         const { user_id, company_id } = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_user_to_other_company']);
         if (!hasPermissions) {
-            throw new Error(t('permissions.insufficientPermissions'));
+            throw new Error(t('errors:permissions.insufficientPermissions'));
+
         }
 
         const { to_user_company_id, from_scope, to_scope, amount, currency } = transferData;
         if (from_scope !== 'user' || to_scope !== 'company') {
-            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+            throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
 
         if (!to_user_company_id) {
-            throw new Error(t('errors.to_user_company_id_required'));
+            throw new Error(t('errors:transfer.to_user_company_id_required'));
         }
 
         // Farklı firma olduğunu doğrula
         if (company_id === to_user_company_id) {
-            throw new Error(t('errors.same_company_not_allowed_for_other_transfer'));
+            throw new Error(t('errors:transfer.same_company_not_allowed_for_other_transfer'));
         }
 
         if (!currency || currency !== await getUserAccountCurrency(user_id, company_id) || currency !== await getCompanyCurrency(to_user_company_id)) {
-            throw new Error(t('errors.invalid_currency'));
+            throw new Error(t('errors:transfer.invalid_currency'));
         }
 
         validateAmount(amount);
@@ -569,13 +576,13 @@ async function handleUserToCompanyOther(transferData) {
         return {
             success: true,
             transferId: transferData.id,
-            message: t('transfers.create.success')
+            message: t('transfers:create.success')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || t('transfers.create.failed')
+            message: error.message || t('transfers:create.failed')
         };
     }
 }
@@ -587,20 +594,21 @@ async function handleUserToExternal(transferData) {
         const { user_id, company_id } = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_user_to_external']);
         if (!hasPermissions) {
-            throw new Error(t('permissions.insufficientPermissions'));
+            throw new Error(t('errors:permissions.insufficientPermissions'));
+
         }
 
         const { to_external_name, from_scope, to_scope, amount, currency } = transferData;
         if (from_scope !== 'user' || to_scope !== 'external') {
-            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+            throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
 
         if (!to_external_name || to_external_name.trim().length === 0) {
-            throw new Error(t('errors.to_external_name_required'));
+            throw new Error(t('errors:transfer.to_external_name_required'));
         }
 
         if (!currency || currency !== await getUserAccountCurrency(user_id, company_id)) {
-            throw new Error(t('errors.invalid_currency'));
+            throw new Error(t('errors:transfer.invalid_currency'));
         }
 
         validateAmount(amount);
@@ -634,13 +642,13 @@ async function handleUserToExternal(transferData) {
         return {
             success: true,
             transferId: transferData.id,
-            message: t('transfers.create.success')
+            message: t('transfers:create.success')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || t('transfers.create.failed')
+            message: error.message || t('transfers:create.failed')
         };
     }
 }
@@ -652,20 +660,21 @@ async function handleCompanyToExternal(transferData) {
         const { user_id, company_id } = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_company_to_external']);
         if (!hasPermissions) {
-            throw new Error(t('permissions.insufficientPermissions'));
+            throw new Error(t('errors:permissions.insufficientPermissions'));
+
         }
 
         const { to_external_name, from_scope, to_scope, amount, currency } = transferData;
         if (from_scope !== 'company' || to_scope !== 'external') {
-            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+            throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
 
         if (!to_external_name || to_external_name.trim().length === 0) {
-            throw new Error(t('errors.to_external_name_required'));
+            throw new Error(t('errors:transfer.to_external_name_required'));
         }
 
         if (!currency || currency !== await getCompanyCurrency(company_id)) {
-            throw new Error(t('errors.invalid_currency'));
+            throw new Error(t('errors:transfer.invalid_currency'));
         }
 
         validateAmount(amount);
@@ -700,13 +709,13 @@ async function handleCompanyToExternal(transferData) {
         return {
             success: true,
             transferId: transferData.id,
-            message: t('transfers.create.success')
+            message: t('transfers:create.success')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || t('transfers.create.failed')
+            message: error.message || t('transfers:create.failed')
         };
     }
 }
@@ -718,24 +727,25 @@ async function handleExternalToUser(transferData) {
         const { user_id, company_id } = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_receive_external_to_user']);
         if (!hasPermissions) {
-            throw new Error(t('permissions.insufficientPermissions'));
+            throw new Error(t('errors:permissions.insufficientPermissions'));
+
         }
 
         const { to_user_id, from_external_name, from_scope, to_scope, amount, currency } = transferData;
         if (from_scope !== 'external' || to_scope !== 'user') {
-            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+            throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
 
         if (!to_user_id) {
-            throw new Error(t('errors.to_user_id_required'));
+            throw new Error(t('errors:transfer.to_user_id_required'));
         }
 
         if (!from_external_name || from_external_name.trim().length === 0) {
-            throw new Error(t('errors.from_external_name_required'));
+            throw new Error(t('errors:transfer.from_external_name_required'));
         }
 
         if (!currency || currency !== await getUserAccountCurrency(to_user_id, company_id)) {
-            throw new Error(t('errors.invalid_currency'));
+            throw new Error(t('errors:transfer.invalid_currency'));
         }
 
         validateAmount(amount);
@@ -770,13 +780,13 @@ async function handleExternalToUser(transferData) {
         return {
             success: true,
             transferId: transferData.id,
-            message: t('transfers.create.success')
+            message: t('transfers:create.success')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || t('transfers.create.failed')
+            message: error.message || t('transfers:create.failed')
         };
     }
 }
@@ -788,20 +798,21 @@ async function handleExternalToCompany(transferData) {
         const { user_id, company_id } = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_receive_external_to_company']);
         if (!hasPermissions) {
-            throw new Error(t('permissions.insufficientPermissions'));
+            throw new Error(t('errors:permissions.insufficientPermissions'));
+
         }
 
         const { from_external_name, from_scope, to_scope, amount, currency } = transferData;
         if (from_scope !== 'external' || to_scope !== 'company') {
-            throw new Error(t('errors.invalid_scopes_for_transfer_type'));
+            throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
 
         if (!from_external_name || from_external_name.trim().length === 0) {
-            throw new Error(t('errors.from_external_name_required'));
+            throw new Error(t('errors:transfer.from_external_name_required'));
         }
 
         if (!currency || currency !== await getCompanyCurrency(company_id)) {
-            throw new Error(t('errors.invalid_currency'));
+            throw new Error(t('errors:transfer.invalid_currency'));
         }
 
         validateAmount(amount);
@@ -835,13 +846,13 @@ async function handleExternalToCompany(transferData) {
         return {
             success: true,
             transferId: transferData.id,
-            message: t('transfers.create.success')
+            message: t('transfers:create.success')
         };
 
     } catch (error) {
         throw {
             success: false,
-            message: error.message || t('transfers.create.failed')
+            message: error.message || t('transfers:create.failed')
         };
     }
 }

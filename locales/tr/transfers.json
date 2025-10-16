@@ -1,0 +1,6 @@
+{
+  "create": {
+    "success": "Transfer işlemi başarıyla tamamlandı.",
+    "failed": "Transfer işlemi başarısız oldu."
+  }
+}

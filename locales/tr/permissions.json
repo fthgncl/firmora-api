@@ -1,0 +1,59 @@
+{
+  "categories": {
+    "system": "Sistem",
+    "personnel": "Personel",
+    "financial": "Finansal"
+  },
+  "sys_admin": {
+    "name": "Sistem yöneticisi",
+    "description": "Tüm sistem üzerinde tam yetkiye sahiptir."
+  },
+  "personnel_manager": {
+    "name": "Personel yöneticisi",
+    "description": "Firma kullanıcılarını yönetebilir, ekleyebilir ve kaldırabilir."
+  },
+  "can_transfer_company_to_same_company_user": {
+    "name": "Aynı şirkette kullanıcıya şirket transferi",
+    "description": "Şirket hesabından aynı şirketteki bir kullanıcıya transfer yapabilir."
+  },
+  "can_transfer_company_to_other_company_user": {
+    "name": "Diğer şirkette kullanıcıya şirket transferi",
+    "description": "Şirket hesabından başka bir şirketteki kullanıcıya transfer yapabilir."
+  },
+  "can_transfer_company_to_other_company": {
+    "name": "Şirketten şirkete transfer",
+    "description": "Şirket hesabından başka bir şirkete transfer yapabilir."
+  },
+  "can_transfer_user_to_same_company_user": {
+    "name": "Aynı şirkette kullanıcıya transfer",
+    "description": "Kullanıcı hesabından aynı şirketteki başka bir kullanıcıya transfer yapabilir."
+  },
+  "can_transfer_user_to_other_company_user": {
+    "name": "Diğer şirkette kullanıcıya transfer",
+    "description": "Kullanıcı hesabından başka şirketteki bir kullanıcıya transfer yapabilir."
+  },
+  "can_transfer_user_to_own_company": {
+    "name": "Kendi şirketine transfer",
+    "description": "Kullanıcı hesabından kendi şirketine transfer yapabilir."
+  },
+  "can_transfer_user_to_other_company": {
+    "name": "Diğer şirkete transfer",
+    "description": "Kullanıcı hesabından başka şirkete transfer yapabilir."
+  },
+  "can_transfer_user_to_external": {
+    "name": "Kullanıcıdan dış alıcıya transfer",
+    "description": "Kullanıcı hesabından sistem dışı bir alıcıya transfer yapabilir."
+  },
+  "can_transfer_company_to_external": {
+    "name": "Şirketten dış alıcıya transfer",
+    "description": "Şirket hesabından sistem dışı bir alıcıya transfer yapabilir."
+  },
+  "can_receive_external_to_user": {
+    "name": "Dış kaynaktan kullanıcıya transfer alma",
+    "description": "Sistem dışı kaynaklardan kullanıcı hesabına gelen transferleri alabilir."
+  },
+  "can_receive_external_to_company": {
+    "name": "Dış kaynaktan şirkete transfer alma",
+    "description": "Sistem dışı kaynaklardan şirket hesabına gelen transferleri alabilir."
+  }
+}

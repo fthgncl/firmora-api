@@ -5,5 +5,21 @@
     "unauthorized": "Unauthorized access",
     "forbidden": "You do not have permission for this operation",
     "badRequest": "Invalid request"
+  },
+  "transfer": {
+    "transfer_type_required": "Transfer type is required.",
+    "currency_required": "Currency is required.",
+    "invalid_transfer_type": "Invalid transfer type.",
+    "invalid_scopes_for_transfer_type": "Invalid source or target scope for this transfer type.",
+    "to_user_id_required": "Target user ID is required.",
+    "to_user_company_id_required": "Target user's company ID is required.",
+    "invalid_currency": "Invalid currency.",
+    "same_company_not_allowed_for_other_transfer": "Transfers between the same company are not allowed for this type.",
+    "cannot_transfer_to_self": "You cannot transfer to yourself.",
+    "to_external_name_required": "External recipient name is required.",
+    "from_external_name_required": "External sender name is required."
+  },
+  "permissions": {
+    "insufficientPermissions": "You do not have permission to perform this action."
   }
 }

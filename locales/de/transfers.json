@@ -1,0 +1,6 @@
+{
+  "create": {
+    "success": "Überweisung erfolgreich abgeschlossen.",
+    "failed": "Überweisung fehlgeschlagen."
+  }
+}

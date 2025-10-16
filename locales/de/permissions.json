@@ -1,0 +1,59 @@
+{
+  "categories": {
+    "system": "System",
+    "personnel": "Personal",
+    "financial": "Finanziell"
+  },
+  "sys_admin": {
+    "name": "Systemadministrator",
+    "description": "Hat volle Berechtigungen für das gesamte System."
+  },
+  "personnel_manager": {
+    "name": "Personalmanager",
+    "description": "Kann Benutzer des Unternehmens verwalten, hinzufügen und entfernen."
+  },
+  "can_transfer_company_to_same_company_user": {
+    "name": "Unternehmen zu Benutzer (selbes Unternehmen)",
+    "description": "Kann vom Unternehmenskonto an einen Benutzer im selben Unternehmen überweisen."
+  },
+  "can_transfer_company_to_other_company_user": {
+    "name": "Unternehmen zu Benutzer (anderes Unternehmen)",
+    "description": "Kann vom Unternehmenskonto an einen Benutzer in einem anderen Unternehmen überweisen."
+  },
+  "can_transfer_company_to_other_company": {
+    "name": "Unternehmen zu Unternehmen",
+    "description": "Kann vom Unternehmenskonto an ein anderes Unternehmen überweisen."
+  },
+  "can_transfer_user_to_same_company_user": {
+    "name": "Benutzer zu Benutzer (selbes Unternehmen)",
+    "description": "Kann vom Benutzerkonto an einen anderen Benutzer im selben Unternehmen überweisen."
+  },
+  "can_transfer_user_to_other_company_user": {
+    "name": "Benutzer zu Benutzer (anderes Unternehmen)",
+    "description": "Kann vom Benutzerkonto an einen Benutzer in einem anderen Unternehmen überweisen."
+  },
+  "can_transfer_user_to_own_company": {
+    "name": "Benutzer zu eigenem Unternehmen",
+    "description": "Kann vom Benutzerkonto an das eigene Unternehmen überweisen."
+  },
+  "can_transfer_user_to_other_company": {
+    "name": "Benutzer zu anderem Unternehmen",
+    "description": "Kann vom Benutzerkonto an ein anderes Unternehmen überweisen."
+  },
+  "can_transfer_user_to_external": {
+    "name": "Benutzer zu externem Empfänger",
+    "description": "Kann vom Benutzerkonto an einen externen Empfänger überweisen."
+  },
+  "can_transfer_company_to_external": {
+    "name": "Unternehmen zu externem Empfänger",
+    "description": "Kann vom Unternehmenskonto an einen externen Empfänger überweisen."
+  },
+  "can_receive_external_to_user": {
+    "name": "Externe Eingänge an Benutzer empfangen",
+    "description": "Kann Überweisungen von externen Quellen auf ein Benutzerkonto empfangen."
+  },
+  "can_receive_external_to_company": {
+    "name": "Externe Eingänge an Unternehmen empfangen",
+    "description": "Kann Überweisungen von externen Quellen auf ein Unternehmenskonto empfangen."
+  }
+}
