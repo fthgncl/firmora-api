@@ -14,12 +14,12 @@ const createUser = async (userData) => {
 
         return {
             status: 'success',
-            message: t('users.create.success'),
+            message: t('users:create.success'),
             user: userWithoutPassword
         };
     } catch (error) {
         if (error.code !== 'ER_DUP_ENTRY') {
-            error.message = `${t('users.create.error')} - ${error.message}`;
+            error.message = `${t('users:create.error')} - ${error.message}`;
         }
         throw error;
     }

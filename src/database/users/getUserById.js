@@ -11,38 +11,38 @@ const { t } = require('../../config/i18nConfig');
  * @throws {Error} Geçerli alan belirtilmezse veya alan doğrulaması başarısız olursa
  */
 async function getUserById(userId, fields) {
-  if (!userId) {
-    throw new Error(t('users.getUserById.userIdRequired'));
-  }
+    if (!userId) {
+        throw new Error(t('users:getUserById.userIdRequired'));
+    }
 
-  if (!Array.isArray(fields) || fields.length === 0) {
-    throw new Error(t('users.getUserById.fieldsRequired'));
-  }
+    if (!Array.isArray(fields) || fields.length === 0) {
+        throw new Error(t('users:getUserById.fieldsRequired'));
+    }
 
-  // Kullanıcı tablosunda tanımlı tüm geçerli alanları al
-  const validTableFields = Object.keys(tablesConfig.users);
+    // Kullanıcı tablosunda tanımlı tüm geçerli alanları al
+    const validTableFields = Object.keys(tablesConfig.users);
 
-  // Talep edilen alanları doğrula
-  const validFields = fields.filter(field => validTableFields.includes(field));
-  const invalidFields = fields.filter(field => !validTableFields.includes(field));
+    // Talep edilen alanları doğrula
+    const validFields = fields.filter(field => validTableFields.includes(field));
+    const invalidFields = fields.filter(field => !validTableFields.includes(field));
 
-  // Geçersiz alanları logla
-  if (invalidFields.length > 0) {
-    await logError(`${t('users.getUserById.invalidFieldsLog')}: ${invalidFields.join(', ')}`);
-  }
+    // Geçersiz alanları logla
+    if (invalidFields.length > 0) {
+        await logError(`${t('users:getUserById.invalidFieldsLog')}: ${invalidFields.join(', ')}`);
+    }
 
-  if (validFields.length === 0) {
-    throw new Error(t('users.getUserById.validFieldsRequired'));
-  }
+    if (validFields.length === 0) {
+        throw new Error(t('users:getUserById.validFieldsRequired'));
+    }
 
-  // SQL sorgusunu oluştur
-  const sql = `SELECT ${validFields.join(', ')} FROM users WHERE id = ?`;
+    // SQL sorgusunu oluştur
+    const sql = `SELECT ${validFields.join(', ')} FROM users WHERE id = ?`;
 
-  // Sorguyu çalıştır
-  const users = await queryAsync(sql, [userId]);
+    // Sorguyu çalıştır
+    const users = await queryAsync(sql, [userId]);
 
-  // Sonucu döndür
-  return users.length > 0 ? users[0] : null;
+    // Sonucu döndür
+    return users.length > 0 ? users[0] : null;
 }
 
 module.exports = getUserById;

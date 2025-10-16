@@ -17,5 +17,10 @@
   "getPhoneNumberByUserId": {
     "userNotFound": "Benutzer nicht gefunden",
     "phoneNotRegistered": "Telefonnummer des Benutzers ist nicht registriert"
+  },
+  "search": {
+    "success": "Benutzer erfolgreich abgerufen",
+    "error": "Beim Suchen nach Benutzern ist ein Fehler aufgetreten",
+    "companyIdRequired": "Unternehmens-ID ist erforderlich"
   }
 }

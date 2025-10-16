@@ -17,5 +17,10 @@
   "getPhoneNumberByUserId": {
     "userNotFound": "Kullanıcı bulunamadı",
     "phoneNotRegistered": "Kullanıcının telefon numarası kayıtlı değil"
+  },
+  "search": {
+    "success": "Kullanıcılar başarıyla getirildi",
+    "error": "Kullanıcı arama sırasında hata oluştu",
+    "companyIdRequired": "Firma ID gereklidir"
   }
 }

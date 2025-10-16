@@ -25,12 +25,10 @@ async function searchUsers(options = {}) {
             sortOrder = 'ASC'
         } = options;
 
-        // Parametreleri validate et
         const validLimit = Math.min(Math.max(parseInt(limit) || 20, 1), 100); // Max 100, min 1
         const validOffset = Math.max(parseInt(offset) || 0, 0);
         const validSortOrder = ['ASC', 'DESC'].includes(sortOrder.toUpperCase()) ? sortOrder.toUpperCase() : 'ASC';
 
-        // İzin verilen sıralama alanları
         const validSortFields = ['name', 'surname', 'email', 'phone', 'username', 'created_at'];
         const validSortBy = validSortFields.includes(sortBy) ? sortBy : 'name';
 
@@ -38,7 +36,6 @@ async function searchUsers(options = {}) {
         let params = [];
         let joins = '';
 
-        // Arama terimi varsa
         if (searchTerm && searchTerm.trim() !== '') {
             const searchPattern = `%${searchTerm.trim()}%`;
             whereConditions.push(`(
@@ -51,7 +48,6 @@ async function searchUsers(options = {}) {
             params.push(searchPattern, searchPattern, searchPattern, searchPattern, searchPattern);
         }
 
-        // Firma bazlı arama
         if (searchScope === 'company' && companyId) {
             joins = `
                 INNER JOIN user_company_permissions ucp ON users.id = ucp.user_id
@@ -60,12 +56,10 @@ async function searchUsers(options = {}) {
             params.push(companyId);
         }
 
-        // WHERE clause'u oluştur
         const whereClause = whereConditions.length > 0
             ? `WHERE ${whereConditions.join(' AND ')}`
             : '';
 
-        // Toplam sonuç sayısını al
         const countQuery = `
             SELECT COUNT(DISTINCT users.id) as total
             FROM users
@@ -76,7 +70,6 @@ async function searchUsers(options = {}) {
         const countResult = await queryAsync(countQuery, params);
         const totalCount = countResult[0]?.total || 0;
 
-        // Kullanıcıları getir
         const usersQuery = `
             SELECT DISTINCT
                 users.id,
@@ -97,13 +90,12 @@ async function searchUsers(options = {}) {
         const usersParams = [...params, validLimit, validOffset];
         const users = await queryAsync(usersQuery, usersParams);
 
-        // Sayfa bilgilerini hesapla
         const totalPages = Math.ceil(totalCount / validLimit);
         const currentPage = Math.floor(validOffset / validLimit) + 1;
 
         return {
             status: 200,
-            message: t('users.search.success') || 'Kullanıcılar başarıyla getirildi',
+            message: t('users:search.success'),
             data: {
                 users: users || [],
                 pagination: {
@@ -121,7 +113,7 @@ async function searchUsers(options = {}) {
     } catch (error) {
         throw {
             status: error.status || 500,
-            message: error.message || t('users.search.error') || 'Kullanıcı arama sırasında hata oluştu',
+            message: error.message || t('users:search.error'),
             error
         };
     }
@@ -137,7 +129,7 @@ async function searchUsersInCompany(companyId, options = {}) {
     if (!companyId) {
         throw {
             status: 400,
-            message: t('users.search.companyIdRequired') || 'Firma ID gereklidir'
+            message: t('users:search.companyIdRequired')
         };
     }
 

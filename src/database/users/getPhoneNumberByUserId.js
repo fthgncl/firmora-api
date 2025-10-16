@@ -8,17 +8,17 @@ const { t } = require('../../config/i18nConfig');
  * @throws {Error} Kullanıcı bulunamadığında veya telefon numarası yoksa
  */
 const getPhoneNumberByUserId = async (userId) => {
-  const userInfo = await getUserById(userId, ['phone']);
+    const userInfo = await getUserById(userId, ['phone']);
 
-  if (!userInfo) {
-    throw new Error(t('users.getPhoneNumberByUserId.userNotFound'));
-  }
+    if (!userInfo) {
+        throw new Error(t('users:getPhoneNumberByUserId.userNotFound'));
+    }
 
-  if (!userInfo.phone) {
-    throw new Error(t('users.getPhoneNumberByUserId.phoneNotRegistered'));
-  }
+    if (!userInfo.phone) {
+        throw new Error(t('users:getPhoneNumberByUserId.phoneNotRegistered'));
+    }
 
-  return userInfo.phone;
+    return userInfo.phone;
 };
 
 module.exports = getPhoneNumberByUserId;
