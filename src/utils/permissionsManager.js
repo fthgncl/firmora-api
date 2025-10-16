@@ -26,13 +26,13 @@ async function readUserPermissions (userId, companyId = null){
             if (companyId) {
                 throw {
                     status: 404,
-                    message: t('permissions.readUser.noPermissionsForCompany')
+                    message: t('permissions:readUser.noPermissionsForCompany')
                 };
             }
             // Kullanıcının hiç yetkisi yoksa boş array döndür
             return {
                 status: 200,
-                message: t('permissions.readUser.noPermissions'),
+                message: t('permissions:readUser.noPermissions'),
                 permissions: []
             };
         }
@@ -40,7 +40,7 @@ async function readUserPermissions (userId, companyId = null){
         // Her zaman array olarak döndür (tek şirket veya tüm şirketler)
         return {
             status: 200,
-            message: t('permissions.readUser.success'),
+            message: t('permissions:readUser.success'),
             permissions: results.map(row => ({
                 companyId: row.company_id,
                 permissions: row.permissions || ''
@@ -50,7 +50,7 @@ async function readUserPermissions (userId, companyId = null){
     } catch (error) {
         throw {
             status: error.status || 500,
-            message: error.message || t('permissions.readUser.error'),
+            message: error.message || t('permissions:readUser.error'),
             error
         };
     }
@@ -195,7 +195,7 @@ async function checkUserRoles(userId, companyId, roles = ['sys_admin'], fullMatc
             return roles.some(role => userRoles.includes(role));    // roles array'ında bulunan her hangi bir index userRoles array'ında da bulunuyorsa true döner
 
     } catch (error) {
-        console.error(t('permissions.checkUserRoles.error', { userId }), error);
+        console.error(t('permissions:checkUserRoles.error', { userId }), error);
     }
 }
 
@@ -207,7 +207,7 @@ async function checkUserRoles(userId, companyId, roles = ['sys_admin'], fullMatc
 async function canUserCreateCompany(userId) {
     try {
         if (!userId) {
-            throw new Error(t('permissions.canCreateCompany.userIdRequired') || 'Kullanıcı ID gereklidir');
+            throw new Error(t('permissions:canCreateCompany.userIdRequired'));
         }
 
         // Users tablosundan max_companies değerini al
@@ -217,7 +217,7 @@ async function canUserCreateCompany(userId) {
         if (!userResults || userResults.length === 0) {
             throw {
                 status: 404,
-                message: t('permissions.canCreateCompany.userNotFound') || 'Kullanıcı bulunamadı'
+                message: t('permissions:canCreateCompany.userNotFound')
             };
         }
 
@@ -233,8 +233,8 @@ async function canUserCreateCompany(userId) {
         return {
             status: 200,
             message: canCreate 
-                ? t('permissions.canCreateCompany.canCreate') || 'Kullanıcı yeni firma oluşturabilir'
-                : t('permissions.canCreateCompany.cannotCreate') || 'Kullanıcı firma oluşturma limitine ulaştı',
+                ? t('permissions:canCreateCompany.canCreate')
+                : t('permissions:canCreateCompany.cannotCreate'),
             canCreate: canCreate,
             maxCompanies: maxCompanies,
             currentCompanyCount: currentCompanyCount,
@@ -244,7 +244,7 @@ async function canUserCreateCompany(userId) {
     } catch (error) {
         throw {
             status: error.status || 500,
-            message: error.message || t('permissions.canCreateCompany.error') || 'Firma oluşturma hakkı kontrolünde hata',
+            message: error.message || t('permissions:canCreateCompany.error'),
             error
         };
     }
@@ -259,7 +259,7 @@ async function canUserCreateCompany(userId) {
 async function canUserSearchUsers(userId, companyId) {
     try {
         if (!userId || !companyId) {
-            throw new Error(t('permissions.canSearchUsers.userIdAndCompanyIdRequired') || 'Kullanıcı ID ve Firma ID gereklidir');
+            throw new Error(t('permissions:canSearchUsers.userIdAndCompanyIdRequired'));
         }
 
         // Kullanıcının firma sahibi olup olmadığını kontrol et
@@ -271,7 +271,7 @@ async function canUserSearchUsers(userId, companyId) {
         if (isOwner) {
             return {
                 status: 200,
-                message: t('permissions.canSearchUsers.canSearchAll') || 'Tüm kullanıcıları arayabilir',
+                message: t('permissions:canSearchUsers.canSearchAll'),
                 canSearch: true,
                 searchScope: 'all', // 'all': Tüm kullanıcılar, 'company': Sadece firma içi, 'none': Hiçbiri
                 reason: 'owner'
@@ -285,7 +285,7 @@ async function canUserSearchUsers(userId, companyId) {
         if (hasSearchAllPermission) {
             return {
                 status: 200,
-                message: t('permissions.canSearchUsers.canSearchAll') || 'Tüm kullanıcıları arayabilir',
+                message: t('permissions:canSearchUsers.canSearchAll'),
                 canSearch: true,
                 searchScope: 'all',
                 reason: 'has_search_permission'
@@ -295,7 +295,7 @@ async function canUserSearchUsers(userId, companyId) {
         // Yukarıdaki koşullar sağlanmıyorsa sadece kendi firmasındaki kullanıcıları arayabilir
         return {
             status: 200,
-            message: t('permissions.canSearchUsers.canSearchCompanyOnly') || 'Sadece firma içi kullanıcıları arayabilir',
+            message: t('permissions:canSearchUsers.canSearchCompanyOnly'),
             canSearch: true,
             searchScope: 'company',
             reason: 'default'
@@ -304,7 +304,7 @@ async function canUserSearchUsers(userId, companyId) {
     } catch (error) {
         throw {
             status: error.status || 500,
-            message: error.message || t('permissions.canSearchUsers.error') || 'Kullanıcı arama yetkisi kontrolünde hata',
+            message: error.message || t('permissions:canSearchUsers.error'),
             error
         };
     }
@@ -319,7 +319,7 @@ async function canUserSearchUsers(userId, companyId) {
 async function canUserAccessCompanySettings(userId, companyId) {
     try {
         if (!userId || !companyId) {
-            throw new Error(t('permissions.canAccessSettings.userIdAndCompanyIdRequired') || 'Kullanıcı ID ve Firma ID gereklidir');
+            throw new Error(t('permissions:canAccessSettings.userIdAndCompanyIdRequired'));
         }
 
         // Kullanıcının firma sahibi olup olmadığını kontrol et
@@ -331,7 +331,7 @@ async function canUserAccessCompanySettings(userId, companyId) {
         if (isOwner) {
             return {
                 status: 200,
-                message: t('permissions.canAccessSettings.canAccess') || 'Ayarlar sayfasına erişebilir',
+                message: t('permissions:canAccessSettings.canAccess'),
                 canAccess: true,
                 reason: 'owner'
             };
@@ -344,7 +344,7 @@ async function canUserAccessCompanySettings(userId, companyId) {
         if (hasSettingsPermission) {
             return {
                 status: 200,
-                message: t('permissions.canAccessSettings.canAccess') || 'Ayarlar sayfasına erişebilir',
+                message: t('permissions:canAccessSettings.canAccess'),
                 canAccess: true,
                 reason: 'has_permission'
             };
@@ -353,7 +353,7 @@ async function canUserAccessCompanySettings(userId, companyId) {
         // Yukarıdaki koşullar sağlanmıyorsa erişemez
         return {
             status: 403,
-            message: t('permissions.canAccessSettings.cannotAccess') || 'Ayarlar sayfasına erişim yetkiniz yok',
+            message: t('permissions:canAccessSettings.cannotAccess'),
             canAccess: false,
             reason: 'no_permission'
         };
@@ -361,7 +361,7 @@ async function canUserAccessCompanySettings(userId, companyId) {
     } catch (error) {
         throw {
             status: error.status || 500,
-            message: error.message || t('permissions.canAccessSettings.error') || 'Ayarlar sayfası erişim kontrolünde hata',
+            message: error.message || t('permissions:canAccessSettings.error'),
             error
         };
     }

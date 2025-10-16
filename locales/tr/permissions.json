@@ -55,5 +55,33 @@
   "can_receive_external_to_company": {
     "name": "Dış kaynaktan şirkete transfer alma",
     "description": "Sistem dışı kaynaklardan şirket hesabına gelen transferleri alabilir."
+  },
+  "readUser": {
+    "success": "Kullanıcı yetkileri getirildi",
+    "noPermissions": "Kullanıcıya ait herhangi bir yetki bulunamadı",
+    "noPermissionsForCompany": "Bu firmaya ait yetki bulunamadı",
+    "error": "Kullanıcı yetkileri getirilirken hata oluştu"
+  },
+  "checkUserRoles": {
+    "error": "Kullanıcı rolleri kontrol edilirken hata oluştu (userId: {{userId}})"
+  },
+  "canCreateCompany": {
+    "userIdRequired": "Kullanıcı ID gereklidir",
+    "userNotFound": "Kullanıcı bulunamadı",
+    "canCreate": "Kullanıcı yeni firma oluşturabilir",
+    "cannotCreate": "Kullanıcı firma oluşturma limitine ulaştı",
+    "error": "Firma oluşturma hakkı kontrolünde hata oluştu"
+  },
+  "canSearchUsers": {
+    "userIdAndCompanyIdRequired": "Kullanıcı ID ve Firma ID gereklidir",
+    "canSearchAll": "Tüm kullanıcıları arayabilir",
+    "canSearchCompanyOnly": "Sadece firma içi kullanıcıları arayabilir",
+    "error": "Kullanıcı arama yetkisi kontrolünde hata oluştu"
+  },
+  "canAccessSettings": {
+    "userIdAndCompanyIdRequired": "Kullanıcı ID ve Firma ID gereklidir",
+    "canAccess": "Ayarlar sayfasına erişebilir",
+    "cannotAccess": "Ayarlar sayfasına erişim yetkiniz yok",
+    "error": "Ayarlar sayfası erişim kontrolünde hata oluştu"
   }
 }

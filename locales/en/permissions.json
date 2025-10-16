@@ -55,5 +55,33 @@
   "can_receive_external_to_company": {
     "name": "Receive external to company",
     "description": "Can receive transfers from external sources to a company account."
+  },
+  "readUser": {
+    "success": "User permissions retrieved",
+    "noPermissions": "No permissions found for the user",
+    "noPermissionsForCompany": "No permissions found for this company",
+    "error": "An error occurred while retrieving user permissions"
+  },
+  "checkUserRoles": {
+    "error": "Error while checking user roles (userId: {{userId}})"
+  },
+  "canCreateCompany": {
+    "userIdRequired": "User ID is required",
+    "userNotFound": "User not found",
+    "canCreate": "User can create a new company",
+    "cannotCreate": "User has reached the company creation limit",
+    "error": "Error while checking the right to create a company"
+  },
+  "canSearchUsers": {
+    "userIdAndCompanyIdRequired": "User ID and Company ID are required",
+    "canSearchAll": "Can search all users",
+    "canSearchCompanyOnly": "Can search users within the company only",
+    "error": "Error while checking user search permission"
+  },
+  "canAccessSettings": {
+    "userIdAndCompanyIdRequired": "User ID and Company ID are required",
+    "canAccess": "Can access the settings page",
+    "cannotAccess": "You do not have permission to access the settings page",
+    "error": "Error while checking access to the settings page"
   }
 }

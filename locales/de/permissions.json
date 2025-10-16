@@ -55,5 +55,33 @@
   "can_receive_external_to_company": {
     "name": "Externe Eingänge an Unternehmen empfangen",
     "description": "Kann Überweisungen von externen Quellen auf ein Unternehmenskonto empfangen."
+  },
+  "readUser": {
+    "success": "Benutzerberechtigungen abgerufen",
+    "noPermissions": "Keine Berechtigungen für den Benutzer gefunden",
+    "noPermissionsForCompany": "Keine Berechtigungen für dieses Unternehmen gefunden",
+    "error": "Fehler beim Abrufen der Benutzerberechtigungen"
+  },
+  "checkUserRoles": {
+    "error": "Fehler bei der Prüfung der Benutzerrollen (userId: {{userId}})"
+  },
+  "canCreateCompany": {
+    "userIdRequired": "Benutzer-ID ist erforderlich",
+    "userNotFound": "Benutzer nicht gefunden",
+    "canCreate": "Der Benutzer kann ein neues Unternehmen erstellen",
+    "cannotCreate": "Der Benutzer hat das Limit zur Unternehmenserstellung erreicht",
+    "error": "Fehler bei der Prüfung des Rechts, ein Unternehmen zu erstellen"
+  },
+  "canSearchUsers": {
+    "userIdAndCompanyIdRequired": "Benutzer-ID und Unternehmens-ID sind erforderlich",
+    "canSearchAll": "Kann alle Benutzer suchen",
+    "canSearchCompanyOnly": "Kann nur Benutzer innerhalb des Unternehmens suchen",
+    "error": "Fehler bei der Prüfung der Benutzersuchberechtigung"
+  },
+  "canAccessSettings": {
+    "userIdAndCompanyIdRequired": "Benutzer-ID und Unternehmens-ID sind erforderlich",
+    "canAccess": "Kann auf die Einstellungsseite zugreifen",
+    "cannotAccess": "Sie haben keine Berechtigung, auf die Einstellungsseite zuzugreifen",
+    "error": "Fehler bei der Prüfung des Zugriffs auf die Einstellungsseite"
   }
 }
