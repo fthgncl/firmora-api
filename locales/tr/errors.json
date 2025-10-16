@@ -17,9 +17,21 @@
     "same_company_not_allowed_for_other_transfer": "Aynı şirketler arasında bu tür transfer yapılamaz.",
     "cannot_transfer_to_self": "Kendinize transfer yapamazsınız.",
     "to_external_name_required": "Harici alıcı adı belirtilmelidir.",
-    "from_external_name_required": "Harici gönderici adı belirtilmelidir."
+    "from_external_name_required": "Harici gönderici adı belirtilmelidir.",
+    "company_currency_not_found": "Firma para birimi bulunamadı",
+    "user_account_not_found": "Kullanıcı hesabı bulunamadı",
+    "account_currency_not_found": "Hesap para birimi bulunamadı",
+    "company_insufficientBalance": "Firma bakiyesi yetersiz"
   },
   "permissions": {
     "insufficientPermissions": "Bu işlem için gerekli izne sahip değilsiniz."
+  },
+  "database": {
+    "invalidConnection": "Bağlantı nesnesi geçersiz!",
+    "notInitialized": "Veritabanı bağlantısı henüz başlatılmadı!",
+    "queryFailed": "Veritabanı sorgusu başarısız",
+    "transactionStartFailed": "Transaction başlatılamadı",
+    "transactionCommitFailed": "Transaction commit edilemedi",
+    "transactionRollbackFailed": "Transaction rollback yapılamadı"
   }
 }

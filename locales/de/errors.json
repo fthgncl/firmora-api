@@ -17,9 +17,21 @@
     "same_company_not_allowed_for_other_transfer": "Überweisungen zwischen demselben Unternehmen sind für diesen Typ nicht erlaubt.",
     "cannot_transfer_to_self": "Sie können keine Überweisung an sich selbst tätigen.",
     "to_external_name_required": "Externer Empfängername ist erforderlich.",
-    "from_external_name_required": "Externer Absendername ist erforderlich."
+    "from_external_name_required": "Externer Absendername ist erforderlich.",
+    "company_currency_not_found": "Unternehmenswährung nicht gefunden",
+    "user_account_not_found": "Benutzerkonto nicht gefunden",
+    "account_currency_not_found": "Kontowährung nicht gefunden",
+    "company_insufficientBalance": "Unternehmensguthaben ist unzureichend"
   },
   "permissions": {
     "insufficientPermissions": "Sie haben keine Berechtigung, diese Aktion auszuführen."
+  },
+  "database": {
+    "invalidConnection": "Ungültiges Verbindungsobjekt!",
+    "notInitialized": "Datenbankverbindung wurde noch nicht initialisiert!",
+    "queryFailed": "Datenbankabfrage fehlgeschlagen",
+    "transactionStartFailed": "Transaktion konnte nicht gestartet werden",
+    "transactionCommitFailed": "Transaktion konnte nicht abgeschlossen werden",
+    "transactionRollbackFailed": "Transaktion konnte nicht zurückgesetzt werden"
   }
 }

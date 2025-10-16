@@ -15,11 +15,11 @@ const getCompanyCurrency = async (companyId) => {
         const results = await queryAsync(query, [companyId]);
 
         if (!results || results.length === 0) {
-            throw new Error(t('companies.delete.notFound'));
+            throw new Error(t('companies:delete.notFound'));
         }
 
         if (!results[0].currency) {
-            throw new Error(t('errors.company_currency_not_found'));
+            throw new Error(t('errors:transfer.company_currency_not_found'));
         }
 
         return results[0].currency;
@@ -41,11 +41,11 @@ const getUserAccountCurrency = async (userId, companyId) => {
         const results = await queryAsync(query, [userId, companyId]);
 
         if (!results || results.length === 0) {
-            throw new Error(t('errors.user_account_not_found'));
+            throw new Error(t('errors:transfer.user_account_not_found'));
         }
 
         if (!results[0].currency) {
-            throw new Error(t('errors.account_currency_not_found'));
+            throw new Error(t('errors:transfer.account_currency_not_found'));
         }
 
         return results[0].currency;
@@ -69,7 +69,7 @@ const validateUserInCompany = async (userId, companyId) => {
         if (!result.permissions || result.permissions.length === 0) {
             throw {
                 status: 400,
-                message: t('transfers.create.userNotInCompany')
+                message: t('transfers:create.userNotInCompany')
             };
         }
 
@@ -77,7 +77,7 @@ const validateUserInCompany = async (userId, companyId) => {
     } catch (error) {
         throw {
             status: error.status || 400,
-            message: error.message || t('transfers.create.userNotInCompany')
+            message: error.message || t('transfers:create.userNotInCompany')
         };
     }
 };
@@ -91,18 +91,18 @@ const validateUserInCompany = async (userId, companyId) => {
 
 const validateAmount = (amount) => {
     if (amount === undefined || amount === null)
-        throw Object.assign(new Error(t('transfers.create.invalidAmount')), { status: 400 });
+        throw Object.assign(new Error(t('transfers:create.invalidAmount')), { status: 400 });
 
     const str = amount.toString().trim();
     const numAmount = parseFloat(str);
 
     // Sayısal ve pozitif olmalı
     if (isNaN(numAmount) || numAmount <= 0)
-        throw Object.assign(new Error(t('transfers.create.invalidAmount')), { status: 400 });
+        throw Object.assign(new Error(t('transfers:create.invalidAmount')), { status: 400 });
 
     // Format kontrolü
     if (!isValidAmount(amount))
-        throw Object.assign(new Error(t('transfers.create.invalidAmountFormat')), { status: 400 });
+        throw Object.assign(new Error(t('transfers:create.invalidAmountFormat')), { status: 400 });
 
     return true;
 };
@@ -122,14 +122,14 @@ const validateCompanyBalance = async (companyId, amount) => {
         if (!result || result.length === 0) {
             throw {
                 status: 404,
-                message: t('company.notFound')
+                message: t('companies:delete.notFound')
             };
         }
 
         if (parseFloat(result[0].balance) < parseFloat(amount)) {
             throw {
                 status: 400,
-                message: t('company.insufficientBalance')
+                message: t('errors:transfer.company_insufficientBalance')
             };
         }
 
@@ -137,67 +137,15 @@ const validateCompanyBalance = async (companyId, amount) => {
     } catch (error) {
         throw {
             status: error.status || 400,
-            message: error.message || t('company.insufficientBalance')
+            message: error.message || t('errors:transfer.company_insufficientBalance')
         };
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Kullanıcının yeterli bakiyeye sahip olup olmadığını kontrol eder
- * @param {string} userId - Kullanıcı ID
- * @param {string} companyId - Firma ID
- * @param {number} amount - Gerekli miktar
- * @throws {Object} Yetersiz bakiye varsa hata fırlatır
- * @returns {Promise<Object>} Kullanıcı hesap bilgileri
- */
-const validateUserBalance = async (userId, companyId, amount) => {
-    try {
-        const account = await validateUserAccountExists(userId, companyId);
-
-        if (parseFloat(account.balance) < parseFloat(amount)) {
-            throw {
-                status: 400,
-                message: t('account.insufficientBalance')
-            };
-        }
-
-        return account;
-    } catch (error) {
-        throw {
-            status: error.status || 400,
-            message: error.message || t('account.insufficientBalance')
-        };
-    }
-};
-
-
-
-
 
 module.exports = {
     getCompanyCurrency,
     getUserAccountCurrency,
     validateUserInCompany,
-    validateUserBalance,
     validateCompanyBalance,
     validateAmount
 };

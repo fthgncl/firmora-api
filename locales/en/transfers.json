@@ -1,6 +1,9 @@
 {
   "create": {
     "success": "Transfer completed successfully.",
-    "failed": "Transfer failed."
+    "failed": "Transfer failed.",
+    "userNotInCompany": "The user does not belong to this company",
+    "invalidAmount": "Invalid amount",
+    "invalidAmountFormat": "Invalid amount format"
   }
 }

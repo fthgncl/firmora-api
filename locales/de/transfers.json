@@ -1,6 +1,9 @@
 {
   "create": {
     "success": "Überweisung erfolgreich abgeschlossen.",
-    "failed": "Überweisung fehlgeschlagen."
+    "failed": "Überweisung fehlgeschlagen.",
+    "userNotInCompany": "Der Benutzer gehört nicht zu diesem Unternehmen",
+    "invalidAmount": "Ungültiger Betrag",
+    "invalidAmountFormat": "Ungültiges Betragsformat"
   }
 }

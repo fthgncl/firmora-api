@@ -17,9 +17,21 @@
     "same_company_not_allowed_for_other_transfer": "Transfers between the same company are not allowed for this type.",
     "cannot_transfer_to_self": "You cannot transfer to yourself.",
     "to_external_name_required": "External recipient name is required.",
-    "from_external_name_required": "External sender name is required."
+    "from_external_name_required": "External sender name is required.",
+    "company_currency_not_found": "Company currency not found",
+    "user_account_not_found": "User account not found",
+    "account_currency_not_found": "Account currency not found",
+    "company_insufficientBalance": "Company balance is insufficient"
   },
   "permissions": {
     "insufficientPermissions": "You do not have permission to perform this action."
+  },
+  "database": {
+    "invalidConnection": "Invalid connection object!",
+    "notInitialized": "Database connection has not been initialized!",
+    "queryFailed": "Database query failed",
+    "transactionStartFailed": "Transaction could not be started",
+    "transactionCommitFailed": "Transaction could not be committed",
+    "transactionRollbackFailed": "Transaction could not be rolled back"
   }
 }

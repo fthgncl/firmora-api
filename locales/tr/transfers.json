@@ -1,6 +1,9 @@
 {
   "create": {
     "success": "Transfer işlemi başarıyla tamamlandı.",
-    "failed": "Transfer işlemi başarısız oldu."
+    "failed": "Transfer işlemi başarısız oldu.",
+    "userNotInCompany": "Kullanıcı bu firmada yer almıyor",
+    "invalidAmount": "Geçersiz miktar",
+    "invalidAmountFormat": "Geçersiz miktar formatı"
   }
 }
