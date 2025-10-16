@@ -6,5 +6,11 @@
   "i18nLoaded": "Multi-language support loaded",
   "databaseConnected": "Database connection successful",
   "expressStarted": "Express server started",
-  "backupServiceStarted": "Backup service started"
+  "backupServiceStarted": "Backup service started",
+  "pipe": "Pipe",
+  "port": "Port",
+  "errors": {
+    "eacces": "requires elevated privileges.",
+    "eaddrinuse": "is already in use."
+  }
 }

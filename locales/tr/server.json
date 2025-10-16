@@ -6,5 +6,11 @@
   "i18nLoaded": "Çok dilli destek yüklendi",
   "databaseConnected": "Veritabanı bağlantısı başarılı",
   "expressStarted": "Express sunucusu başlatıldı",
-  "backupServiceStarted": "Yedekleme servisi başlatıldı"
+  "backupServiceStarted": "Yedekleme servisi başlatıldı",
+  "pipe": "Boru",
+  "port": "Port",
+  "errors": {
+    "eacces": "için yetkili erişim gerekli.",
+    "eaddrinuse": "zaten kullanılıyor."
+  }
 }

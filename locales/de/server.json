@@ -6,5 +6,11 @@
   "i18nLoaded": "Mehrsprachige Unterstützung geladen",
   "databaseConnected": "Datenbankverbindung erfolgreich",
   "expressStarted": "Express-Server gestartet",
-  "backupServiceStarted": "Backup-Dienst gestartet"
+  "backupServiceStarted": "Backup-Dienst gestartet",
+  "pipe": "Rohr",
+  "port": "Port",
+  "errors": {
+    "eacces": "erfordert Administratorrechte.",
+    "eaddrinuse": "wird bereits verwendet."
+  }
 }

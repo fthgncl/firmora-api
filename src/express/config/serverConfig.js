@@ -1,3 +1,6 @@
+// src/express/config/serverConfig.js
+const { t } = require('../../config/i18nConfig');
+
 /**
  * Port değerini normalize eder
  * @param {string|number} val - Port değeri
@@ -18,15 +21,17 @@ const normalizePort = (val) => {
 const handleServerError = (error, port) => {
     if (error.syscall !== 'listen') throw error;
 
-    const bind = typeof port === 'string' ? `Boru ${port}` : `Port ${port}`;
+    const bind =
+        typeof port === 'string'
+            ? `${t('server:pipe')} ${port}`
+            : `${t('server:port')} ${port}`;
 
-    // Özel hataları ele al
     switch (error.code) {
         case 'EACCES':
-            console.error(`${bind} için yetkili erişim gerekli.`);
+            console.error(`${bind} ${t('server:errors.eacces')}`);
             throw error;
         case 'EADDRINUSE':
-            console.error(`${bind} zaten kullanılıyor.`);
+            console.error(`${bind} ${t('server:errors.eaddrinuse')}`);
             throw error;
         default:
             throw error;
