@@ -86,6 +86,7 @@ function getTranslatedPermissions(lang = process.env.DEFAULT_LANGUAGE) {
     for (const [key, permission] of Object.entries(permissions)) {
         translatedPermissions[key] = {
             code: permission.code,
+            lang,
             category: t(permission.category, { lng: lang }),
             name: t(permission.name, { lng: lang }),
             description: t(permission.description, { lng: lang })
