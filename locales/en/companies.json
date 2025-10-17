@@ -1,7 +1,9 @@
 {
   "create": {
     "success": "Company created successfully!",
-    "error": "Error occurred while creating company"
+    "error": "Error occurred while creating company",
+    "fieldsRequired": "Company name and currency are required.",
+    "duplicateError": "A company with these details already exists."
   },
   "delete": {
     "success": "Company deleted successfully!",
@@ -57,5 +59,12 @@
   "search": {
     "success": "Companies retrieved successfully.",
     "error": "An error occurred while searching for companies."
+  },
+  "get": {
+    "companyIdRequired": "Company ID is required",
+    "invalidCompanyId": "Invalid company ID format",
+    "notFound": "Company not found",
+    "success": "Company details fetched successfully",
+    "error": "An error occurred while fetching company details"
   }
 }

@@ -1,0 +1,12 @@
+{
+  "verify": {
+    "emailSent": "Verification email has been sent successfully.",
+    "alreadyVerified": "Email address is already verified.",
+    "verifiedSuccess": "Email verified successfully."
+  },
+  "signUp": {
+    "accountCreatedWithVerification": "User created successfully. A verification link has been sent to your email address. Please check your inbox.",
+    "accountCreated": "User created successfully.",
+    "verificationEmailFailed": "Verification email could not be sent. Please try again later or contact support."
+  }
+}

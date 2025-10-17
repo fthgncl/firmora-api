@@ -1,7 +1,9 @@
 {
   "create": {
     "success": "Unternehmen erfolgreich erstellt!",
-    "error": "Fehler beim Erstellen des Unternehmens"
+    "error": "Fehler beim Erstellen des Unternehmens",
+    "fieldsRequired": "Firmenname und Währung sind erforderlich.",
+    "duplicateError": "Ein Unternehmen mit diesen Angaben existiert bereits."
   },
   "delete": {
     "success": "Unternehmen erfolgreich gelöscht!",
@@ -57,5 +59,12 @@
   "search": {
     "success": "Unternehmen wurden erfolgreich abgerufen.",
     "error": "Beim Suchen nach Unternehmen ist ein Fehler aufgetreten."
+  },
+  "get": {
+    "companyIdRequired": "Unternehmens-ID ist erforderlich",
+    "invalidCompanyId": "Ungültiges Unternehmens-ID-Format",
+    "notFound": "Unternehmen nicht gefunden",
+    "success": "Unternehmensdetails erfolgreich abgerufen",
+    "error": "Fehler beim Abrufen der Unternehmensdetails"
   }
 }

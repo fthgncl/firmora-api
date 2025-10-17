@@ -31,13 +31,13 @@
 const express = require('express');
 const router = express.Router();
 const responseHelper = require('../utils/responseHelper');
+const { t } = require('../../config/i18nConfig');
 
-// Health Check Route
 router.get('/', (req, res) => {
     return responseHelper.success(res, {
-        message: req.t('server.running'),
+        message: t('server.running', { lng: req.language }),
         timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV || 'unknown', // NODE_ENV tanımlanmadığında 'unknown'
+        environment: process.env.NODE_ENV || 'unknown',
         language: req.language
     });
 });

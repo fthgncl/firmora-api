@@ -1,12 +1,3 @@
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const router = express.Router();
-const {queryAsync} = require('../../database/utils/connection');
-const {createToken} = require("../../auth/jwt");
-const responseHelper = require('../utils/responseHelper');
-const {t} = require('../../config/i18nConfig');
-const {readUserPermissions} = require('../../utils/permissionsManager');
-
 /**
  * @swagger
  * /sign-in:
@@ -154,64 +145,69 @@ const {readUserPermissions} = require('../../utils/permissionsManager');
  *                   type: string
  *                   example: "Sunucu hatası"
  */
-router.post('/', async (req, res) => {
-    const {username, password, rememberMe} = req.body;
 
-    // Gerekli alanları kontrol et
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const router = express.Router();
+const { queryAsync } = require('../../database/utils/connection');
+const { createToken } = require("../../auth/jwt");
+const responseHelper = require('../utils/responseHelper');
+const { t } = require('../../config/i18nConfig');
+const { readUserPermissions } = require('../../utils/permissionsManager');
+
+router.post('/', async (req, res) => {
+    const { username, password, rememberMe } = req.body;
+
     if (!username || !password) {
-        return responseHelper.error(res, t('auth.signIn.fieldsRequired'), 400);
+        return responseHelper.error(res, t('errors:signIn.fieldsRequired'), 400);
     }
 
     try {
-        // Kullanıcıyı veritabanında ara
         const query = `
-            SELECT id, username, password, max_companies, emailverified
-            FROM users
-            WHERE username = ?
-            LIMIT 1
-        `;
+      SELECT id, username, password, max_companies, emailverified
+      FROM users
+      WHERE username = ?
+      LIMIT 1
+    `;
         const users = await queryAsync(query, [username]);
 
         if (users.length === 0) {
-            return responseHelper.error(res, t('auth.signIn.invalidCredentials'), 401);
+            return responseHelper.error(res, t('errors:signIn.invalidCredentials'), 401);
         }
 
         const user = users[0];
 
-        // Şifre kontrolü
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return responseHelper.error(res, t('auth.signIn.invalidCredentials'), 401);
+            return responseHelper.error(res, t('errors:signIn.invalidCredentials'), 401);
         }
 
-        // E-posta doğrulanmış mı kontrol et
         if (!user.emailverified) {
-            return responseHelper.error(res, 'E-posta adresiniz doğrulanmamış. Lütfen e-postanızı kontrol edin ve hesabınızı onaylayın.', 403);
+            return responseHelper.error(res, t('errors:signIn.emailNotVerified'), 403);
         }
 
-        // Kullanıcının tüm şirketlerdeki yetkilerini çek
         const userPermissionsData = await readUserPermissions(user.id);
         const permissions = userPermissionsData.permissions || [];
 
-        // Token oluştur
         const tokenPayload = {
             id: user.id,
             username: user.username,
-            permissions: permissions, 
+            permissions: permissions,
             max_companies: user.max_companies,
             rememberMe: !!rememberMe
         };
-        
-        const tokenLifetime = rememberMe ? process.env.REMEMBER_ME_TOKEN_LIFETIME : process.env.DEFAULT_TOKEN_LIFETIME;
+
+        const tokenLifetime = rememberMe
+            ? process.env.REMEMBER_ME_TOKEN_LIFETIME
+            : process.env.DEFAULT_TOKEN_LIFETIME;
         const token = await createToken(tokenPayload, tokenLifetime);
 
         return responseHelper.success(res, {
-            message: t('auth.signIn.success'),
+            message: t('auth:signIn.success'),
             token
         });
 
     } catch (error) {
-        console.error('Giriş hatası:', error);
         return responseHelper.serverError(res, error);
     }
 });

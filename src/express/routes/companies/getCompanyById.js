@@ -1,12 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const { queryAsync } = require('../../../database/utils/connection');
-const { t } = require('../../../config/i18nConfig');
-require('../../../utils/validation');
-const {isValidCompanyId} = require("../../../utils/validation");
-const responseHelper = require("../../utils/responseHelper");
-const { canUserAccessCompanySettings } = require('../../../utils/permissionsManager');
-
 /**
  * @swagger
  * /companies/get:
@@ -254,12 +245,21 @@ const { canUserAccessCompanySettings } = require('../../../utils/permissionsMana
  *                   type: object
  *                   description: Hata detayları (sadece development ortamında)
  */
+
+const express = require('express');
+const router = express.Router();
+const { queryAsync } = require('../../../database/utils/connection');
+const { t } = require('../../../config/i18nConfig');
+require('../../../utils/validation');
+const { isValidCompanyId } = require("../../../utils/validation");
+const responseHelper = require("../../utils/responseHelper");
+const { canUserAccessCompanySettings } = require('../../../utils/permissionsManager');
+
 router.post('/get', async (req, res) => {
     try {
-
         const userId = req.tokenPayload?.id;
         if (!userId) {
-            return responseHelper.error(res, t('auth.tokenRequired'), 401);
+            return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
 
         const { companyId } = req.body;
@@ -268,14 +268,14 @@ router.post('/get', async (req, res) => {
         if (!companyId) {
             return res.status(400).json({
                 success: false,
-                message: t('companies.get.companyIdRequired') || 'Firma ID gereklidir'
+                message: t('companies:get.companyIdRequired')
             });
         }
 
         if ( isValidCompanyId(companyId)) {
             return res.status(400).json({
                 success: false,
-                message: t('companies.get.invalidCompanyId') || 'Geçersiz firma ID formatı'
+                message: t('companies:get.invalidCompanyId')
             });
         }
 
@@ -308,14 +308,14 @@ router.post('/get', async (req, res) => {
         if (!result || result.length === 0) {
             return res.status(404).json({
                 success: false,
-                message: t('companies.get.notFound') || 'Firma bulunamadı'
+                message: t('companies:get.notFound')
             });
         }
 
         // Başarılı sonuç döndür
         return res.status(200).json({
             success: true,
-            message: t('companies.get.success') || 'Firma bilgileri başarıyla getirildi',
+            message: t('companies:get.success'),
             data: result[0]
         });
 
@@ -323,11 +323,11 @@ router.post('/get', async (req, res) => {
         console.error('Get company error:', error);
 
         const statusCode = error.status || 500;
-        const message = error.message || t('companies.get.error') || 'Firma bilgileri getirilirken hata oluştu';
+        const message = error.message || t('companies:get.error');
 
         return res.status(statusCode).json({
             success: false,
-            message: message,
+            message,
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
     }

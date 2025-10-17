@@ -1,8 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const { searchCompanies } = require('../../../database/companies/searchCompanies');
-const { t } = require('../../../config/i18nConfig');
-
 /**
  * @swagger
  * /companies/search:
@@ -109,6 +104,12 @@ const { t } = require('../../../config/i18nConfig');
  *       500:
  *         description: Sunucu hatası
  */
+
+const express = require('express');
+const router = express.Router();
+const { searchCompanies } = require('../../../database/companies/searchCompanies');
+const { t } = require('../../../config/i18nConfig');
+
 router.get('/', async (req, res) => {
     try {
         const {
@@ -120,7 +121,6 @@ router.get('/', async (req, res) => {
             sortOrder
         } = req.query;
 
-        // Offset hesaplama (page parametresi varsa)
         let calculatedOffset = offset;
         if (page && !offset) {
             const pageNum = parseInt(page);
@@ -128,7 +128,6 @@ router.get('/', async (req, res) => {
             calculatedOffset = (pageNum - 1) * limitNum;
         }
 
-        // Arama seçeneklerini hazırla
         const searchOptions = {
             searchTerm: searchTerm || '',
             limit: limit || 20,
@@ -137,7 +136,6 @@ router.get('/', async (req, res) => {
             sortOrder: sortOrder || 'ASC'
         };
 
-        // Firma arama
         const result = await searchCompanies(searchOptions);
         return res.status(result.status).json(result);
 
@@ -145,7 +143,7 @@ router.get('/', async (req, res) => {
         console.error('Firma arama hatası:', error);
         return res.status(error.status || 500).json({
             status: error.status || 500,
-            message: error.message || t('companies.search.error') || 'Firma arama sırasında hata oluştu',
+            message: error.message || t('companies:search.error'),
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
     }

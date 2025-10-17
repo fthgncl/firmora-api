@@ -1,7 +1,7 @@
 {
   "create": {
     "success": "User created successfully!",
-    "error": "Error occurred while creating user"
+    "error": "An error occurred while creating the user"
   },
   "delete": {
     "success": "User deleted successfully!",
@@ -9,18 +9,19 @@
     "error": "User could not be deleted"
   },
   "getUserById": {
-    "userIdRequired": "User ID must be specified",
+    "userIdRequired": "User ID must be provided",
     "fieldsRequired": "At least one field must be specified",
     "validFieldsRequired": "At least one valid field must be specified",
-    "invalidFieldsLog": "Invalid fields requested in getUserById function"
+    "invalidFieldsLog": "Invalid fields were requested in getUserById"
   },
   "getPhoneNumberByUserId": {
     "userNotFound": "User not found",
-    "phoneNotRegistered": "User's phone number is not registered"
+    "phoneNotRegistered": "The user's phone number is not registered"
   },
   "search": {
-    "success": "Users retrieved successfully",
-    "error": "An error occurred while searching users",
-    "companyIdRequired": "Company ID is required"
+    "success": "Users fetched successfully",
+    "error": "An error occurred while searching for users",
+    "companyIdRequired": "Company ID is required",
+    "noPermission": "You do not have permission to search users"
   }
 }

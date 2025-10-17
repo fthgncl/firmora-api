@@ -1,12 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const { getCompanyById } = require('../../../database/companies');
-const responseHelper = require('../../utils/responseHelper');
-const { t } = require('../../../config/i18nConfig');
-const {checkUserRoles, setUserPermissions, readUserPermissions} = require("../../../utils/permissionsManager");
-const getUserById = require("../../../database/users/getUserById");
-const {createAccount} = require("../../../database/accounts");
-
 /**
  * @swagger
  * /companies/add-user:
@@ -117,51 +108,56 @@ const {createAccount} = require("../../../database/accounts");
  *                   type: string
  *                   example: "Sunucu hatası"
  */
+
+const express = require('express');
+const router = express.Router();
+const { getCompanyById } = require('../../../database/companies');
+const responseHelper = require('../../utils/responseHelper');
+const { t } = require('../../../config/i18nConfig');
+const { checkUserRoles, setUserPermissions, readUserPermissions } = require('../../../utils/permissionsManager');
+const getUserById = require('../../../database/users/getUserById');
+const { createAccount } = require('../../../database/accounts');
+
 router.post('/add-user', async (req, res) => {
     try {
-
         const userId = req.tokenPayload?.id;
         const { userId: newEmployeeId, companyId, permissions } = req.body;
 
-        if (!companyId || !newEmployeeId || !permissions) {
-            return responseHelper.error(res, t('companies.addUser.fieldsRequired'), 400);
+        if (!userId) {
+            return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
 
-        // Kullanıcının kendisini firmaya eklemeye çalışıp çalışmadığını kontrol et
+        if (!companyId || !newEmployeeId || !permissions) {
+            return responseHelper.error(res, t('companies:addUser.fieldsRequired'), 400);
+        }
+
         if (userId === newEmployeeId) {
-            return responseHelper.error(res, t('companies.addUser.cannotAddSelf'), 400);
+            return responseHelper.error(res, t('companies:addUser.cannotAddSelf'), 400);
         }
 
         // TODO: kullanıcı kendisinde olmayan yetkiyi oluşturduğu kullanıcıya veremesin
-        const hasPermission = await checkUserRoles(userId, companyId,['personnel_manager']);
+        const hasPermission = await checkUserRoles(userId, companyId, ['personnel_manager']);
         if (!hasPermission) {
             return responseHelper.error(res, t('errors:permissions.insufficientPermissions'), 403);
         }
 
-
-
-        // Kullanıcının var olup olmadığını kontrol et
         const newEmployee = await getUserById(newEmployeeId, ['id']);
         if (!newEmployee) {
-            return responseHelper.error(res, t('companies.addUser.userNotFound'), 404);
+            return responseHelper.error(res, t('companies:addUser.userNotFound'), 404);
         }
 
-        // Firmanın var olup olmadığını kontrol et
         const company = await getCompanyById(companyId, ['id', 'currency']);
         if (!company) {
-            return responseHelper.error(res, t('companies.addUser.companyNotFound'), 404);
+            return responseHelper.error(res, t('companies:addUser.companyNotFound'), 404);
         }
 
-        // Kullanıcının firmada zaten yetkisi olup olmadığını kontrol et
         const existingPermissions = await readUserPermissions(newEmployeeId, companyId);
         if (existingPermissions.permissions && existingPermissions.permissions.length > 0) {
-            return responseHelper.error(res, t('companies.addUser.userAlreadyExists'), 400);
+            return responseHelper.error(res, t('companies:addUser.userAlreadyExists'), 400);
         }
 
-        // Kullanıcıyı firmaya ekle ve yetkilerini ayarla
         const result = await setUserPermissions(newEmployeeId, companyId, permissions);
 
-        // Kullanıcı için otomatik hesap oluştur
         await createAccount({
             user_id: newEmployeeId,
             company_id: companyId,
@@ -170,7 +166,7 @@ router.post('/add-user', async (req, res) => {
         });
 
         return responseHelper.success(res, {
-            message: "Kullanıcı başarıyla eklendi.",
+            message: t('companies:addUser.success'),
             companyId: result.companyId,
             userId: newEmployeeId,
             permissions: result.newPermissions
@@ -182,3 +178,4 @@ router.post('/add-user', async (req, res) => {
 });
 
 module.exports = router;
+

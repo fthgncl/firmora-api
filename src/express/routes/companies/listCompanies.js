@@ -1,10 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const responseHelper = require('../../utils/responseHelper');
-const {t} = require('../../../config/i18nConfig');
-const {queryAsync} = require('../../../database/utils/connection');
-const {readUserPermissions, checkUserRoles} = require('../../../utils/permissionsManager');
-
 /**
  * @swagger
  * /companies:
@@ -171,25 +164,31 @@ const {readUserPermissions, checkUserRoles} = require('../../../utils/permission
  *                   type: object
  *                   description: Hata detayları (sadece development ortamında)
  */
+
+const express = require('express');
+const router = express.Router();
+const responseHelper = require('../../utils/responseHelper');
+const { t } = require('../../../config/i18nConfig');
+const { queryAsync } = require('../../../database/utils/connection');
+const { readUserPermissions, checkUserRoles } = require('../../../utils/permissionsManager');
+
 router.get('/', async (req, res) => {
     try {
         // Kullanıcı ID'sini al
         const userId = req.tokenPayload?.id;
 
         if (!userId) {
-            return responseHelper.error(res, t('auth.tokenRequired'), 401);
+            return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
-
 
         const authorizedCompanyIds = [];
         const userPermissionsData = await readUserPermissions(userId);
 
-        for (const {companyId} of userPermissionsData.permissions) {
+        for (const { companyId } of userPermissionsData.permissions) {
             if (await checkUserRoles(userId, companyId, ['personnel_manager'])) {
                 authorizedCompanyIds.push(companyId);
             }
         }
-
 
         // Yetkili olunan şirketlerin detaylarını getir
         let authorizedCompanies = [];
@@ -209,15 +208,12 @@ router.get('/', async (req, res) => {
             authorizedCompanies = await queryAsync(query, authorizedCompanyIds);
         }
 
-        // İki listeyi birleştir ve duplicate'leri temizle
+        // Duplicate'leri temizle
         const companyMap = new Map();
-
-        // Yetkili olunan şirketleri ekle (duplicate'ler otomatik olarak üzerine yazılır)
         authorizedCompanies.forEach(company => {
             companyMap.set(company.id, company);
         });
 
-        // Map'i array'e çevir
         const allCompanies = Array.from(companyMap.values());
 
         return responseHelper.success(res, {
@@ -225,7 +221,6 @@ router.get('/', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Şirketleri listeleme hatası:', error);
         return responseHelper.serverError(res, error);
     }
 });

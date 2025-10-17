@@ -166,32 +166,31 @@ const router = express.Router();
 const createUser = require('../../database/users/createUser');
 const validator = require('../../utils/validation');
 const responseHelper = require('../utils/responseHelper');
-const {isValidUsername, isValidPhone} = require("../../utils/validation");
-const {cleanInputs} = require("../../utils/inputCleaner");
-const {sendVerificationEmail} = require('../../express/services/emailService');
+const { isValidUsername, isValidPhone } = require("../../utils/validation");
+const { cleanInputs } = require("../../utils/inputCleaner");
+const { sendVerificationEmail } = require('../../express/services/emailService');
+const { t } = require('../../config/i18nConfig');
 
 // Error handling for duplicate entries
 const getErrorMessages = (error) => {
     const errorMessages = {};
     if (error.code === 'ER_DUP_ENTRY') {
         if (error.sqlMessage.includes('username')) {
-            errorMessages.username = 'Bu kullanıcı adı zaten kullanılmaktadır. Lütfen farklı bir kullanıcı adı seçiniz.';
+            errorMessages.username = t('errors:signUp.usernameInUse');
         }
         if (error.sqlMessage.includes('email')) {
-            errorMessages.email = 'Bu email adresi zaten kullanılmaktadır. Lütfen farklı bir email adresi giriniz.';
+            errorMessages.email = t('errors:signUp.emailInUse');
         }
         if (error.sqlMessage.includes('phone')) {
-            errorMessages.email = 'Bu telefon zaten kullanılmaktadır. Lütfen farklı bir telefon numarası giriniz.';
+            errorMessages.phone = t('errors:signUp.phoneInUse');
         }
     } else {
-        errorMessages.general = 'Bilinmeyen bir hata oluştu. Lütfen tekrar deneyin.';
+        errorMessages.general = t('errors:signUp.unknownError');
     }
     return errorMessages;
 };
 
 router.post('/', async (req, res) => {
-
-    // Input değerlerini temizle
     const cleanedInput = cleanInputs({
         name: req.body.name,
         surname: req.body.surname,
@@ -200,80 +199,69 @@ router.post('/', async (req, res) => {
         phone: req.body.phone
     });
 
-    const {name, surname, username, email, phone} = cleanedInput;
+    const { name, surname, username, email, phone } = cleanedInput;
     const password = req.body.password || '';
     const confirmpassword = req.body.confirmpassword || '';
 
     const errors = {};
 
-    // Name validation (minimum 3 characters and maximum 20 characters)
     if (!name) {
-        errors.name = 'Ad boş bırakılamaz.';
+        errors.name = t('errors:signUp.nameRequired');
     } else if (name.length < 3 || name.length > 20) {
-        errors.name = 'Ad en az 3 ve en fazla 20 karakter uzunluğunda olabilir.';
+        errors.name = t('errors:signUp.nameLength');
     } else if (!validator.isTextOnly(name)) {
-        errors.name = 'Ad sadece harflerden oluşmalıdır.';
+        errors.name = t('errors:signUp.nameInvalid');
     }
 
-    // Surname validation (minimum 3 characters and maximum 20 characters)
     if (!surname) {
-        errors.surname = 'Soyad boş bırakılamaz.';
+        errors.surname = t('errors:signUp.surnameRequired');
     } else if (surname.length < 3 || surname.length > 20) {
-        errors.surname = 'Soyad en az 3 ve en fazla 20 karakter uzunluğunda olabilir.';
+        errors.surname = t('errors:signUp.surnameLength');
     } else if (!validator.isTextOnly(surname)) {
-        errors.surname = 'Soyad sadece harflerden oluşmalıdır.';
+        errors.surname = t('errors:signUp.surnameInvalid');
     }
 
-    // Username validation (required, max 15 characters)
     if (!username) {
-        errors.username = 'Kullanıcı adı boş bırakılamaz.';
+        errors.username = t('errors:signUp.usernameRequired');
     } else if (!isValidUsername(username)) {
         if (username.length < 6 || username.length > 15) {
-            errors.username = 'Kullanıcı adı en az 6 ve en fazla 15 karakter uzunluğunda olabilir.';
+            errors.username = t('errors:signUp.usernameLength');
         } else if ((username.match(/\d/g) || []).length > 4) {
-            errors.username = 'Kullanıcı adı en fazla 4 rakam içerebilir.';
+            errors.username = t('errors:signUp.usernameTooManyDigits');
         } else {
-            errors.username = 'Kullanıcı adı harfle başlamalı ve sadece harf ile rakam içermelidir.';
+            errors.username = t('errors:signUp.usernameInvalidFormat');
         }
     }
 
-    // Email validation (required, must follow email format)
     if (!email) {
-        errors.email = 'E-posta boş bırakılamaz.';
+        errors.email = t('errors:signUp.emailRequired');
     } else if (!validator.email(email)) {
-        errors.email = 'Geçerli bir e-posta adresi girilmelidir.';
+        errors.email = t('errors:signUp.emailInvalid');
     }
 
     if (!phone) {
-        errors.phone = 'Telefon numarası gereklidir.';
+        errors.phone = t('errors:signUp.phoneRequired');
+    } else if (!isValidPhone(phone)) {
+        errors.phone = t('errors:signUp.phoneInvalid');
     }
 
-    if (!isValidPhone(phone)) {
-        errors.phone = 'Geçersiz telefon numarası formatı.';
-    }
-
-    // Password validation (required)
     if (!password) {
-        errors.password = 'Şifre boş bırakılamaz.';
+        errors.password = t('errors:signUp.passwordRequired');
     } else if (!validator.password(password)) {
-        errors.password = 'Şifre 8 ile 20 karakter uzunluğunda olmalı, büyük harf, küçük harf, rakam ve özel karakter içermelidir.';
+        errors.password = t('errors:signUp.passwordInvalid');
     }
 
-    // Password confirmation validation (must match)
     if (password !== confirmpassword) {
-        errors.confirmpassword = 'Şifreler eşleşmiyor.';
+        errors.confirmpassword = t('errors:signUp.passwordMismatch');
     }
 
-    // If there are any validation errors, return them
     if (Object.keys(errors).length > 0) {
-        return responseHelper.error(res, 'Verilen bilgilerde hatalar mevcut.', 400, { errors });
+        return responseHelper.error(res, t('errors:signUp.validationFailed'), 400, { errors });
     }
 
     try {
-        // Create the user
-        const result = await createUser({name, surname, username, email, password, phone});
+        const result = await createUser({ name, surname, username, email, password, phone });
 
-        // Doğrulama e-postası gönder
         let emailSent = true;
         try {
             await sendVerificationEmail(result.user);
@@ -282,26 +270,23 @@ router.post('/', async (req, res) => {
         }
 
         const responseData = {
-            message: emailSent 
-                ? 'Kullanıcı başarıyla oluşturuldu. E-posta adresinize bir doğrulama bağlantısı gönderildi. Lütfen e-postanızı kontrol edin.'
-                : 'Kullanıcı başarıyla oluşturuldu.',
+            message: emailSent
+                ? t('emails:signUp.accountCreatedWithVerification')
+                : t('emails:signUp.accountCreated'),
             user: { ...result.user }
         };
 
         if (!emailSent) {
-            responseData.warning = 'Doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin veya destek ekibiyle iletişime geçin.';
+            responseData.warning = t('emails:signUp.verificationEmailFailed');
         }
 
         return responseHelper.success(res, responseData, 201);
     } catch (error) {
-        // Handle errors (duplicate entries)
         const errorMessages = getErrorMessages(error);
-
-        // Mükerrer kayıt hatası için 400 durum kodu kullan
         const statusCode = error.code === 'ER_DUP_ENTRY' ? 400 : 500;
-        const message = error.code === 'ER_DUP_ENTRY' 
-            ? 'Girilen bilgiler başka bir kullanıcı tarafından kullanılıyor.'
-            : 'Sunucu hatası veya veritabanı hatası oluştu.';
+        const message = error.code === 'ER_DUP_ENTRY'
+            ? t('errors:signUp.duplicateEntry')
+            : t('errors:signUp.serverError');
 
         return responseHelper.error(res, message, statusCode, { errors: errorMessages });
     }

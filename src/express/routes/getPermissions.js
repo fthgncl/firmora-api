@@ -1,9 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const responseHelper = require('../utils/responseHelper');
-const { t } = require('../../config/i18nConfig');
-const permissions = require('../../config/permissionsConfig');
-
 /**
  * @swagger
  * /permissions:
@@ -172,12 +166,19 @@ const permissions = require('../../config/permissionsConfig');
  *                   type: string
  *                   example: "Yetki yapılandırması getirilirken hata oluştu"
  */
+
+const express = require('express');
+const router = express.Router();
+const responseHelper = require('../utils/responseHelper');
+const { t } = require('../../config/i18nConfig');
+const permissions = require('../../config/permissionsConfig');
+
 router.get('/', async (req, res) => {
     try {
         // Token kontrolü middleware tarafından yapılıyor
         const userId = req.tokenPayload?.id;
         if (!userId) {
-            return responseHelper.error(res, t('auth.tokenRequired'), 401);
+            return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
 
         // Permissions config'i döndür
@@ -186,7 +187,6 @@ router.get('/', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Yetki yapılandırması getirme hatası:', error);
         return responseHelper.serverError(res, error);
     }
 });

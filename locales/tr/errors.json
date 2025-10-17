@@ -46,5 +46,45 @@
   "server": {
     "sslLoadFailed": "SSL sertifikaları yüklenirken hata oluştu: {{error}}",
     "startFailed": "Express sunucusu başlatılırken hata oluştu: {{error}}"
+  },
+  "verifyEmail": {
+    "emailOrUsernameRequired": "E-posta adresi veya kullanıcı adı (key: emailOrUsername) boş olamaz.",
+    "usernameNotFound": "Bu kullanıcı adına ait bir hesap bulunamadı.",
+    "accountNotFoundByEmail": "Bu e-posta adresine ait bir hesap bulunamadı.",
+    "alreadyVerified": "Bu e-posta adresi zaten doğrulanmış.",
+    "invalidOrExpiredToken": "Geçersiz veya süresi dolmuş token.",
+    "userNotFound": "Kullanıcı bulunamadı."
+  },
+  "signUp": {
+    "usernameInUse": "Bu kullanıcı adı zaten kullanılmaktadır. Lütfen farklı bir kullanıcı adı seçiniz.",
+    "emailInUse": "Bu e-posta adresi zaten kullanılmaktadır. Lütfen farklı bir e-posta adresi giriniz.",
+    "phoneInUse": "Bu telefon numarası zaten kullanılmaktadır. Lütfen farklı bir telefon numarası giriniz.",
+    "unknownError": "Bilinmeyen bir hata oluştu. Lütfen tekrar deneyin.",
+    "nameRequired": "Ad boş bırakılamaz.",
+    "nameLength": "Ad en az 3 ve en fazla 20 karakter uzunluğunda olmalıdır.",
+    "nameInvalid": "Ad sadece harflerden oluşmalıdır.",
+    "surnameRequired": "Soyad boş bırakılamaz.",
+    "surnameLength": "Soyad en az 3 ve en fazla 20 karakter uzunluğunda olmalıdır.",
+    "surnameInvalid": "Soyad sadece harflerden oluşmalıdır.",
+    "usernameRequired": "Kullanıcı adı boş bırakılamaz.",
+    "usernameLength": "Kullanıcı adı en az 6 ve en fazla 15 karakter uzunluğunda olmalıdır.",
+    "usernameTooManyDigits": "Kullanıcı adı en fazla 4 rakam içerebilir.",
+    "usernameInvalidFormat": "Kullanıcı adı harfle başlamalı ve sadece harf ile rakam içermelidir.",
+    "emailRequired": "E-posta boş bırakılamaz.",
+    "emailInvalid": "Geçerli bir e-posta adresi girilmelidir.",
+    "phoneRequired": "Telefon numarası gereklidir.",
+    "phoneInvalid": "Geçersiz telefon numarası formatı.",
+    "passwordRequired": "Şifre boş bırakılamaz.",
+    "passwordInvalid": "Şifre 8-20 karakter uzunluğunda olmalı, büyük harf, küçük harf, rakam ve özel karakter içermelidir.",
+    "passwordMismatch": "Şifreler eşleşmiyor.",
+    "validationFailed": "Verilen bilgilerde hatalar mevcut.",
+    "duplicateEntry": "Girilen bilgiler başka bir kullanıcı tarafından kullanılıyor.",
+    "serverError": "Sunucu hatası veya veritabanı hatası oluştu."
+  },
+  "signIn": {
+    "fieldsRequired": "Kullanıcı adı ve şifre alanları gereklidir.",
+    "invalidCredentials": "Kullanıcı adı veya şifre hatalı.",
+    "emailNotVerified": "E-posta adresiniz doğrulanmamış. Lütfen e-postanızı kontrol edin ve hesabınızı onaylayın.",
+    "serverError": "Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin."
   }
 }

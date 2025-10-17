@@ -1,8 +1,4 @@
-const express = require('express');
-const router = express.Router();
-const { canUserSearchUsers } = require('../../utils/permissionsManager');
-const { searchAllUsers, searchUsersInCompany } = require('../../database/users/searchUsers');
-const { t } = require('../../config/i18nConfig');
+
 
 /**
  * @swagger
@@ -453,46 +449,49 @@ const { t } = require('../../config/i18nConfig');
  *                   success: false
  *                   message: "Kullanıcı arama sırasında hata oluştu"
  */
+
+const express = require('express');
+const router = express.Router();
+const { canUserSearchUsers } = require('../../utils/permissionsManager');
+const { searchAllUsers, searchUsersInCompany } = require('../../database/users/searchUsers');
+const { t } = require('../../config/i18nConfig');
+
 router.post('/', async (req, res) => {
     try {
         const userId = req.tokenPayload?.id;
-        const { 
-            searchTerm = '', 
-            companyId, 
-            limit = 20, 
+        const {
+            searchTerm = '',
+            companyId,
+            limit = 20,
             offset = 0,
             sortBy = 'name',
             sortOrder = 'ASC',
             searchScope = 'all'
         } = req.body;
 
-        // Kullanıcı ID kontrolü
         if (!userId) {
             return res.status(401).json({
                 success: false,
-                message: t('auth.unauthorized') || 'Yetkilendirme gerekli'
+                message: t('errors:general.unauthorized')
             });
         }
 
-        // Firma ID kontrolü
         if (!companyId) {
             return res.status(400).json({
                 success: false,
-                message: t('users.search.companyIdRequired') || 'Firma ID gereklidir'
+                message: t('users:search.companyIdRequired')
             });
         }
 
-        // Kullanıcının arama yetkisini kontrol et
         const searchPermission = await canUserSearchUsers(userId, companyId);
 
         if (!searchPermission.canSearch) {
             return res.status(403).json({
                 success: false,
-                message: t('users.search.noPermission') || 'Kullanıcı arama yetkisi yok'
+                message: t('users:search.noPermission')
             });
         }
 
-        // Arama parametrelerini hazırla
         const searchOptions = {
             searchTerm,
             limit: parseInt(limit),
@@ -503,23 +502,17 @@ router.post('/', async (req, res) => {
 
         let result;
 
-
-        // Arama kapsamına göre işlem yap
         if (searchPermission.searchScope === 'all' && searchScope === 'all') {
-            // Tüm kullanıcılarda ara
             result = await searchAllUsers(searchOptions);
         } else if (searchPermission.searchScope === 'company' || searchScope === 'company') {
-            // Sadece firma içinde ara
             result = await searchUsersInCompany(companyId, searchOptions);
         } else {
-            // Hiçbir arama yetkisi yok
             return res.status(403).json({
                 success: false,
-                message: t('users.search.noPermission') || 'Kullanıcı arama yetkisi yok'
+                message: t('users:search.noPermission')
             });
         }
 
-        // Başarılı sonuç döndür
         return res.status(200).json({
             success: true,
             message: result.message,
@@ -530,7 +523,7 @@ router.post('/', async (req, res) => {
 
     } catch (error) {
         const statusCode = error.status || 500;
-        const message = error.message || t('users.search.error') || 'Kullanıcı arama sırasında hata oluştu';
+        const message = error.message || t('users:search.error');
 
         return res.status(statusCode).json({
             success: false,
@@ -541,3 +534,4 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
+

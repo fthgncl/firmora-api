@@ -136,25 +136,25 @@ const { queryAsync } = require("../../database/utils/connection");
 const { sendVerificationEmail } = require("../services/emailService");
 const { verifyToken } = require('../../auth/jwt');
 const responseHelper = require('../utils/responseHelper');
+const { t } = require('../../config/i18nConfig');
 
 router.post('/send', async (req, res) => {
     const { emailOrUsername } = req.body;
 
     if (!emailOrUsername) {
-        return responseHelper.error(res, 'E-posta adresi veya kullanıcı adı (key:emailOrUsername) boş olamaz.', 400);
+        return responseHelper.error(res, t('errors:verifyEmail.emailOrUsernameRequired'), 400);
     }
 
     let normalizedEmail;
-    let isEmail = validator.email(emailOrUsername);
+    const isEmail = validator.email(emailOrUsername);
 
     if (isEmail) {
         normalizedEmail = emailOrUsername.trim().toLowerCase();
     } else {
-        // Kullanıcı adı verilmiş, veritabanından email adresini bulmalıyız
         try {
             const user = await queryAsync('SELECT email FROM Users WHERE username = ?', [emailOrUsername]);
             if (!user.length) {
-                return responseHelper.error(res, 'Bu kullanıcı adına ait bir hesap bulunamadı.', 404);
+                return responseHelper.error(res, t('errors:verifyEmail.usernameNotFound'), 404);
             }
             normalizedEmail = user[0].email;
         } catch (error) {
@@ -163,21 +163,23 @@ router.post('/send', async (req, res) => {
     }
 
     try {
-        const user = await queryAsync('SELECT emailverified, name, surname, username, email, created_at FROM Users WHERE email = ?', [normalizedEmail]);
+        const user = await queryAsync(
+            'SELECT emailverified, name, surname, username, email, created_at FROM Users WHERE email = ?',
+            [normalizedEmail]
+        );
 
         if (!user.length) {
-            return responseHelper.error(res, 'Bu e-posta adresine ait bir hesap bulunamadı.', 404);
+            return responseHelper.error(res, t('errors:verifyEmail.accountNotFoundByEmail'), 404);
         }
 
         if (user[0].emailverified) {
-            return responseHelper.error(res, 'Bu e-posta adresi zaten doğrulanmış.', 400);
+            return responseHelper.error(res, t('errors:verifyEmail.alreadyVerified'), 400);
         }
 
-        // Doğrulama e-postası gönder
         await sendVerificationEmail(user[0]);
 
         return responseHelper.success(res, {
-            message: 'Doğrulama e-postası başarıyla gönderildi.'
+            message: t('emails:verify.emailSent')
         });
 
     } catch (error) {
@@ -189,35 +191,31 @@ router.get('/:token', async (req, res) => {
     const { token } = req.params;
 
     try {
-        // Token'ı doğrula
         const decoded = await verifyToken(token);
 
         if (!decoded || !decoded.email) {
-            return responseHelper.error(res, 'Geçersiz veya süresi dolmuş token.', 400);
+            return responseHelper.error(res, t('errors:verifyEmail.invalidOrExpiredToken'), 400);
         }
 
-        // Kullanıcıyı veritabanında ara
         const user = await queryAsync('SELECT * FROM Users WHERE email = ?', [decoded.email]);
 
         if (!user.length) {
-            return responseHelper.error(res, 'Kullanıcı bulunamadı.', 404);
+            return responseHelper.error(res, t('errors:verifyEmail.userNotFound'), 404);
         }
 
-        // Kullanıcı zaten doğrulanmış mı kontrol et
         if (user[0].emailverified) {
             return responseHelper.success(res, {
-                message: 'E-posta adresi zaten doğrulanmış.'
+                message: t('emails:verify.alreadyVerified')
             });
         }
 
-        // Kullanıcının e-posta adresini doğrulanmış olarak işaretle
         await queryAsync('UPDATE Users SET emailverified = true WHERE email = ?', [decoded.email]);
 
         return responseHelper.success(res, {
-            message: 'E-posta başarıyla doğrulandı.'
+            message: t('emails:verify.verifiedSuccess')
         });
     } catch (error) {
-        return responseHelper.error(res, 'E-posta doğrulanamadı. Geçersiz veya süresi dolmuş token.', 400);
+        return responseHelper.error(res, t('errors:verifyEmail.invalidOrExpiredToken'), 400);
     }
 });
 

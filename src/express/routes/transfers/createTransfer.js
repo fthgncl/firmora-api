@@ -1,9 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const createTransfer = require('../../../database/transfers/createTransfer');
-const responseHelper = require('../../utils/responseHelper');
-const { t } = require('../../../config/i18nConfig');
-
 /**
  * @swagger
  * /transfers:
@@ -128,18 +122,26 @@ const { t } = require('../../../config/i18nConfig');
  *       500:
  *         description: Sunucu hatası
  */
+
+const express = require('express');
+const router = express.Router();
+const createTransfer = require('../../../database/transfers/createTransfer');
+const responseHelper = require('../../utils/responseHelper');
+const { t } = require('../../../config/i18nConfig');
+
 router.post('/', async (req, res) => {
     try {
-        // Kullanıcı bilgilerini al
         const userId = req.tokenPayload?.id;
         const transferData = req.body;
 
+        // Token kontrolü
         if (!userId) {
-            return responseHelper.error(res, t('auth.tokenRequired'), 401);
+            return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
 
+        // Firma ID kontrolü
         if (!transferData.company_id) {
-            return responseHelper.error(res, t('companies.companyIdRequired'), 400);
+            return responseHelper.error(res, t('companies:companyIdRequired'), 400);
         }
 
         // Transfer oluştur
@@ -153,7 +155,6 @@ router.post('/', async (req, res) => {
     } catch (error) {
         console.error('Transfer oluşturma hatası:', error);
 
-        // Özel hata durumlarını kontrol et
         if (error.status) {
             return responseHelper.error(res, error.message, error.status);
         }
@@ -163,3 +164,4 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
+

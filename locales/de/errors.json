@@ -46,5 +46,45 @@
   "server": {
     "sslLoadFailed": "Beim Laden der SSL-Zertifikate ist ein Fehler aufgetreten: {{error}}",
     "startFailed": "Beim Starten des Express-Servers ist ein Fehler aufgetreten: {{error}}"
+  },
+  "verifyEmail": {
+    "emailOrUsernameRequired": "E-Mail-Adresse oder Benutzername (key: emailOrUsername) darf nicht leer sein.",
+    "usernameNotFound": "Für diesen Benutzernamen wurde kein Konto gefunden.",
+    "accountNotFoundByEmail": "Für diese E-Mail-Adresse wurde kein Konto gefunden.",
+    "alreadyVerified": "Diese E-Mail-Adresse ist bereits verifiziert.",
+    "invalidOrExpiredToken": "Ungültiges oder abgelaufenes Token.",
+    "userNotFound": "Benutzer wurde nicht gefunden."
+  },
+  "signUp": {
+    "usernameInUse": "Dieser Benutzername ist bereits vergeben. Bitte wählen Sie einen anderen.",
+    "emailInUse": "Diese E-Mail-Adresse wird bereits verwendet. Bitte geben Sie eine andere ein.",
+    "phoneInUse": "Diese Telefonnummer ist bereits registriert. Bitte verwenden Sie eine andere Nummer.",
+    "unknownError": "Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+    "nameRequired": "Vorname darf nicht leer sein.",
+    "nameLength": "Vorname muss zwischen 3 und 20 Zeichen lang sein.",
+    "nameInvalid": "Vorname darf nur Buchstaben enthalten.",
+    "surnameRequired": "Nachname darf nicht leer sein.",
+    "surnameLength": "Nachname muss zwischen 3 und 20 Zeichen lang sein.",
+    "surnameInvalid": "Nachname darf nur Buchstaben enthalten.",
+    "usernameRequired": "Benutzername darf nicht leer sein.",
+    "usernameLength": "Benutzername muss zwischen 6 und 15 Zeichen lang sein.",
+    "usernameTooManyDigits": "Benutzername darf maximal 4 Ziffern enthalten.",
+    "usernameInvalidFormat": "Benutzername muss mit einem Buchstaben beginnen und darf nur Buchstaben oder Zahlen enthalten.",
+    "emailRequired": "E-Mail darf nicht leer sein.",
+    "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "phoneRequired": "Telefonnummer ist erforderlich.",
+    "phoneInvalid": "Ungültiges Telefonnummernformat.",
+    "passwordRequired": "Passwort darf nicht leer sein.",
+    "passwordInvalid": "Das Passwort muss 8–20 Zeichen lang sein und Großbuchstaben, Kleinbuchstaben, Zahlen und Sonderzeichen enthalten.",
+    "passwordMismatch": "Passwörter stimmen nicht überein.",
+    "validationFailed": "Es liegen Validierungsfehler in den angegebenen Informationen vor.",
+    "duplicateEntry": "Die eingegebenen Daten werden bereits von einem anderen Benutzer verwendet.",
+    "serverError": "Ein Server- oder Datenbankfehler ist aufgetreten."
+  },
+  "signIn": {
+    "fieldsRequired": "Benutzername und Passwort sind erforderlich.",
+    "invalidCredentials": "Ungültiger Benutzername oder Passwort.",
+    "emailNotVerified": "Ihre E-Mail-Adresse wurde nicht verifiziert. Bitte überprüfen Sie Ihren Posteingang und bestätigen Sie Ihr Konto.",
+    "serverError": "Beim Anmelden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
   }
 }

@@ -46,5 +46,45 @@
   "server": {
     "sslLoadFailed": "An error occurred while loading SSL certificates: {{error}}",
     "startFailed": "An error occurred while starting the Express server: {{error}}"
+  },
+  "verifyEmail": {
+    "emailOrUsernameRequired": "Email address or username (key: emailOrUsername) cannot be empty.",
+    "usernameNotFound": "No account found for this username.",
+    "accountNotFoundByEmail": "No account found for this email address.",
+    "alreadyVerified": "This email address is already verified.",
+    "invalidOrExpiredToken": "Invalid or expired token.",
+    "userNotFound": "User not found."
+  },
+  "signUp": {
+    "usernameInUse": "This username is already taken. Please choose another one.",
+    "emailInUse": "This email address is already in use. Please provide a different email.",
+    "phoneInUse": "This phone number is already registered. Please use a different number.",
+    "unknownError": "An unknown error occurred. Please try again.",
+    "nameRequired": "First name cannot be empty.",
+    "nameLength": "First name must be between 3 and 20 characters long.",
+    "nameInvalid": "First name must contain only letters.",
+    "surnameRequired": "Last name cannot be empty.",
+    "surnameLength": "Last name must be between 3 and 20 characters long.",
+    "surnameInvalid": "Last name must contain only letters.",
+    "usernameRequired": "Username cannot be empty.",
+    "usernameLength": "Username must be between 6 and 15 characters long.",
+    "usernameTooManyDigits": "Username can contain a maximum of 4 digits.",
+    "usernameInvalidFormat": "Username must start with a letter and contain only letters or numbers.",
+    "emailRequired": "Email cannot be empty.",
+    "emailInvalid": "Please enter a valid email address.",
+    "phoneRequired": "Phone number is required.",
+    "phoneInvalid": "Invalid phone number format.",
+    "passwordRequired": "Password cannot be empty.",
+    "passwordInvalid": "Password must be 8-20 characters long and include uppercase, lowercase, number, and special character.",
+    "passwordMismatch": "Passwords do not match.",
+    "validationFailed": "There are validation errors in the provided information.",
+    "duplicateEntry": "The entered information is already used by another user.",
+    "serverError": "A server or database error occurred."
+  },
+  "signIn": {
+    "fieldsRequired": "Username and password fields are required.",
+    "invalidCredentials": "Invalid username or password.",
+    "emailNotVerified": "Your email address has not been verified. Please check your inbox and confirm your account.",
+    "serverError": "An error occurred during login. Please try again."
   }
 }

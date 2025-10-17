@@ -1,0 +1,12 @@
+{
+  "verify": {
+    "emailSent": "Bestätigungs-E-Mail wurde erfolgreich gesendet.",
+    "alreadyVerified": "E-Mail-Adresse ist bereits verifiziert.",
+    "verifiedSuccess": "E-Mail wurde erfolgreich verifiziert."
+  },
+  "signUp": {
+    "accountCreatedWithVerification": "Benutzer wurde erfolgreich erstellt. Ein Bestätigungslink wurde an Ihre E-Mail-Adresse gesendet. Bitte überprüfen Sie Ihr Postfach.",
+    "accountCreated": "Benutzer wurde erfolgreich erstellt.",
+    "verificationEmailFailed": "Bestätigungs-E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es später erneut oder wenden Sie sich an den Support."
+  }
+}

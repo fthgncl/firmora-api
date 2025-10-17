@@ -1,0 +1,12 @@
+{
+  "verify": {
+    "emailSent": "Doğrulama e-postası başarıyla gönderildi.",
+    "alreadyVerified": "E-posta adresi zaten doğrulanmış.",
+    "verifiedSuccess": "E-posta başarıyla doğrulandı."
+  },
+  "signUp": {
+    "accountCreatedWithVerification": "Kullanıcı başarıyla oluşturuldu. E-posta adresinize bir doğrulama bağlantısı gönderildi. Lütfen e-postanızı kontrol edin.",
+    "accountCreated": "Kullanıcı başarıyla oluşturuldu.",
+    "verificationEmailFailed": "Doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin veya destek ekibiyle iletişime geçin."
+  }
+}

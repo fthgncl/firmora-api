@@ -1,11 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const createCompany = require('../../../database/companies/createCompany');
-const { canUserCreateCompany, setUserPermissions} = require('../../../utils/permissionsManager');
-const responseHelper = require('../../utils/responseHelper');
-const { t } = require('../../../config/i18nConfig');
-const { beginTransaction, commit, rollback } = require('../../../database/utils/connection');
-
 /**
  * @swagger
  * /companies:
@@ -77,19 +69,29 @@ const { beginTransaction, commit, rollback } = require('../../../database/utils/
  *       500:
  *         description: Sunucu hatası
  */
+
+const express = require('express');
+const router = express.Router();
+const createCompany = require('../../../database/companies/createCompany');
+const { canUserCreateCompany, setUserPermissions } = require('../../../utils/permissionsManager');
+const responseHelper = require('../../utils/responseHelper');
+const { t } = require('../../../config/i18nConfig');
+const { beginTransaction, commit, rollback } = require('../../../database/utils/connection');
+
 router.post('/', async (req, res) => {
     try {
         // Kullanıcı yetkisini kontrol et
         const userId = req.tokenPayload?.id;
         if (!userId) {
-            return responseHelper.error(res, t('auth.tokenRequired'), 401);
+            return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
 
         // Kullanıcının firma oluşturma hakkını kontrol et
         const canCreate = await canUserCreateCompany(userId);
         if (!canCreate.canCreate) {
-            return responseHelper.error(res, 
-                canCreate.message || t('companies.create.limitReached'), 
+            return responseHelper.error(
+                res,
+                canCreate.message || t('permissions:canCreateCompany.cannotCreate'),
                 403,
                 {
                     maxCompanies: canCreate.maxCompanies,
@@ -102,7 +104,7 @@ router.post('/', async (req, res) => {
         // Gerekli alanları kontrol et
         const { company_name, currency } = req.body;
         if (!company_name || !currency) {
-            return responseHelper.error(res, t('companies.create.fieldsRequired'), 400);
+            return responseHelper.error(res, t('companies:create.fieldsRequired'), 400);
         }
 
         try {
@@ -126,20 +128,14 @@ router.post('/', async (req, res) => {
                 message: result.message,
                 company: result.company
             });
-
         } catch (transactionError) {
             // Hata durumunda rollback yap
             await rollback();
-            console.error('Transaction rollback yapıldı:', transactionError);
             throw transactionError;
         }
-
     } catch (error) {
-        console.error('Şirket oluşturma hatası:', error);
-
-        // Unique constraint hatası kontrolü
         if (error.code === 'ER_DUP_ENTRY') {
-            return responseHelper.error(res, t('companies.create.duplicateError'), 409);
+            return responseHelper.error(res, t('companies:create.duplicateError'), 409);
         }
 
         return responseHelper.serverError(res, error);

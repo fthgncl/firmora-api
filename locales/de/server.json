@@ -1,4 +1,5 @@
 {
+  "running": "Server läuft.",
   "starting": "Server wird gestartet...",
   "started": "Server erfolgreich gestartet!",
   "failed": "Anwendung konnte nicht gestartet werden!",

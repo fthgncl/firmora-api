@@ -1,9 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const responseHelper = require('../../utils/responseHelper');
-const { t } = require('../../../config/i18nConfig');
-const { query } = require('../../../database');
-
 /**
  * @swagger
  * /companies:
@@ -48,24 +42,31 @@ const { query } = require('../../../database');
  *       500:
  *         description: Sunucu hatası
  */
+
+const express = require('express');
+const router = express.Router();
+const responseHelper = require('../../utils/responseHelper');
+const { t } = require('../../../config/i18nConfig');
+const { query } = require('../../../database');
+
 router.delete('/', async (req, res) => {
     try {
         // Kullanıcı ID'sini kontrol et
         const userId = req.tokenPayload?.id;
         if (!userId) {
-            return responseHelper.error(res, t('auth.tokenRequired'), 401);
+            return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
 
         const { company_id } = req.body;
         if (!company_id) {
-            return responseHelper.error(res, t('companies.delete.idRequired'), 400);
+            return responseHelper.error(res, t('companies:delete.idRequired'), 400);
         }
 
         // Firmayı veritabanından sorgula
         const companyResult = await query('SELECT owner_id FROM companies WHERE id = ?', [company_id]);
 
         if (!companyResult || companyResult.length === 0) {
-            return responseHelper.error(res, t('companies.delete.notFound'), 404);
+            return responseHelper.error(res, t('companies:delete.notFound'), 404);
         }
 
         const company = companyResult[0];
@@ -79,7 +80,7 @@ router.delete('/', async (req, res) => {
         await query('DELETE FROM companies WHERE id = ?', [company_id]);
 
         return responseHelper.success(res, {
-            message: t('companies.delete.success')
+            message: t('companies:delete.success')
         });
 
     } catch (error) {

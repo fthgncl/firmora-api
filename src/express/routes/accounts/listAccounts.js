@@ -1,9 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const getAccountsByUserId = require('../../../database/accounts/getAccountsByUserId');
-const responseHelper = require('../../utils/responseHelper');
-const { t } = require('../../../config/i18nConfig');
-
 /**
  * @swagger
  * /accounts:
@@ -131,12 +125,19 @@ const { t } = require('../../../config/i18nConfig');
  *                   type: string
  *                   example: "Sunucu hatası"
  */
+
+const express = require('express');
+const router = express.Router();
+const getAccountsByUserId = require('../../../database/accounts/getAccountsByUserId');
+const responseHelper = require('../../utils/responseHelper');
+const { t } = require('../../../config/i18nConfig');
+
 router.get('/', async (req, res) => {
     try {
         // Token'dan userId'yi al
         const userId = req.tokenPayload?.id;
         if (!userId) {
-            return responseHelper.error(res, t('auth.tokenRequired'), 401);
+            return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
 
         // Opsiyonel firma ID filtresi

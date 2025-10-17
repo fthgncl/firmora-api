@@ -1,7 +1,9 @@
 {
   "create": {
     "success": "Firma başarıyla oluşturuldu!",
-    "error": "Firma oluşturulurken hata oluştu"
+    "error": "Firma oluşturulurken hata oluştu",
+    "fieldsRequired": "Firma adı ve para birimi zorunludur.",
+    "duplicateError": "Bu bilgilerle kayıtlı bir firma zaten var."
   },
   "delete": {
     "success": "Firma başarıyla silindi!",
@@ -57,5 +59,12 @@
   "search": {
     "success": "Firmalar başarıyla getirildi.",
     "error": "Firma arama sırasında bir hata oluştu."
+  },
+  "get": {
+    "companyIdRequired": "Firma ID gereklidir",
+    "invalidCompanyId": "Geçersiz firma ID formatı",
+    "notFound": "Firma bulunamadı",
+    "success": "Firma bilgileri başarıyla getirildi",
+    "error": "Firma bilgileri getirilirken hata oluştu"
   }
 }

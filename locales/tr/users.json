@@ -21,6 +21,7 @@
   "search": {
     "success": "Kullanıcılar başarıyla getirildi",
     "error": "Kullanıcı arama sırasında hata oluştu",
-    "companyIdRequired": "Firma ID gereklidir"
+    "companyIdRequired": "Firma ID gereklidir",
+    "noPermission": "Kullanıcı arama yetkiniz yok"
   }
 }

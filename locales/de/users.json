@@ -1,10 +1,10 @@
 {
   "create": {
-    "success": "Benutzer erfolgreich erstellt!",
-    "error": "Fehler beim Erstellen des Benutzers"
+    "success": "Benutzer wurde erfolgreich erstellt!",
+    "error": "Beim Erstellen des Benutzers ist ein Fehler aufgetreten"
   },
   "delete": {
-    "success": "Benutzer erfolgreich gelöscht!",
+    "success": "Benutzer wurde erfolgreich gelöscht!",
     "notFound": "Benutzer nicht gefunden.",
     "error": "Benutzer konnte nicht gelöscht werden"
   },
@@ -12,15 +12,16 @@
     "userIdRequired": "Benutzer-ID muss angegeben werden",
     "fieldsRequired": "Mindestens ein Feld muss angegeben werden",
     "validFieldsRequired": "Mindestens ein gültiges Feld muss angegeben werden",
-    "invalidFieldsLog": "Ungültige Felder in getUserById-Funktion angefordert"
+    "invalidFieldsLog": "In getUserById wurden ungültige Felder angefordert"
   },
   "getPhoneNumberByUserId": {
     "userNotFound": "Benutzer nicht gefunden",
-    "phoneNotRegistered": "Telefonnummer des Benutzers ist nicht registriert"
+    "phoneNotRegistered": "Die Telefonnummer des Benutzers ist nicht registriert"
   },
   "search": {
     "success": "Benutzer erfolgreich abgerufen",
     "error": "Beim Suchen nach Benutzern ist ein Fehler aufgetreten",
-    "companyIdRequired": "Unternehmens-ID ist erforderlich"
+    "companyIdRequired": "Firmen-ID ist erforderlich",
+    "noPermission": "Sie haben keine Berechtigung, nach Benutzern zu suchen"
   }
 }
