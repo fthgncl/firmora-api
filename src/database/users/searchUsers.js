@@ -5,7 +5,7 @@ const { readUserPermissions } = require('../../utils/permissionsManager');
 /**
  * Kullanıcıları arar ve sayfalama ile sonuçları döndürür
  * @param {Object} options - Arama parametreleri
- * @param {string} options.searchTerm - Aranacak terim (isim, email, telefon, username)
+ * @param {string} options.searchTerm - Aranacak terim (id, isim, email, telefon, username)
  * @param {string} options.companyId - Firma ID (firma bazlı arama için)
  * @param {number} options.limit - Sayfa başına sonuç sayısı (varsayılan: 20)
  * @param {number} options.offset - Atlanacak kayıt sayısı (varsayılan: 0)
@@ -30,7 +30,7 @@ async function searchUsers(options = {}) {
         const validOffset = Math.max(parseInt(offset) || 0, 0);
         const validSortOrder = ['ASC', 'DESC'].includes(sortOrder.toUpperCase()) ? sortOrder.toUpperCase() : 'ASC';
 
-        const validSortFields = ['name', 'surname', 'email', 'phone', 'username', 'created_at'];
+        const validSortFields = ['id', 'name', 'surname', 'email', 'phone', 'username', 'created_at'];
         const validSortBy = validSortFields.includes(sortBy) ? sortBy : 'name';
 
         let whereConditions = [];
@@ -38,16 +38,35 @@ async function searchUsers(options = {}) {
         let joins = '';
 
         if (searchTerm && searchTerm.trim() !== '') {
-            const searchPattern = `%${searchTerm.trim()}%`;
-            whereConditions.push(`(
-                users.name LIKE ? OR 
-                users.surname LIKE ? OR 
-                users.email LIKE ? OR 
-                users.phone LIKE ? OR
-                users.username LIKE ?
-            )`);
-            params.push(searchPattern, searchPattern, searchPattern, searchPattern, searchPattern);
+            const trimmed = searchTerm.trim();
+            const searchPattern = `%${trimmed}%`;
+            const isNumericId = /^[0-9]+$/.test(trimmed);
+
+            const conditions = [
+                'users.name LIKE ?',
+                'users.surname LIKE ?',
+                'users.email LIKE ?',
+                'users.phone LIKE ?',
+                'users.username LIKE ?',
+                // ID her durumda LIKE ile aranır (INT ise CAST ile güvenli)
+                'CAST(users.id AS CHAR) LIKE ?'
+            ];
+
+            const paramsList = [
+                searchPattern, searchPattern, searchPattern, searchPattern, searchPattern,
+                searchPattern
+            ];
+
+            // Sayısal bir ID girildiyse, index kullansın diye tam eşleşmeyi de ekle
+            if (isNumericId) {
+                conditions.unshift('users.id = ?');
+                paramsList.unshift(Number(trimmed));
+            }
+
+            whereConditions.push(`(${conditions.join(' OR ')})`);
+            params.push(...paramsList);
         }
+
 
         if (searchScope === 'company' && companyId) {
             joins = `
