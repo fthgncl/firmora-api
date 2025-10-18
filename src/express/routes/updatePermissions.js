@@ -54,7 +54,7 @@ const {getCompaniesByOwnerId} = require("../../database/companies");
  *                   properties:
  *                     message:
  *                       type: string
- *                       example: "Yetkiler güncellemeye hazır"
+ *                       example: "Yetkiler güncellendi"
  *                     targetUserId:
  *                       type: string
  *                       example: "user123"
