@@ -10,6 +10,7 @@ const accountsRouter = require('../routes/accounts');
 const verifyEmail = require('../routes/verifyEmail');
 const searchUsersRouter = require('../routes/searchUsers');
 const getPermissionsRouter = require('../routes/getPermissions');
+const updatePermissionsRouter = require('../routes/updatePermissions');
 
 
 // Middleware
@@ -34,6 +35,7 @@ const setupRoutes = (app) => {
     app.use('/accounts', strictRateLimit, accountsRouter);
     app.use('/search-users', strictRateLimit, searchUsersRouter);
     app.use('/permissions', strictRateLimit, getPermissionsRouter);
+    app.use('/update-permissions', strictRateLimit, updatePermissionsRouter);
 
     // 404 hata handler'ı - hiçbir rotaya eşleşmeyen istekler için
     app.use((req, res, next) => {

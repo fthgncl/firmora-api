@@ -24,7 +24,12 @@
     "company_insufficientBalance": "Company balance is insufficient"
   },
   "permissions": {
-    "insufficientPermissions": "You do not have permission to perform this action."
+    "insufficientPermissions": "You do not have the required permission for this action.",
+    "cannotUpdateOwnPermissions": "You cannot update your own permissions.",
+    "noPermissionsFound": "No permission data found.",
+    "cannotAssignPermissionYouDontHave": "You cannot assign the '{{permission}}' permission that you do not have yourself.",
+    "updateFailed": "An error occurred while updating permissions.",
+    "cannotModifyImmunityUser": "Only the company creator can modify this user's permissions."
   },
   "database": {
     "invalidConnection": "Invalid connection object!",
@@ -86,5 +91,10 @@
     "invalidCredentials": "Invalid username or password.",
     "emailNotVerified": "Your email address has not been verified. Please check your inbox and confirm your account.",
     "serverError": "An error occurred during login. Please try again."
+  },
+  "validation": {
+    "targetUserIdRequired": "Hedef kullanıcı ID'si belirtilmelidir.",
+    "companyIdRequired": "Firma ID'si belirtilmelidir.",
+    "permissionsRequired": "Yetkiler belirtilmeli ve dizi formatında olmalıdır."
   }
 }

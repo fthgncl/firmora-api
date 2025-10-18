@@ -24,7 +24,12 @@
     "company_insufficientBalance": "Unternehmensguthaben ist unzureichend"
   },
   "permissions": {
-    "insufficientPermissions": "Sie haben keine Berechtigung, diese Aktion auszuführen."
+    "insufficientPermissions": "Sie haben keine Berechtigung, diese Aktion auszuführen.",
+    "cannotUpdateOwnPermissions": "Sie können Ihre eigenen Berechtigungen nicht ändern.",
+    "noPermissionsFound": "Keine Berechtigungsdaten gefunden.",
+    "cannotAssignPermissionYouDontHave": "Sie können die Berechtigung '{{permission}}', die Sie selbst nicht besitzen, nicht zuweisen.",
+    "updateFailed": "Beim Aktualisieren der Berechtigungen ist ein Fehler aufgetreten.",
+    "cannotModifyImmunityUser": "Nur der Firmengründer kann die Berechtigungen dieses Benutzers ändern."
   },
   "database": {
     "invalidConnection": "Ungültiges Verbindungsobjekt!",
@@ -86,5 +91,10 @@
     "invalidCredentials": "Ungültiger Benutzername oder Passwort.",
     "emailNotVerified": "Ihre E-Mail-Adresse wurde nicht verifiziert. Bitte überprüfen Sie Ihren Posteingang und bestätigen Sie Ihr Konto.",
     "serverError": "Beim Anmelden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+  },
+  "validation": {
+    "targetUserIdRequired": "Zielbenutzer-ID muss angegeben werden.",
+    "companyIdRequired": "Firmen-ID muss angegeben werden.",
+    "permissionsRequired": "Berechtigungen müssen angegeben und im Array-Format sein."
   }
 }

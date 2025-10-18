@@ -56,6 +56,10 @@
     "name": "Receive external to company",
     "description": "Can receive transfers from external sources to a company account."
   },
+  "immunity": {
+    "name": "Immunity",
+    "description": "The permissions of a user with this privilege can only be modified by the company creator."
+  },
   "readUser": {
     "success": "User permissions retrieved",
     "noPermissions": "No permissions found for the user",
@@ -83,5 +87,8 @@
     "canAccess": "Can access the settings page",
     "cannotAccess": "You do not have permission to access the settings page",
     "error": "Error while checking access to the settings page"
+  },
+  "updatePermissions": {
+    "success": "Permissions updated successfully"
   }
 }

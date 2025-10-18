@@ -153,7 +153,6 @@ function checkRoles(permissionsString) {
 
     // Tüm permission tanımlarını dön
     for (const [key, value] of Object.entries(perms)) {
-        console.log(value.code)
         // Eğer permissionsString içinde bu kod varsa ekle
         if (permissionsString.indexOf(value.code) !== -1) {
             roles.push(key);
@@ -369,4 +368,4 @@ async function canUserAccessCompanySettings(userId, companyId) {
 
 
 
-module.exports = {readUserPermissions, checkUserRoles, addUserPermissions, setUserPermissions, removeUserPermissions, canUserCreateCompany, canUserSearchUsers, canUserAccessCompanySettings};
+module.exports = {readUserPermissions, checkUserRoles, checkRoles, addUserPermissions, setUserPermissions, removeUserPermissions, canUserCreateCompany, canUserSearchUsers, canUserAccessCompanySettings};

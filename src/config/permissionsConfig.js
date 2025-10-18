@@ -78,6 +78,12 @@ const permissions = {
         "category": "permissions:categories.financial",
         "name": "permissions:can_receive_external_to_company.name",
         "description": "permissions:can_receive_external_to_company.description"
+    },
+    "immunity": {
+        "code": "n",
+        "category": "permissions:categories.system",
+        "name": "permissions:immunity.name",
+        "description": "permissions:immunity.description"
     }
 };
 

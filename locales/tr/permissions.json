@@ -56,6 +56,10 @@
     "name": "Dış kaynaktan şirkete transfer alma",
     "description": "Sistem dışı kaynaklardan şirket hesabına gelen transferleri alabilir."
   },
+  "immunity": {
+    "name": "Dokunulmazlık",
+    "description": "Bu yetkiye sahip kullanıcının izinleri, yalnızca firmayı kuran kişi tarafından değiştirilebilir."
+  },
   "readUser": {
     "success": "Kullanıcı yetkileri getirildi",
     "noPermissions": "Kullanıcıya ait herhangi bir yetki bulunamadı",
@@ -83,5 +87,8 @@
     "canAccess": "Ayarlar sayfasına erişebilir",
     "cannotAccess": "Ayarlar sayfasına erişim yetkiniz yok",
     "error": "Ayarlar sayfası erişim kontrolünde hata oluştu"
+  },
+  "updatePermissions": {
+    "success": "Kullanıcı yetkileri başarıyla güncellendi"
   }
 }

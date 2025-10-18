@@ -24,7 +24,12 @@
     "company_insufficientBalance": "Firma bakiyesi yetersiz"
   },
   "permissions": {
-    "insufficientPermissions": "Bu işlem için gerekli izne sahip değilsiniz."
+    "insufficientPermissions": "Bu işlem için gerekli izne sahip değilsiniz.",
+    "cannotUpdateOwnPermissions": "Kendi yetkilerinizi güncelleyemezsiniz.",
+    "noPermissionsFound": "Yetki bilgileriniz bulunamadı.",
+    "cannotAssignPermissionYouDontHave": "Kendinizde olmayan '{{permission}}' yetkisini başkasına atayamazsınız.",
+    "updateFailed": "Yetkiler güncellenirken bir hata oluştu.",
+    "cannotModifyImmunityUser": "Bu kullanıcının izinleri yalnızca firmayı kuran kişi tarafından değiştirilebilir."
   },
   "database": {
     "invalidConnection": "Bağlantı nesnesi geçersiz!",
@@ -86,5 +91,10 @@
     "invalidCredentials": "Kullanıcı adı veya şifre hatalı.",
     "emailNotVerified": "E-posta adresiniz doğrulanmamış. Lütfen e-postanızı kontrol edin ve hesabınızı onaylayın.",
     "serverError": "Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin."
+  },
+  "validation": {
+    "targetUserIdRequired": "Hedef kullanıcı ID'si belirtilmelidir.",
+    "companyIdRequired": "Firma ID'si belirtilmelidir.",
+    "permissionsRequired": "Yetkiler belirtilmeli ve dizi formatında olmalıdır."
   }
 }

@@ -56,6 +56,10 @@
     "name": "Externe Eingänge an Unternehmen empfangen",
     "description": "Kann Überweisungen von externen Quellen auf ein Unternehmenskonto empfangen."
   },
+  "immunity": {
+    "name": "Immunität",
+    "description": "Die Berechtigungen eines Benutzers mit dieser Befugnis können nur vom Firmengründer geändert werden."
+  },
   "readUser": {
     "success": "Benutzerberechtigungen abgerufen",
     "noPermissions": "Keine Berechtigungen für den Benutzer gefunden",
@@ -83,5 +87,8 @@
     "canAccess": "Kann auf die Einstellungsseite zugreifen",
     "cannotAccess": "Sie haben keine Berechtigung, auf die Einstellungsseite zuzugreifen",
     "error": "Fehler bei der Prüfung des Zugriffs auf die Einstellungsseite"
+  },
+  "updatePermissions": {
+    "success": "Berechtigungen erfolgreich aktualisiert"
   }
 }
