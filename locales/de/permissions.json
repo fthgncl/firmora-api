@@ -6,60 +6,61 @@
   },
   "sys_admin": {
     "name": "Systemadministrator",
-    "description": "Hat volle Berechtigungen für das gesamte System."
+    "description": "Hat volle Kontrolle über alle Vorgänge innerhalb des Unternehmens."
   },
   "personnel_manager": {
     "name": "Personalmanager",
-    "description": "Kann Benutzer des Unternehmens verwalten, hinzufügen und entfernen."
+    "description": "Kann Firmenmitarbeiter verwalten, neue Benutzer hinzufügen oder bestehende entfernen."
   },
   "can_transfer_company_to_same_company_user": {
-    "name": "Unternehmen zu Benutzer (selbes Unternehmen)",
-    "description": "Kann vom Unternehmenskonto an einen Benutzer im selben Unternehmen überweisen."
+    "name": "Firmenüberweisung an Benutzer innerhalb derselben Firma",
+    "description": "Kann Gelder vom Firmenkonto an ein Benutzerkonto innerhalb derselben Firma überweisen."
   },
   "can_transfer_company_to_other_company_user": {
-    "name": "Unternehmen zu Benutzer (anderes Unternehmen)",
-    "description": "Kann vom Unternehmenskonto an einen Benutzer in einem anderen Unternehmen überweisen."
+    "name": "Firmenüberweisung an Benutzer in einer anderen Firma",
+    "description": "Kann Gelder vom Firmenkonto an ein Benutzerkonto in einer anderen Firma senden."
   },
   "can_transfer_company_to_other_company": {
-    "name": "Unternehmen zu Unternehmen",
-    "description": "Kann vom Unternehmenskonto an ein anderes Unternehmen überweisen."
+    "name": "Überweisung von Firma zu Firma",
+    "description": "Kann direkte Geldtransfers von einem Firmenkonto zu einem anderen durchführen."
   },
   "can_transfer_user_to_same_company_user": {
-    "name": "Benutzer zu Benutzer (selbes Unternehmen)",
-    "description": "Kann vom Benutzerkonto an einen anderen Benutzer im selben Unternehmen überweisen."
+    "name": "Benutzerüberweisung innerhalb derselben Firma",
+    "description": "Kann Gelder von einem Benutzerkonto an einen anderen Benutzer innerhalb derselben Firma senden."
   },
   "can_transfer_user_to_other_company_user": {
-    "name": "Benutzer zu Benutzer (anderes Unternehmen)",
-    "description": "Kann vom Benutzerkonto an einen Benutzer in einem anderen Unternehmen überweisen."
+    "name": "Benutzerüberweisung zwischen verschiedenen Firmen",
+    "description": "Kann Gelder von einem Benutzerkonto an einen Benutzer in einer anderen Firma senden."
   },
   "can_transfer_user_to_own_company": {
-    "name": "Benutzer zu eigenem Unternehmen",
-    "description": "Kann vom Benutzerkonto an das eigene Unternehmen überweisen."
+    "name": "Überweisung an eigenes Firmenkonto",
+    "description": "Kann Gelder von seinem Benutzerkonto auf das eigene Firmenkonto überweisen."
   },
   "can_transfer_user_to_other_company": {
-    "name": "Benutzer zu anderem Unternehmen",
-    "description": "Kann vom Benutzerkonto an ein anderes Unternehmen überweisen."
+    "name": "Überweisung an eine andere Firma",
+    "description": "Kann Gelder direkt von einem Benutzerkonto auf ein anderes Firmenkonto überweisen."
   },
   "can_transfer_user_to_external": {
-    "name": "Benutzer zu externem Empfänger",
-    "description": "Kann vom Benutzerkonto an einen externen Empfänger überweisen."
+    "name": "Benutzerüberweisung an externen Empfänger",
+    "description": "Kann Gelder von einem Benutzerkonto an einen externen (außerhalb des Systems) Empfänger senden."
   },
   "can_transfer_company_to_external": {
-    "name": "Unternehmen zu externem Empfänger",
-    "description": "Kann vom Unternehmenskonto an einen externen Empfänger überweisen."
+    "name": "Firmenüberweisung an externen Empfänger",
+    "description": "Kann Gelder vom Firmenkonto an einen externen (außerhalb des Systems) Empfänger senden."
   },
   "can_receive_external_to_user": {
-    "name": "Externe Eingänge an Benutzer empfangen",
-    "description": "Kann Überweisungen von externen Quellen auf ein Benutzerkonto empfangen."
+    "name": "Externe Zahlungen an Benutzerkonto empfangen",
+    "description": "Das Benutzerkonto kann Geldüberweisungen von externen Quellen empfangen."
   },
   "can_receive_external_to_company": {
-    "name": "Externe Eingänge an Unternehmen empfangen",
-    "description": "Kann Überweisungen von externen Quellen auf ein Unternehmenskonto empfangen."
+    "name": "Externe Zahlungen an Firmenkonto empfangen",
+    "description": "Das Firmenkonto kann Geldüberweisungen von externen Quellen empfangen."
   },
   "immunity": {
-    "name": "Immunität",
-    "description": "Die Berechtigungen eines Benutzers mit dieser Befugnis können nur vom Firmengründer geändert werden."
+    "name": "Berechtigungsimmunität",
+    "description": "Die Berechtigungen eines Benutzers mit dieser Rolle können nur vom Firmengründer geändert werden."
   },
+
   "readUser": {
     "success": "Benutzerberechtigungen abgerufen",
     "noPermissions": "Keine Berechtigungen für den Benutzer gefunden",

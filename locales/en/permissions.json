@@ -6,60 +6,61 @@
   },
   "sys_admin": {
     "name": "System Administrator",
-    "description": "Has full privileges over the entire system."
+    "description": "Has full authority over all operations within the company."
   },
   "personnel_manager": {
     "name": "Personnel Manager",
-    "description": "Can manage, add, and remove company users."
+    "description": "Can manage company employees, add new users, or remove existing ones."
   },
   "can_transfer_company_to_same_company_user": {
-    "name": "Company to same-company user transfer",
-    "description": "Can transfer from the company account to a user in the same company."
+    "name": "Company-to-user transfer within the same company",
+    "description": "Can transfer funds from the company account to a user account within the same company."
   },
   "can_transfer_company_to_other_company_user": {
-    "name": "Company to other-company user transfer",
-    "description": "Can transfer from the company account to a user in another company."
+    "name": "Company-to-user transfer in another company",
+    "description": "Can send funds from the company account to a user account belonging to another company."
   },
   "can_transfer_company_to_other_company": {
-    "name": "Company to company transfer",
-    "description": "Can transfer from the company account to another company."
+    "name": "Company-to-company transfer",
+    "description": "Can perform direct fund transfers from one company account to another company account."
   },
   "can_transfer_user_to_same_company_user": {
-    "name": "User to same-company user transfer",
-    "description": "Can transfer from the user account to another user in the same company."
+    "name": "User-to-user transfer within the same company",
+    "description": "Can send funds from a user account to another user within the same company."
   },
   "can_transfer_user_to_other_company_user": {
-    "name": "User to other-company user transfer",
-    "description": "Can transfer from the user account to a user in another company."
+    "name": "User-to-user transfer across companies",
+    "description": "Can send funds from a user account to a user belonging to a different company."
   },
   "can_transfer_user_to_own_company": {
-    "name": "User to own company transfer",
-    "description": "Can transfer from the user account to their own company."
+    "name": "User-to-own-company transfer",
+    "description": "Can send funds from a user account to their own company account."
   },
   "can_transfer_user_to_other_company": {
-    "name": "User to other company transfer",
-    "description": "Can transfer from the user account to another company."
+    "name": "User-to-company transfer across companies",
+    "description": "Can transfer funds directly from a user account to another company account."
   },
   "can_transfer_user_to_external": {
-    "name": "User to external transfer",
-    "description": "Can transfer from the user account to an external recipient."
+    "name": "User-to-external recipient transfer",
+    "description": "Can send funds from a user account to an external (non-system) recipient."
   },
   "can_transfer_company_to_external": {
-    "name": "Company to external transfer",
-    "description": "Can transfer from the company account to an external recipient."
+    "name": "Company-to-external recipient transfer",
+    "description": "Can send funds from the company account to an external (non-system) recipient."
   },
   "can_receive_external_to_user": {
-    "name": "Receive external to user",
-    "description": "Can receive transfers from external sources to a user account."
+    "name": "Receiving external funds to user account",
+    "description": "The user account can receive fund transfers from external sources."
   },
   "can_receive_external_to_company": {
-    "name": "Receive external to company",
-    "description": "Can receive transfers from external sources to a company account."
+    "name": "Receiving external funds to company account",
+    "description": "The company account can receive fund transfers from external sources."
   },
   "immunity": {
-    "name": "Immunity",
-    "description": "The permissions of a user with this privilege can only be modified by the company creator."
+    "name": "Permission Immunity",
+    "description": "A user with this privilege can have their permissions modified only by the company founder."
   },
+
   "readUser": {
     "success": "User permissions retrieved",
     "noPermissions": "No permissions found for the user",
