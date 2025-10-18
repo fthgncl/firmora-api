@@ -202,7 +202,6 @@ router.post('/', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Update permissions error:', error);
         return responseHelper.error(
             res,
             error.message || t('errors:permissions.updateFailed'),
