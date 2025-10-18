@@ -33,7 +33,7 @@
  *       - ✅ Karmaşık arama kriterleri için ideal
  *       - ✅ URL uzunluk limitinden etkilenmez
  *       - ✅ JSON formatında zengin veri yapısı
- *       - ✅ Request body ile güvenli parametre iletimi
+ *       - ✅ Requst body ile güvenli parametre iletimi
  *       - ✅ Tüm HTTP istemcileri tarafından desteklenir
  *       - ✅ Gelecekte filtre ekleme kolaylığı
  *       
@@ -236,6 +236,26 @@
  *                             format: date-time
  *                             description: Kayıt oluşturma tarihi
  *                             example: "2024-01-15T10:30:00.000Z"
+ *                           permissions:
+ *                             type: array
+ *                             description: Kullanıcının tüm firmalardaki yetki kodları
+ *                             items:
+ *                               type: object
+ *                               properties:
+ *                                 companyId:
+ *                                   type: string
+ *                                   format: uuid
+ *                                   description: Firma ID
+ *                                   example: "123e4567-e89b-12d3-a456-426614174000"
+ *                                 permissions:
+ *                                   type: string
+ *                                   description: Yetki kodları (örn. "abc" - a, b, c yetkileri)
+ *                                   example: "abc"
+ *                             example:
+ *                               - companyId: "123e4567-e89b-12d3-a456-426614174000"
+ *                                 permissions: "abc"
+ *                               - companyId: "223e4567-e89b-12d3-a456-426614174001"
+ *                                 permissions: "de"
  *                     pagination:
  *                       type: object
  *                       description: Sayfalama bilgileri
@@ -314,6 +334,11 @@
  *                         username: "ahmetyilmaz"
  *                         emailverified: true
  *                         created_at: "2024-01-15T10:30:00.000Z"
+ *                         permissions:
+ *                           - companyId: "123e4567-e89b-12d3-a456-426614174000"
+ *                             permissions: "abc"
+ *                           - companyId: "223e4567-e89b-12d3-a456-426614174001"
+ *                             permissions: "de"
  *                       - id: "223e4567-e89b-12d3-a456-426614174001"
  *                         name: "Mehmet"
  *                         surname: "Demir"
@@ -322,6 +347,9 @@
  *                         username: "mehmetdemir"
  *                         emailverified: false
  *                         created_at: "2024-01-16T11:30:00.000Z"
+ *                         permissions:
+ *                           - companyId: "123e4567-e89b-12d3-a456-426614174000"
+ *                             permissions: "f"
  *                     pagination:
  *                       total: 150
  *                       limit: 20

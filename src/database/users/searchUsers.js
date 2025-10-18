@@ -1,5 +1,6 @@
 const { queryAsync } = require('../utils/connection');
 const { t } = require('../../config/i18nConfig');
+const { readUserPermissions } = require('../../utils/permissionsManager');
 
 /**
  * Kullanıcıları arar ve sayfalama ile sonuçları döndürür
@@ -90,6 +91,25 @@ async function searchUsers(options = {}) {
         const usersParams = [...params, validLimit, validOffset];
         const users = await queryAsync(usersQuery, usersParams);
 
+        // Her kullanıcı için yetki kodlarını al
+        const usersWithPermissions = await Promise.all(
+            users.map(async (user) => {
+                try {
+                    const permissionsResult = await readUserPermissions(user.id, companyId);
+                    return {
+                        ...user,
+                        permissions: permissionsResult.permissions || []
+                    };
+                } catch (error) {
+                    // Yetki okuma hatası durumunda boş array döndür
+                    return {
+                        ...user,
+                        permissionCodes: []
+                    };
+                }
+            })
+        );
+
         const totalPages = Math.ceil(totalCount / validLimit);
         const currentPage = Math.floor(validOffset / validLimit) + 1;
 
@@ -97,7 +117,7 @@ async function searchUsers(options = {}) {
             status: 200,
             message: t('users:search.success'),
             data: {
-                users: users || [],
+                users: usersWithPermissions || [],
                 pagination: {
                     total: totalCount,
                     limit: validLimit,
