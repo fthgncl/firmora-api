@@ -154,9 +154,11 @@ const { createToken } = require("../../auth/jwt");
 const responseHelper = require('../utils/responseHelper');
 const { t } = require('../../config/i18nConfig');
 const { readUserPermissions } = require('../../utils/permissionsManager');
+const {cleanInputs} = require("../../utils/inputCleaner");
 
 router.post('/', async (req, res) => {
-    const { username, password, rememberMe } = req.body;
+
+    const { username, password, rememberMe } = cleanInputs(req.body);
 
     if (!username || !password) {
         return responseHelper.error(res, t('errors:signIn.fieldsRequired'), 400);
