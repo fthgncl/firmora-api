@@ -84,6 +84,18 @@ const permissions = {
         "category": "permissions:categories.financial",
         "name": "permissions:can_receive_external_to_company.name",
         "description": "permissions:can_receive_external_to_company.description"
+    },
+    "can_view_company_transfer_history": {
+        "code": "o",
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_view_company_transfer_history.name",
+        "description": "permissions:can_view_company_transfer_history.description"
+    },
+    "can_view_other_users_transfer_history": {
+        "code": "p",
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_view_other_users_transfer_history.name",
+        "description": "permissions:can_view_other_users_transfer_history.description"
     }
 };
 

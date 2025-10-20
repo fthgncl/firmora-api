@@ -60,7 +60,14 @@
     "name": "Permission Immunity",
     "description": "A user with this privilege can have their permissions modified only by the company founder."
   },
-
+  "can_view_company_transfer_history": {
+    "name": "View company transfer history",
+    "description": "The user can view the full transaction history of their company's financial transfers."
+  },
+  "can_view_other_users_transfer_history": {
+    "name": "View other users' transfer history",
+    "description": "The user can view the financial transaction history of other users within the same company."
+  },
   "readUser": {
     "success": "User permissions retrieved",
     "noPermissions": "No permissions found for the user",

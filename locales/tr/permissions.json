@@ -66,6 +66,14 @@
     "noPermissionsForCompany": "Bu firmaya ait yetki bulunamadı",
     "error": "Kullanıcı yetkileri getirilirken hata oluştu"
   },
+  "can_view_company_transfer_history": {
+    "name": "Şirketin para transfer geçmişini görüntüleme",
+    "description": "Kullanıcı, bağlı olduğu şirketin gerçekleştirdiği tüm para transferlerinin geçmişini görüntüleyebilir."
+  },
+  "can_view_other_users_transfer_history": {
+    "name": "Diğer kullanıcıların para transfer geçmişini görüntüleme",
+    "description": "Kullanıcı, firmadaki diğer kullanıcıların yaptığı para transferlerinin geçmişini görüntüleyebilir."
+  },
   "checkUserRoles": {
     "error": "Kullanıcı rolleri kontrol edilirken hata oluştu (userId: {{userId}})"
   },

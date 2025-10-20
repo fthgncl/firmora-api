@@ -60,7 +60,14 @@
     "name": "Berechtigungsimmunität",
     "description": "Die Berechtigungen eines Benutzers mit dieser Rolle können nur vom Firmengründer geändert werden."
   },
-
+  "can_view_company_transfer_history": {
+    "name": "Unternehmensüberweisungshistorie anzeigen",
+    "description": "Der Benutzer kann den vollständigen Verlauf der Finanztransaktionen seines Unternehmens einsehen."
+  },
+  "can_view_other_users_transfer_history": {
+    "name": "Überweisungshistorie anderer Benutzer anzeigen",
+    "description": "Der Benutzer kann den Verlauf der Finanztransaktionen anderer Benutzer innerhalb desselben Unternehmens einsehen."
+  },
   "readUser": {
     "success": "Benutzerberechtigungen abgerufen",
     "noPermissions": "Keine Berechtigungen für den Benutzer gefunden",
