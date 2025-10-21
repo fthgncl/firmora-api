@@ -12,7 +12,7 @@ const colors = require('ansi-colors');
         const envResult = await loadEnv();
 
         // i18next'i başlat
-        const { initializeI18n } = require('./src/config/i18nConfig');
+        const {initializeI18n} = require('./src/config/i18nConfig');
         const i18nResult = await initializeI18n();
 
         // i18n yüklendikten sonra t fonksiyonunu al
@@ -24,9 +24,9 @@ const colors = require('ansi-colors');
         console.log(colors.bgYellow.black(i18nResult.message));
 
         // loadEnv() tamamlandıktan sonra diğer modülleri yükle
-        const { databaseInit } = require('./src/database');
+        const {databaseInit} = require('./src/database');
         const startExpressApp = require('./src/express');
-        const { startBackupService } = require('./src/services/backupService');
+        const {startBackupService} = require('./src/services/backupService');
 
         // Veritabanını başlat
         const dbResult = await databaseInit();
@@ -41,6 +41,7 @@ const colors = require('ansi-colors');
         console.log(colors.bgYellow.black(backupResult.message));
 
         console.log(colors.bgGreen.black(`~~~ ${t('server:started')} ~~~`));
+
     } catch (error) {
         await logError(error.message, error);
         // t fonksiyonu yüklenmediyse basit mesaj kullan
