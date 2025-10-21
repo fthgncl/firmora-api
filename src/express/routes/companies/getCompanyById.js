@@ -5,32 +5,32 @@
  *     summary: Firma bilgilerini getir
  *     description: |
  *       Belirtilen ID'ye sahip firmanın detaylı bilgilerini getirir.
- *       
+ *
  *       ## Dönen Bilgiler
- *       
+ *
  *       - Firma ID ve adı
  *       - Sektör bilgisi
  *       - Para birimi (currency)
  *       - Mevcut bakiye
  *       - Firma sahibi ID
  *       - Oluşturulma tarihi
- *       
+ *
  *       ## Yetkilendirme
- *       
- *       Bu endpoint kimlik doğrulaması gerektirir. Kullanıcı sadece aşağıdaki durumlarda 
+ *
+ *       Bu endpoint kimlik doğrulaması gerektirir. Kullanıcı sadece aşağıdaki durumlarda
  *       firma bilgilerine erişebilir:
- *       
+ *
  *       - Firmanın sahibi ise
  *       - Firmada `sys_admin` yetkisine sahipse
  *       - Firmada `personnel_manager` yetkisine sahipse
- *       
+ *
  *       ## Kullanım Senaryoları
- *       
+ *
  *       - Firma detay sayfası
  *       - Firma ayarları
  *       - Bakiye görüntüleme
  *       - Firma raporlama
- *       
+ *
  *     tags:
  *       - Companies
  *     security:
@@ -50,7 +50,7 @@
  *                 format: uuid
  *                 description: |
  *                   Bilgileri getirilecek firma ID
- *                   
+ *
  *                   36 karakter uzunluğunda UUID formatında olmalıdır.
  *                 example: "123e4567-e89b-12d3-a456-426614174000"
  *           examples:
@@ -253,7 +253,8 @@ const { t } = require('../../../config/i18nConfig');
 require('../../../utils/validation');
 const { isValidCompanyId } = require("../../../utils/validation");
 const responseHelper = require("../../utils/responseHelper");
-const { canUserAccessCompanySettings } = require('../../../utils/permissionsManager');
+const { canUserAccessCompanySettings, checkUserRoles} = require('../../../utils/permissionsManager');
+const getCompanyTotalBalance = require('../../../database/companies/getCompanyTotalBalance');
 
 router.post('/get', async (req, res) => {
     try {
@@ -310,6 +311,24 @@ router.post('/get', async (req, res) => {
                 success: false,
                 message: t('companies:get.notFound')
             });
+        }
+
+        const hasSensitiveAccess = await checkUserRoles(userId, companyId, [
+            'can_transfer_company_to_same_company_user',
+            'can_transfer_company_to_other_company_user',
+            'can_transfer_company_to_other_company',
+            'can_transfer_company_to_external',
+            'can_receive_external_to_company',
+            'can_view_company_transfer_history',
+            'can_view_other_users_transfer_history'
+        ]);
+
+        if ( !hasSensitiveAccess ) {
+            // Kullanıcının hassas bilgilere erişimi yoksa, bakiye bilgisini gizle
+            result[0].balance = undefined;
+        }
+        else {
+            result[0].totalBalance = getCompanyTotalBalance(companyId);
         }
 
         // Başarılı sonuç döndür

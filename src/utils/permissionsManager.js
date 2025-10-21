@@ -337,7 +337,16 @@ async function canUserAccessCompanySettings(userId, companyId) {
         }
 
         // Kullanıcının yetkilerini kontrol et (sys_admin VEYA personnel_manager)
-        const hasSettingsPermission = await checkUserRoles(userId, companyId, ['sys_admin', 'personnel_manager'], false);
+        const hasSettingsPermission = await checkUserRoles(userId, companyId, [
+            'personnel_manager',
+            'can_transfer_company_to_same_company_user',
+            'can_transfer_company_to_other_company_user',
+            'can_transfer_company_to_other_company',
+            'can_transfer_company_to_external',
+            'can_receive_external_to_company',
+            'can_view_company_transfer_history',
+            'can_view_other_users_transfer_history'
+        ]);
 
         // sys_admin veya personnel_manager yetkisi varsa ayarlar sayfasına erişebilir
         if (hasSettingsPermission) {
