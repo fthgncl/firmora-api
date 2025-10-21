@@ -19,7 +19,10 @@ const startServer = (app, port) => {
 
         if (useSSL) {
             try {
-                const sslPath = path.join(process.cwd(), 'ssl');
+                // SSL klasörü yolunu belirle: önce proje dizininde ara, yoksa C:/ssl kullan
+                const projectSslPath = path.join(process.cwd(), 'ssl');
+                const sslPath = fs.existsSync(projectSslPath) ? projectSslPath : 'C:/ssl';
+
                 const privateKey = fs.readFileSync(path.join(sslPath, 'private.key'), 'utf8');
                 const certificate = fs.readFileSync(path.join(sslPath, 'certificate.crt'), 'utf8');
                 const ca = fs.existsSync(path.join(sslPath, 'ca_bundle.crt'))
