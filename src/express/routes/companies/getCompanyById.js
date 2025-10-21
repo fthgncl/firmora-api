@@ -328,7 +328,7 @@ router.post('/get', async (req, res) => {
             result[0].balance = undefined;
         }
         else {
-            result[0].totalBalance = getCompanyTotalBalance(companyId);
+            result[0].totalBalance = await getCompanyTotalBalance(companyId);
         }
 
         // Başarılı sonuç döndür
