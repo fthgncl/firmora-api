@@ -66,5 +66,8 @@
     "notFound": "Company not found",
     "success": "Company details fetched successfully",
     "error": "An error occurred while fetching company details"
+  },
+  "getCompanyTotalBalance": {
+    "error": "An error occurred while fetching the company's total balance."
   }
 }

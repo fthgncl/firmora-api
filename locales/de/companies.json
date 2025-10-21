@@ -66,5 +66,8 @@
     "notFound": "Unternehmen nicht gefunden",
     "success": "Unternehmensdetails erfolgreich abgerufen",
     "error": "Fehler beim Abrufen der Unternehmensdetails"
+  },
+  "getCompanyTotalBalance": {
+    "error": "Fehler beim Abrufen des Gesamtguthabens des Unternehmens."
   }
 }

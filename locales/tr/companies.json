@@ -66,5 +66,8 @@
     "notFound": "Firma bulunamadı",
     "success": "Firma bilgileri başarıyla getirildi",
     "error": "Firma bilgileri getirilirken hata oluştu"
+  },
+  "getCompanyTotalBalance": {
+    "error": "Firma toplam bakiyesi getirilirken bir hata oluştu."
   }
 }
