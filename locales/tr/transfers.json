@@ -5,5 +5,10 @@
     "userNotInCompany": "Kullanıcı bu firmada yer almıyor",
     "invalidAmount": "Geçersiz miktar",
     "invalidAmountFormat": "Geçersiz miktar formatı"
+  },
+  "getById": {
+    "transferIdRequired": "Transfer ID'si gereklidir",
+    "invalidTransferId": "Geçersiz transfer ID formatı",
+    "notFound": "Transfer bulunamadı"
   }
 }

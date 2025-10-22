@@ -5,5 +5,10 @@
     "userNotInCompany": "Der Benutzer gehört nicht zu diesem Unternehmen",
     "invalidAmount": "Ungültiger Betrag",
     "invalidAmountFormat": "Ungültiges Betragsformat"
+  },
+  "getById": {
+    "transferIdRequired": "Transfer-ID ist erforderlich.",
+    "invalidTransferId": "Ungültiges Format der Transfer-ID.",
+    "notFound": "Überweisung wurde nicht gefunden."
   }
 }

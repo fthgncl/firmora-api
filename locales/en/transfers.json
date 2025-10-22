@@ -5,5 +5,10 @@
     "userNotInCompany": "The user does not belong to this company",
     "invalidAmount": "Invalid amount",
     "invalidAmountFormat": "Invalid amount format"
+  },
+  "getById": {
+    "transferIdRequired": "Transfer ID is required.",
+    "invalidTransferId": "Invalid transfer ID format.",
+    "notFound": "Transfer not found."
   }
 }
