@@ -94,5 +94,11 @@ module.exports = {
         // - external_to_user        – Sistem dışı bir kaynaktan kullanıcı hesabına
         // - external_to_company     – Sistem dışı bir kaynaktan firma hesabına
         transfer_type: "ENUM('company_to_user_same','company_to_user_other','company_to_company_other','user_to_user_same','user_to_user_other','user_to_company_same','user_to_company_other','user_to_external','company_to_external','external_to_user','external_to_company') NOT NULL",
+
+        // sender_final_balance: Transfer işlemi sonrası kaynak hesapta kalan bakiye
+        sender_final_balance: 'DECIMAL(15,2) NULL DEFAULT NULL',
+
+        // receiver_final_balance: Transfer işlemi sonrası hedef hesapta kalan bakiye
+        receiver_final_balance: 'DECIMAL(15,2) NULL DEFAULT NULL',
     }
 };

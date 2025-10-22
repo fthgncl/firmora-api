@@ -1,23 +1,32 @@
-const { queryAsync } = require('../utils/connection');
-const { generateUniqueId } = require('../../utils/idUtils');
-const { t } = require('../../config/i18nConfig');
-const { checkUserRoles } = require('../../utils/permissionsManager');
-const {getCompanyCurrency, getUserAccountCurrency, validateUserInCompany, validateAmount, validateCompanyBalance} = require("../utils/validators");
-const {deductCompanyBalance, addCompanyBalance} = require("../companies");
-const {addAccountBalance, deductAccountBalance} = require("../accounts");
+const {queryAsync} = require('../utils/connection');
+const {generateUniqueId} = require('../../utils/idUtils');
+const {t} = require('../../config/i18nConfig');
+const {checkUserRoles} = require('../../utils/permissionsManager');
+const {
+    getCompanyCurrency,
+    getUserAccountCurrency,
+    validateUserInCompany,
+    validateAmount,
+    validateCompanyBalance
+} = require("../utils/validators");
+const {deductCompanyBalance, addCompanyBalance, getCompanyById} = require("../companies");
+const {addAccountBalance, deductAccountBalance, getAccountsByUserId} = require("../accounts");
 
 const createTransfer = async (transferData, userId, companyId) => {
 
-    const { transfer_type, currency } = transferData;
+    const {transfer_type, currency} = transferData;
 
     if (!transfer_type) {
         throw new Error(t('errors:transfer.transfer_type_required'));
     }
 
-    if (!currency){
+    if (!currency) {
         throw new Error(t('errors:transfer.currency_required'));
     }
 
+    await calculateFinalBalances(transferData, userId, companyId)
+
+    console.log(transferData);
 
     transferData.id = await generateUniqueId('TRF', 'transfers');
     transferData.user_id = userId;
@@ -77,7 +86,6 @@ const createTransfer = async (transferData, userId, companyId) => {
                 throw new Error(t('errors:transfer.invalid_transfer_type'));
         }
 
-        
 
         // İşlem başarılı, commit yap
         await queryAsync('COMMIT');
@@ -90,19 +98,40 @@ const createTransfer = async (transferData, userId, companyId) => {
     }
 };
 
+async function calculateFinalBalances(transferData, userId, companyId) {
+    let fromCurrentBalance = null;
+    if (transferData.from_scope === 'company') {
+        fromCurrentBalance = await getCompanyById(companyId, ['balance']);
+    } else if (transferData.from_scope === 'user') {
+        const {accounts} = await getAccountsByUserId(userId, ['balance'], companyId)
+        fromCurrentBalance = accounts.length > 0 ? accounts[0].balance : null;
+    }
+    transferData.sender_final_balance = fromCurrentBalance == null ? null : fromCurrentBalance - transferData.amount;
+
+    let toCurrentBalance = null;
+    if (transferData.to_scope === 'company' && transferData.to_user_company_id) {
+        toCurrentBalance = await getCompanyById(transferData.to_user_company_id, ['balance']);
+    } else if (transferData.to_scope === 'user' && transferData.to_user_id) {
+        const targetCompanyId = transferData.to_user_company_id || companyId;
+        const {accounts} = await getAccountsByUserId(transferData.to_user_id, ['balance'], targetCompanyId);
+        toCurrentBalance = accounts.length > 0 ? accounts[0].balance : null;
+    }
+    transferData.receiver_final_balance = toCurrentBalance == null ? null : toCurrentBalance + transferData.amount;
+}
+
 // Handler fonksiyonları
 async function handleCompanyToUserSame(transferData) {
     // Firma hesabından aynı firmadaki bir kullanıcıya transfer
 
     try {
-        const { user_id, company_id } = transferData;
+        const {user_id, company_id} = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_company_to_same_company_user']);
         if (!hasPermissions) {
             throw new Error(t('errors:permissions.insufficientPermissions'));
 
         }
 
-        const { to_user_id, from_scope, to_scope, amount, currency } = transferData;
+        const {to_user_id, from_scope, to_scope, amount, currency} = transferData;
         if (from_scope !== 'company' || to_scope !== 'user') {
             throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
@@ -124,10 +153,10 @@ async function handleCompanyToUserSame(transferData) {
 
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
-            INSERT INTO transfers (
-                id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, description, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+            INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
+                                   sender_final_balance, receiver_final_balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -141,7 +170,9 @@ async function handleCompanyToUserSame(transferData) {
             amount,
             currency,
             'company_to_user_same',
-            transferData.description || null
+            transferData.description || null,
+            transferData.sender_final_balance,
+            transferData.receiver_final_balance
         ]);
 
         return {
@@ -164,14 +195,14 @@ async function handleCompanyToUserOther(transferData) {
     // Firma hesabından başka firmadaki bir kullanıcıya transfer
 
     try {
-        const { user_id, company_id } = transferData;
+        const {user_id, company_id} = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_company_to_other_company_user']);
         if (!hasPermissions) {
             throw new Error(t('errors:permissions.insufficientPermissions'));
 
         }
 
-        const { to_user_id, to_user_company_id, from_scope, to_scope, amount, currency } = transferData;
+        const {to_user_id, to_user_company_id, from_scope, to_scope, amount, currency} = transferData;
         if (from_scope !== 'company' || to_scope !== 'user') {
             throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
@@ -201,10 +232,10 @@ async function handleCompanyToUserOther(transferData) {
 
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
-            INSERT INTO transfers (
-                id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, description, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+            INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
+                                   sender_final_balance, receiver_final_balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -218,7 +249,9 @@ async function handleCompanyToUserOther(transferData) {
             amount,
             currency,
             'company_to_user_other',
-            transferData.description || null
+            transferData.description || null,
+            transferData.sender_final_balance,
+            transferData.receiver_final_balance
         ]);
 
         return {
@@ -241,14 +274,14 @@ async function handleCompanyToCompanyOther(transferData) {
     // Firma hesabından başka bir firmaya transfer
 
     try {
-        const { user_id, company_id } = transferData;
+        const {user_id, company_id} = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_company_to_other_company']);
         if (!hasPermissions) {
             throw new Error(t('errors:permissions.insufficientPermissions'));
 
         }
 
-        const { to_user_company_id, from_scope, to_scope, amount, currency } = transferData;
+        const {to_user_company_id, from_scope, to_scope, amount, currency} = transferData;
         if (from_scope !== 'company' || to_scope !== 'company') {
             throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
@@ -274,10 +307,10 @@ async function handleCompanyToCompanyOther(transferData) {
 
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
-            INSERT INTO transfers (
-                id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, description, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+            INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
+                                   sender_final_balance, receiver_final_balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -291,7 +324,9 @@ async function handleCompanyToCompanyOther(transferData) {
             amount,
             currency,
             'company_to_company_other',
-            transferData.description || null
+            transferData.description || null,
+            transferData.sender_final_balance,
+            transferData.receiver_final_balance
         ]);
 
         return {
@@ -314,14 +349,14 @@ async function handleUserToUserSame(transferData) {
     // Kullanıcı hesabından aynı firmadaki başka bir kullanıcıya transfer
 
     try {
-        const { user_id, company_id } = transferData;
+        const {user_id, company_id} = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_user_to_same_company_user']);
         if (!hasPermissions) {
             throw new Error(t('errors:permissions.insufficientPermissions'));
 
         }
 
-        const { to_user_id, from_scope, to_scope, amount, currency } = transferData;
+        const {to_user_id, from_scope, to_scope, amount, currency} = transferData;
         if (from_scope !== 'user' || to_scope !== 'user') {
             throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
@@ -348,10 +383,10 @@ async function handleUserToUserSame(transferData) {
 
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
-            INSERT INTO transfers (
-                id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, description, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+            INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
+                                   sender_final_balance, receiver_final_balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -365,7 +400,9 @@ async function handleUserToUserSame(transferData) {
             amount,
             currency,
             'user_to_user_same',
-            transferData.description || null
+            transferData.description || null,
+            transferData.sender_final_balance,
+            transferData.receiver_final_balance
         ]);
 
         return {
@@ -388,14 +425,14 @@ async function handleUserToUserOther(transferData) {
     // Kullanıcı hesabından başka firmadaki bir kullanıcıya transfer
 
     try {
-        const { user_id, company_id } = transferData;
+        const {user_id, company_id} = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_user_to_other_company_user']);
         if (!hasPermissions) {
             throw new Error(t('errors:permissions.insufficientPermissions'));
 
         }
 
-        const { to_user_id, to_user_company_id, from_scope, to_scope, amount, currency } = transferData;
+        const {to_user_id, to_user_company_id, from_scope, to_scope, amount, currency} = transferData;
         if (from_scope !== 'user' || to_scope !== 'user') {
             throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
@@ -430,10 +467,10 @@ async function handleUserToUserOther(transferData) {
 
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
-            INSERT INTO transfers (
-                id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, description, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+            INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
+                                   sender_final_balance, receiver_final_balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -447,7 +484,9 @@ async function handleUserToUserOther(transferData) {
             amount,
             currency,
             'user_to_user_other',
-            transferData.description || null
+            transferData.description || null,
+            transferData.sender_final_balance,
+            transferData.receiver_final_balance
         ]);
 
         return {
@@ -470,14 +509,14 @@ async function handleUserToCompanySame(transferData) {
     // Kullanıcı hesabından kendi firmasına transfer
 
     try {
-        const { user_id, company_id } = transferData;
+        const {user_id, company_id} = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_user_to_own_company']);
         if (!hasPermissions) {
             throw new Error(t('errors:permissions.insufficientPermissions'));
 
         }
 
-        const { from_scope, to_scope, amount, currency } = transferData;
+        const {from_scope, to_scope, amount, currency} = transferData;
         if (from_scope !== 'user' || to_scope !== 'company') {
             throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
@@ -493,10 +532,10 @@ async function handleUserToCompanySame(transferData) {
 
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
-            INSERT INTO transfers (
-                id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, description, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+            INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
+                                   sender_final_balance, receiver_final_balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -510,7 +549,9 @@ async function handleUserToCompanySame(transferData) {
             amount,
             currency,
             'user_to_company_same',
-            transferData.description || null
+            transferData.description || null,
+            transferData.sender_final_balance,
+            transferData.receiver_final_balance
         ]);
 
         return {
@@ -533,14 +574,14 @@ async function handleUserToCompanyOther(transferData) {
     // Kullanıcı hesabından başka firmaya transfer
 
     try {
-        const { user_id, company_id } = transferData;
+        const {user_id, company_id} = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_user_to_other_company']);
         if (!hasPermissions) {
             throw new Error(t('errors:permissions.insufficientPermissions'));
 
         }
 
-        const { to_user_company_id, from_scope, to_scope, amount, currency } = transferData;
+        const {to_user_company_id, from_scope, to_scope, amount, currency} = transferData;
         if (from_scope !== 'user' || to_scope !== 'company') {
             throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
@@ -565,10 +606,10 @@ async function handleUserToCompanyOther(transferData) {
 
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
-            INSERT INTO transfers (
-                id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, description, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+            INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
+                                   sender_final_balance, receiver_final_balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -582,7 +623,9 @@ async function handleUserToCompanyOther(transferData) {
             amount,
             currency,
             'user_to_company_other',
-            transferData.description || null
+            transferData.description || null,
+            transferData.sender_final_balance,
+            transferData.receiver_final_balance
         ]);
 
         return {
@@ -605,14 +648,14 @@ async function handleUserToExternal(transferData) {
     // Kullanıcı hesabından sistem dışı bir alıcıya transfer
 
     try {
-        const { user_id, company_id } = transferData;
+        const {user_id, company_id} = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_user_to_external']);
         if (!hasPermissions) {
             throw new Error(t('errors:permissions.insufficientPermissions'));
 
         }
 
-        const { to_external_name, from_scope, to_scope, amount, currency } = transferData;
+        const {to_external_name, from_scope, to_scope, amount, currency} = transferData;
         if (from_scope !== 'user' || to_scope !== 'external') {
             throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
@@ -632,10 +675,10 @@ async function handleUserToExternal(transferData) {
 
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
-            INSERT INTO transfers (
-                id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, to_external_name, description, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+            INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
+                                   from_scope, to_scope, amount, currency, transfer_type, to_external_name, description,
+                                   status, sender_final_balance, receiver_final_balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -650,7 +693,9 @@ async function handleUserToExternal(transferData) {
             currency,
             'user_to_external',
             to_external_name,
-            transferData.description || null
+            transferData.description || null,
+            transferData.sender_final_balance,
+            transferData.receiver_final_balance
         ]);
 
         return {
@@ -673,14 +718,14 @@ async function handleCompanyToExternal(transferData) {
     // Firma hesabından sistem dışı bir alıcıya transfer
 
     try {
-        const { user_id, company_id } = transferData;
+        const {user_id, company_id} = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_transfer_company_to_external']);
         if (!hasPermissions) {
             throw new Error(t('errors:permissions.insufficientPermissions'));
 
         }
 
-        const { to_external_name, from_scope, to_scope, amount, currency } = transferData;
+        const {to_external_name, from_scope, to_scope, amount, currency} = transferData;
         if (from_scope !== 'company' || to_scope !== 'external') {
             throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
@@ -701,10 +746,10 @@ async function handleCompanyToExternal(transferData) {
 
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
-            INSERT INTO transfers (
-                id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, to_external_name, description, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+            INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
+                                   from_scope, to_scope, amount, currency, transfer_type, to_external_name, description,
+                                   status, sender_final_balance, receiver_final_balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -719,7 +764,9 @@ async function handleCompanyToExternal(transferData) {
             currency,
             'company_to_external',
             to_external_name,
-            transferData.description || null
+            transferData.description || null,
+            transferData.sender_final_balance,
+            transferData.receiver_final_balance
         ]);
 
         return {
@@ -742,14 +789,14 @@ async function handleExternalToUser(transferData) {
     // Sistem dışı kaynaktan kullanıcı hesabına transfer
 
     try {
-        const { user_id, company_id } = transferData;
+        const {user_id, company_id} = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_receive_external_to_user']);
         if (!hasPermissions) {
             throw new Error(t('errors:permissions.insufficientPermissions'));
 
         }
 
-        const { to_user_id, from_external_name, from_scope, to_scope, amount, currency } = transferData;
+        const {to_user_id, from_external_name, from_scope, to_scope, amount, currency} = transferData;
         if (from_scope !== 'external' || to_scope !== 'user') {
             throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
@@ -774,10 +821,10 @@ async function handleExternalToUser(transferData) {
 
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
-            INSERT INTO transfers (
-                id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, from_external_name, description, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+            INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
+                                   from_scope, to_scope, amount, currency, transfer_type, from_external_name,
+                                   description, status, sender_final_balance, receiver_final_balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -792,7 +839,9 @@ async function handleExternalToUser(transferData) {
             currency,
             'external_to_user',
             from_external_name,
-            transferData.description || null
+            transferData.description || null,
+            transferData.sender_final_balance,
+            transferData.receiver_final_balance
         ]);
 
         return {
@@ -815,14 +864,14 @@ async function handleExternalToCompany(transferData) {
     // Sistem dışı kaynaktan firma hesabına transfer
 
     try {
-        const { user_id, company_id } = transferData;
+        const {user_id, company_id} = transferData;
         const hasPermissions = await checkUserRoles(user_id, company_id, ['can_receive_external_to_company']);
         if (!hasPermissions) {
             throw new Error(t('errors:permissions.insufficientPermissions'));
 
         }
 
-        const { from_external_name, from_scope, to_scope, amount, currency } = transferData;
+        const {from_external_name, from_scope, to_scope, amount, currency} = transferData;
         if (from_scope !== 'external' || to_scope !== 'company') {
             throw new Error(t('errors:transfer.invalid_scopes_for_transfer_type'));
         }
@@ -842,10 +891,10 @@ async function handleExternalToCompany(transferData) {
 
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
-            INSERT INTO transfers (
-                id, user_id, company_id, to_user_id, to_user_company_id,
-                from_scope, to_scope, amount, currency, transfer_type, from_external_name, description, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed')
+            INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
+                                   from_scope, to_scope, amount, currency, transfer_type, from_external_name,
+                                   description, status, sender_final_balance, receiver_final_balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -860,7 +909,9 @@ async function handleExternalToCompany(transferData) {
             currency,
             'external_to_company',
             from_external_name,
-            transferData.description || null
+            transferData.description || null,
+            transferData.sender_final_balance,
+            transferData.receiver_final_balance
         ]);
 
         return {
