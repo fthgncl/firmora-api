@@ -153,7 +153,6 @@ router.post('/', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Transfer oluşturma hatası:', error);
 
         if (error.status) {
             return responseHelper.error(res, error.message, error.status);

@@ -151,10 +151,12 @@ async function handleCompanyToUserSame(transferData) {
         };
 
     } catch (error) {
-        throw {
-            success: false,
-            message: error.message || t('transfers:create.failed')
-        };
+        const errorMessage = error.message || t('transfers:create.failed');
+        const errorStatus = error.message ? 400 : 500;
+
+        const err = new Error(errorMessage);
+        err.status = errorStatus;
+        throw err;
     }
 }
 
@@ -226,10 +228,12 @@ async function handleCompanyToUserOther(transferData) {
         };
 
     } catch (error) {
-        throw {
-            success: false,
-            message: error.message || t('transfers:create.failed')
-        };
+        const errorMessage = error.message || t('transfers:create.failed');
+        const errorStatus = error.message ? 400 : 500;
+
+        const err = new Error(errorMessage);
+        err.status = errorStatus;
+        throw err;
     }
 }
 
@@ -297,10 +301,12 @@ async function handleCompanyToCompanyOther(transferData) {
         };
 
     } catch (error) {
-        throw {
-            success: false,
-            message: error.message || t('transfers:create.failed')
-        };
+        const errorMessage = error.message || t('transfers:create.failed');
+        const errorStatus = error.message ? 400 : 500;
+
+        const err = new Error(errorMessage);
+        err.status = errorStatus;
+        throw err;
     }
 }
 
@@ -369,10 +375,12 @@ async function handleUserToUserSame(transferData) {
         };
 
     } catch (error) {
-        throw {
-            success: false,
-            message: error.message || t('transfers:create.failed')
-        };
+        const errorMessage = error.message || t('transfers:create.failed');
+        const errorStatus = error.message ? 400 : 500;
+
+        const err = new Error(errorMessage);
+        err.status = errorStatus;
+        throw err;
     }
 }
 
@@ -449,10 +457,12 @@ async function handleUserToUserOther(transferData) {
         };
 
     } catch (error) {
-        throw {
-            success: false,
-            message: error.message || t('transfers:create.failed')
-        };
+        const errorMessage = error.message || t('transfers:create.failed');
+        const errorStatus = error.message ? 400 : 500;
+
+        const err = new Error(errorMessage);
+        err.status = errorStatus;
+        throw err;
     }
 }
 
@@ -510,10 +520,12 @@ async function handleUserToCompanySame(transferData) {
         };
 
     } catch (error) {
-        throw {
-            success: false,
-            message: error.message || t('transfers:create.failed')
-        };
+        const errorMessage = error.message || t('transfers:create.failed');
+        const errorStatus = error.message ? 400 : 500;
+
+        const err = new Error(errorMessage);
+        err.status = errorStatus;
+        throw err;
     }
 }
 
@@ -580,10 +592,12 @@ async function handleUserToCompanyOther(transferData) {
         };
 
     } catch (error) {
-        throw {
-            success: false,
-            message: error.message || t('transfers:create.failed')
-        };
+        const errorMessage = error.message || t('transfers:create.failed');
+        const errorStatus = error.message ? 400 : 500;
+
+        const err = new Error(errorMessage);
+        err.status = errorStatus;
+        throw err;
     }
 }
 
@@ -646,10 +660,12 @@ async function handleUserToExternal(transferData) {
         };
 
     } catch (error) {
-        throw {
-            success: false,
-            message: error.message || t('transfers:create.failed')
-        };
+        const errorMessage = error.message || t('transfers:create.failed');
+        const errorStatus = error.message ? 400 : 500;
+
+        const err = new Error(errorMessage);
+        err.status = errorStatus;
+        throw err;
     }
 }
 
@@ -713,10 +729,12 @@ async function handleCompanyToExternal(transferData) {
         };
 
     } catch (error) {
-        throw {
-            success: false,
-            message: error.message || t('transfers:create.failed')
-        };
+        const errorMessage = error.message || t('transfers:create.failed');
+        const errorStatus = error.message ? 400 : 500;
+
+        const err = new Error(errorMessage);
+        err.status = errorStatus;
+        throw err;
     }
 }
 
@@ -784,10 +802,12 @@ async function handleExternalToUser(transferData) {
         };
 
     } catch (error) {
-        throw {
-            success: false,
-            message: error.message || t('transfers:create.failed')
-        };
+        const errorMessage = error.message || t('transfers:create.failed');
+        const errorStatus = error.message ? 400 : 500;
+
+        const err = new Error(errorMessage);
+        err.status = errorStatus;
+        throw err;
     }
 }
 
@@ -850,10 +870,12 @@ async function handleExternalToCompany(transferData) {
         };
 
     } catch (error) {
-        throw {
-            success: false,
-            message: error.message || t('transfers:create.failed')
-        };
+        const errorMessage = error.message || t('transfers:create.failed');
+        const errorStatus = error.message ? 400 : 500;
+
+        const err = new Error(errorMessage);
+        err.status = errorStatus;
+        throw err;
     }
 }
 
