@@ -101,23 +101,26 @@ const createTransfer = async (transferData, userId, companyId) => {
 async function calculateFinalBalances(transferData, userId, companyId) {
     let fromCurrentBalance = null;
     if (transferData.from_scope === 'company') {
-        fromCurrentBalance = await getCompanyById(companyId, ['balance']);
+        const company = await getCompanyById(companyId, ['balance']);
+        fromCurrentBalance = company?.balance ?? null;
     } else if (transferData.from_scope === 'user') {
-        const {accounts} = await getAccountsByUserId(userId, ['balance'], companyId)
+        const { accounts } = await getAccountsByUserId(userId, ['balance'], companyId);
         fromCurrentBalance = accounts.length > 0 ? accounts[0].balance : null;
     }
     transferData.sender_final_balance = fromCurrentBalance == null ? null : fromCurrentBalance - transferData.amount;
 
     let toCurrentBalance = null;
     if (transferData.to_scope === 'company' && transferData.to_user_company_id) {
-        toCurrentBalance = await getCompanyById(transferData.to_user_company_id, ['balance']);
+        const company = await getCompanyById(transferData.to_user_company_id, ['balance']);
+        toCurrentBalance = company?.balance ?? null;
     } else if (transferData.to_scope === 'user' && transferData.to_user_id) {
         const targetCompanyId = transferData.to_user_company_id || companyId;
-        const {accounts} = await getAccountsByUserId(transferData.to_user_id, ['balance'], targetCompanyId);
+        const { accounts } = await getAccountsByUserId(transferData.to_user_id, ['balance'], targetCompanyId);
         toCurrentBalance = accounts.length > 0 ? accounts[0].balance : null;
     }
     transferData.receiver_final_balance = toCurrentBalance == null ? null : toCurrentBalance + transferData.amount;
 }
+
 
 // Handler fonksiyonları
 async function handleCompanyToUserSame(transferData) {
