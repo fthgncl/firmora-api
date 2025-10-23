@@ -129,7 +129,7 @@ const createTransfer = require('../../../database/transfers/createTransfer');
 const responseHelper = require('../../utils/responseHelper');
 const { t } = require('../../../config/i18nConfig');
 
-router.post('/create-transfer', async (req, res) => {
+router.post('/create', async (req, res) => {
     try {
         const userId = req.tokenPayload?.id;
         const transferData = req.body;
