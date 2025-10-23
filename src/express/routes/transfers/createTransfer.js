@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /transfers:
+ * /transfers/create-transfer:
  *   post:
  *     summary: Yeni transfer oluştur
  *     description: Farklı transfer tipleri ile para transferi gerçekleştirir (ilgili yetki gerekli)
@@ -129,7 +129,7 @@ const createTransfer = require('../../../database/transfers/createTransfer');
 const responseHelper = require('../../utils/responseHelper');
 const { t } = require('../../../config/i18nConfig');
 
-router.post('/', async (req, res) => {
+router.post('/create-transfer', async (req, res) => {
     try {
         const userId = req.tokenPayload?.id;
         const transferData = req.body;
