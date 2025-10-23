@@ -140,7 +140,7 @@ router.post('/create', async (req, res) => {
         }
 
         // Firma ID kontrolü
-        if (!transferData.company_id) {
+        if (!transferData?.company_id) {
             return responseHelper.error(res, t('companies:companyIdRequired'), 400);
         }
 
