@@ -10,5 +10,10 @@
     "transferIdRequired": "Transfer ID'si gereklidir",
     "invalidTransferId": "Geçersiz transfer ID formatı",
     "notFound": "Transfer bulunamadı"
+  },
+  "list": {
+    "success": "Transferler listesi başarıyla alındı",
+    "failed": "Transferler listesi alınamadı",
+    "companyIdRequired": "Firma ID'si gereklidir"
   }
 }

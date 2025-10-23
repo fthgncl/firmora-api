@@ -37,49 +37,22 @@ module.exports = {
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
     },
     transfers: {
-        // id : transfer no
         id: 'VARCHAR(36) NOT NULL UNIQUE',
-
-        // user_id: işlemi kimin yaptığı (operatör)
         user_id: 'VARCHAR(36) NOT NULL',
-
-        // company_id : hangi firma veya hangi firmanın kullanıcısı gönderecek (kaynak firma)
         company_id: 'VARCHAR(36) NOT NULL',
-
-        // to_user_id : hangi kullanıcının hesabına gideceği (varsa)
         to_user_id: 'VARCHAR(36) NULL',
-
-        // to_user_company_id: hangi firmaya veya hangi firmanın kullanıcısına gidecek
-        // (kullanıcı hedefi: hedef kullanıcının firması | firma hedefi: doğrudan hedef firma)
         to_user_company_id: 'VARCHAR(36) NULL',
-
-        // from_scope : para çıkışının nereden olacağı ("user", "company" veya "external")
         from_scope: "ENUM('user','company','external') NOT NULL",
-
-        // to_scope : para girişinin nereye olacağı ("user", "company" veya "external")
         to_scope: "ENUM('user','company','external') NOT NULL",
-
-        // amount: para miktarı (pozitif)
         amount: 'DECIMAL(15,2) NOT NULL',
-
-        // currency: para birimi (ISO-4217)
         currency: "VARCHAR(3) NOT NULL CHECK (currency REGEXP '^[A-Z]{3}$')",
-
-        // description: açıklama
         description: 'VARCHAR(255) NULL DEFAULT NULL',
-
-        // status: işlem durumu
         status: "ENUM('pending','completed','failed','reversed') NOT NULL DEFAULT 'completed'",
-
-        // to_external_name: Sistem dışı kullanıcı için paranın gönderileceği kişi/firma adı
-        // (hedef sistemde yoksa bu alanı doldur; to_user_id/to_user_company_id boş kalabilir)
         to_external_name: 'VARCHAR(120) NULL DEFAULT NULL',
-
-        // from_external_name: Sistem dışı kullanıcı için paranın geldiği kişi/firma adı
         from_external_name: 'VARCHAR(120) NULL DEFAULT NULL',
-
-        // created_at: oluşturulma tarihi
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
+        sender_final_balance: 'DECIMAL(15,2) NULL DEFAULT NULL',
+        receiver_final_balance: 'DECIMAL(15,2) NULL DEFAULT NULL',
 
         // transfer_type: transfer türü
         // - company_to_user_same      – Firma hesabından aynı firmadaki bir kullanıcıya
@@ -94,11 +67,5 @@ module.exports = {
         // - external_to_user        – Sistem dışı bir kaynaktan kullanıcı hesabına
         // - external_to_company     – Sistem dışı bir kaynaktan firma hesabına
         transfer_type: "ENUM('company_to_user_same','company_to_user_other','company_to_company_other','user_to_user_same','user_to_user_other','user_to_company_same','user_to_company_other','user_to_external','company_to_external','external_to_user','external_to_company') NOT NULL",
-
-        // sender_final_balance: Transfer işlemi sonrası kaynak hesapta kalan bakiye
-        sender_final_balance: 'DECIMAL(15,2) NULL DEFAULT NULL',
-
-        // receiver_final_balance: Transfer işlemi sonrası hedef hesapta kalan bakiye
-        receiver_final_balance: 'DECIMAL(15,2) NULL DEFAULT NULL',
     }
 };

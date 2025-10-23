@@ -10,5 +10,10 @@
     "transferIdRequired": "Transfer ID is required.",
     "invalidTransferId": "Invalid transfer ID format.",
     "notFound": "Transfer not found."
+  },
+  "list": {
+    "success": "Transfer list retrieved successfully.",
+    "failed": "Failed to retrieve transfer list.",
+    "companyIdRequired": "Company ID is required."
   }
 }

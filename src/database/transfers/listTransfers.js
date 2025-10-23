@@ -3,8 +3,9 @@ const { t } = require('../../config/i18nConfig');
 
 /**
  * Transfer kayıtlarını listeler ve sayfalama ile sonuçları döndürür
- * @param {Object} options - Arama parametreleri
+ * @param {{searchTerm: string, companyId: *, userId: null, toUserId: null, toUserCompanyId: null, transferType: null, status: null, currency: null, fromScope: null, toScope: null, startDate: null, endDate: null, limit: number, offset: number, sortBy: string, sortOrder: string}} options - Arama parametreleri
  * @param {string} options.searchTerm - Aranacak terim (id, açıklama, tutar vb.)
+ * @param {string} options.entitySearch - Kullanıcı/Firma ID araması (user_id, company_id, to_user_id, to_user_company_id)
  * @param {string} options.companyId - Firma ID (gönderen firma)
  * @param {string} options.userId - Kullanıcı ID (işlemi yapan kullanıcı)
  * @param {string} options.toUserId - Hedef kullanıcı ID
@@ -26,6 +27,7 @@ async function listTransfers(options = {}) {
     try {
         const {
             searchTerm = '',
+            entitySearch = '',
             companyId = null,
             userId = null,
             toUserId = null,
@@ -71,6 +73,27 @@ async function listTransfers(options = {}) {
             params.push(...paramsList);
         }
 
+        // Entity ID araması - Temel filtre (user_id, company_id, to_user_id, to_user_company_id)
+        // Bu filtre kullanılırsa, önce bu ID'nin bulunduğu tüm kayıtlar getirilir
+        // Sonra diğer filtreler bu kayıtlar üzerinde uygulanır
+        if (entitySearch && entitySearch.trim() !== '') {
+            const trimmed = entitySearch.trim();
+
+            const conditions = [
+                'transfers.user_id = ?',
+                'transfers.company_id = ?',
+                'transfers.to_user_id = ?',
+                'transfers.to_user_company_id = ?'
+            ];
+
+            const paramsList = [trimmed, trimmed, trimmed, trimmed];
+
+            whereConditions.push(`(${conditions.join(' OR ')})`);
+            params.push(...paramsList);
+        }
+
+        // Aşağıdaki filtreler entitySearch varsa onun üzerine, yoksa tüm kayıtlar üzerine uygulanır
+
         // Firma filtresi (gönderen veya alan firma)
         if (companyId) {
             whereConditions.push('(transfers.company_id = ? OR transfers.to_user_company_id = ?)');
@@ -84,15 +107,15 @@ async function listTransfers(options = {}) {
         }
 
         // Hedef kullanıcı filtresi
-        if (options.toUserId) {
+        if (toUserId) {
             whereConditions.push('transfers.to_user_id = ?');
-            params.push(options.toUserId);
+            params.push(toUserId);
         }
 
         // Hedef firma filtresi
-        if (options.toUserCompanyId) {
+        if (toUserCompanyId) {
             whereConditions.push('transfers.to_user_company_id = ?');
-            params.push(options.toUserCompanyId);
+            params.push(toUserCompanyId);
         }
 
         // Transfer türü filtresi
@@ -194,7 +217,7 @@ async function listTransfers(options = {}) {
 
         return {
             status: 200,
-            message: t('transfers:list.success') || 'Transfers listed successfully',
+            message: t('transfers:list.success'),
             data: {
                 transfers: transfers || [],
                 pagination: {
@@ -212,7 +235,7 @@ async function listTransfers(options = {}) {
     } catch (error) {
         throw {
             status: error.status || 500,
-            message: error.message || t('transfers:list.error') || 'Error listing transfers',
+            message: `${t('transfers:list.failed')} : ${error.message}`,
             error
         };
     }
@@ -228,7 +251,7 @@ async function listTransfersByCompany(companyId, options = {}) {
     if (!companyId) {
         throw {
             status: 400,
-            message: t('transfers:list.companyIdRequired') || 'Company ID is required'
+            message: t('transfers:list.companyIdRequired')
         };
     }
 

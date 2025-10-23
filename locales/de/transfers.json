@@ -10,5 +10,10 @@
     "transferIdRequired": "Transfer-ID ist erforderlich.",
     "invalidTransferId": "Ungültiges Format der Transfer-ID.",
     "notFound": "Überweisung wurde nicht gefunden."
+  },
+  "list": {
+    "success": "Überweisungsliste erfolgreich abgerufen.",
+    "failed": "Fehler beim Abrufen der Überweisungsliste.",
+    "companyIdRequired": "Unternehmens-ID ist erforderlich."
   }
 }
