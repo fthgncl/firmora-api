@@ -109,7 +109,7 @@ async function authorizeAndNormalizeFilters(initiatorUserId, body) {
             if (!canViewSenderUsersTransfers) {
                 throw {
                     status: 403,
-                    message: t('transfers:list.noPermissionOtherUsersSender')
+                    message: t('errors:permissions.cannotViewOtherUserTransferHistory')
                 };
             }
         }
@@ -123,8 +123,7 @@ async function authorizeAndNormalizeFilters(initiatorUserId, body) {
             if (!canViewReceiverUsersTransfers) {
                 throw {
                     status: 403,
-                    message: t('transfers:list.noPermissionOtherUsersReceiver')
-                        || 'You do not have permission to view other users’ transfer history for the receiver company.'
+                    message: t('errors:permissions.cannotViewOtherUserTransferHistory')
                 };
             }
         }
@@ -144,8 +143,7 @@ async function authorizeAndNormalizeFilters(initiatorUserId, body) {
             if (!canViewSenderCompanyTransfers) {
                 throw {
                     status: 403,
-                    message: t('transfers:list.noPermissionCompanySender')
-                        || 'You do not have permission to view company-wide transfer history for the sender company.'
+                    message: t('errors:permissions.cannotViewCompanyTransferHistory')
                 };
             }
         }
@@ -160,8 +158,7 @@ async function authorizeAndNormalizeFilters(initiatorUserId, body) {
             if (!canViewReceiverCompanyTransfers) {
                 throw {
                     status: 403,
-                    message: t('transfers:list.noPermissionCompanyReceiver')
-                        || 'You do not have permission to view company-wide transfer history for the receiver company.'
+                    message: t('errors:permissions.cannotViewCompanyTransferHistory')
                 };
             }
         }
