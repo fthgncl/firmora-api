@@ -164,7 +164,7 @@ function checkRoles(permissionsString) {
 
 async function checkUserRoles(userId, companyId, roles = ['sys_admin'], fullMatch = false) {
 
-    if (!userId || !companyId) {
+    if (!userId || !companyId || !Array.isArray(roles) || roles.length === 0) {
         return false;
     }
 
@@ -193,9 +193,9 @@ async function checkUserRoles(userId, companyId, roles = ['sys_admin'], fullMatc
             return true;
 
         if (fullMatch)
-            return userRoles.every(role => userRoles.includes(role));    // roles array'ında bulunan her bir index userRoles array'ında da bulunuyorsa true döner
+            return roles.every(role => userRoles.includes(role));    // roles array'ında bulunan her bir index userRoles array'ında da bulunuyorsa true döner
         else
-            return userRoles.some(role => userRoles.includes(role));    // roles array'ında bulunan her hangi bir index userRoles array'ında da bulunuyorsa true döner
+            return roles.some(role => userRoles.includes(role));    // roles array'ında bulunan her hangi bir index userRoles array'ında da bulunuyorsa true döner
 
     } catch (error) {
         console.error(t('permissions:checkUserRoles.error', { userId }), error);
