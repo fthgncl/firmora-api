@@ -29,7 +29,9 @@
     "noPermissionsFound": "Keine Berechtigungsdaten gefunden.",
     "cannotAssignPermissionYouDontHave": "Sie können die Berechtigung '{{permission}}', die Sie selbst nicht besitzen, nicht zuweisen.",
     "updateFailed": "Beim Aktualisieren der Berechtigungen ist ein Fehler aufgetreten.",
-    "cannotModifyImmunityUser": "Nur der Firmengründer kann die Berechtigungen dieses Benutzers ändern."
+    "cannotModifyImmunityUser": "Nur der Firmengründer kann die Berechtigungen dieses Benutzers ändern.",
+    "cannotViewCompanyTransferHistory": "Sie haben keine Berechtigung, die Überweisungshistorie dieses Unternehmens anzuzeigen.",
+    "cannotViewOtherUserTransferHistory": "Sie haben keine Berechtigung, die Überweisungshistorie eines anderen Benutzers in diesem Unternehmen anzuzeigen."
   },
   "database": {
     "invalidConnection": "Ungültiges Verbindungsobjekt!",

@@ -29,7 +29,9 @@
     "noPermissionsFound": "Yetki bilgileriniz bulunamadı.",
     "cannotAssignPermissionYouDontHave": "Kendinizde olmayan '{{permission}}' yetkisini başkasına atayamazsınız.",
     "updateFailed": "Yetkiler güncellenirken bir hata oluştu.",
-    "cannotModifyImmunityUser": "Bu kullanıcının izinleri yalnızca firmayı kuran kişi tarafından değiştirilebilir."
+    "cannotModifyImmunityUser": "Bu kullanıcının izinleri yalnızca firmayı kuran kişi tarafından değiştirilebilir.",
+    "cannotViewCompanyTransferHistory": "Bu şirketin para transfer geçmişini görüntüleme izniniz yok.",
+    "cannotViewOtherUserTransferHistory": "Bu firmada bir kullanıcının para transfer geçmişini görüntüleme izniniz yok."
   },
   "database": {
     "invalidConnection": "Bağlantı nesnesi geçersiz!",

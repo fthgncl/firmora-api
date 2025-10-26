@@ -29,7 +29,9 @@
     "noPermissionsFound": "No permission data found.",
     "cannotAssignPermissionYouDontHave": "You cannot assign the '{{permission}}' permission that you do not have yourself.",
     "updateFailed": "An error occurred while updating permissions.",
-    "cannotModifyImmunityUser": "Only the company creator can modify this user's permissions."
+    "cannotModifyImmunityUser": "Only the company creator can modify this user's permissions.",
+    "cannotViewCompanyTransferHistory": "You do not have permission to view this company's transfer history.",
+    "cannotViewOtherUserTransferHistory": "You do not have permission to view another user's transfer history in this company."
   },
   "database": {
     "invalidConnection": "Invalid connection object!",
