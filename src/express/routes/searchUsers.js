@@ -481,7 +481,6 @@ const router = express.Router();
 const { canUserSearchUsers, checkUserRoles} = require('../../utils/permissionsManager');
 const { searchAllUsers, searchUsersInCompany } = require('../../database/users/searchUsers');
 const { t } = require('../../config/i18nConfig');
-const {queryAsync} = require("../../database/utils/connection");
 const {getAccountsByUserId} = require("../../database/accounts");
 
 router.post('/', async (req, res) => {
@@ -550,8 +549,6 @@ router.post('/', async (req, res) => {
                 })
             );
         }
-
-        console.log(result.data.users);
 
         return res.status(200).json({
             success: true,
