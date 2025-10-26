@@ -1,5 +1,3 @@
-
-
 /**
  * @swagger
  * /search-users:
@@ -7,28 +5,28 @@
  *     summary: Gelişmiş kullanıcı arama
  *     description: |
  *       Kullanıcıları yetkilerine göre arar ve filtreler. Sayfalama, sıralama ve gelişmiş arama özellikleri sunar.
- *       
+ *
  *       ## Yetki Seviyeleri
- *       
+ *
  *       Kullanıcılar aşağıdaki durumlarda **tüm kullanıcılara** erişebilir:
  *       - Firma sahibi ise
  *       - `personnel_manager` (Personel Yöneticisi) yetkisine sahipse
  *       - `can_transfer_external` (Firma Dışı Transfer) yetkisine sahipse
- *       
+ *
  *       Diğer durumlarda kullanıcılar **sadece kendi firmalarındaki** kullanıcıları görebilir.
- *       
+ *
  *       ## Arama Özellikleri
- *       
+ *
  *       - İsim, soyisim, email, telefon ve username alanlarında arama
  *       - Esnek sayfalama (limit & offset)
  *       - Çoklu alan sıralaması (ASC/DESC)
  *       - Detaylı pagination bilgileri
  *       - LIKE operatörü ile esnek eşleşme
- *       
+ *
  *       ## Neden POST?
- *       
+ *
  *       Bu endpoint arama işlemi olmasına rağmen POST metodu kullanır çünkü:
- *       
+ *
  *       **Avantajlar:**
  *       - ✅ Karmaşık arama kriterleri için ideal
  *       - ✅ URL uzunluk limitinden etkilenmez
@@ -36,13 +34,13 @@
  *       - ✅ Requst body ile güvenli parametre iletimi
  *       - ✅ Tüm HTTP istemcileri tarafından desteklenir
  *       - ✅ Gelecekte filtre ekleme kolaylığı
- *       
+ *
  *       **Kullanım Senaryoları:**
  *       - Yeni personel eklerken kullanıcı seçimi
  *       - Para transferi için alıcı arama
  *       - Raporlama ve analitik için kullanıcı filtreleme
  *       - Admin panelinde kullanıcı yönetimi
- *       
+ *
  *     tags:
  *       - Users
  *     security:
@@ -62,7 +60,7 @@
  *                 format: uuid
  *                 description: |
  *                   Firma ID (zorunlu)
- *                   
+ *
  *                   Bu parametre kullanıcının hangi firma bağlamında arama yaptığını belirtir.
  *                   Yetki kontrolü bu firma üzerinden yapılır.
  *                 example: "123e4567-e89b-12d3-a456-426614174000"
@@ -72,14 +70,14 @@
  *                 maxLength: 100
  *                 description: |
  *                   Arama terimi (opsiyonel)
- *                   
+ *
  *                   Aşağıdaki alanlarda arama yapar:
  *                   - İsim (name)
  *                   - Soyisim (surname)
  *                   - E-posta (email)
  *                   - Telefon (phone)
  *                   - Kullanıcı adı (username)
- *                   
+ *
  *                   Boş bırakılırsa tüm kullanıcılar listelenir.
  *                 example: "ahmet"
  *               limit:
@@ -89,7 +87,7 @@
  *                 default: 20
  *                 description: |
  *                   Sayfa başına sonuç sayısı
- *                   
+ *
  *                   - Minimum: 1
  *                   - Maksimum: 100
  *                   - Varsayılan: 20
@@ -100,8 +98,8 @@
  *                 default: 0
  *                 description: |
  *                   Atlanacak kayıt sayısı (sayfalama için)
- *                   
- *                   Örnek: 
+ *
+ *                   Örnek:
  *                   - 1. sayfa için: offset = 0
  *                   - 2. sayfa için: offset = 20 (limit=20 ise)
  *                   - 3. sayfa için: offset = 40 (limit=20 ise)
@@ -112,7 +110,7 @@
  *                 default: name
  *                 description: |
  *                   Sıralama yapılacak alan
- *                   
+ *
  *                   Kullanılabilir alanlar:
  *                   - `name`: İsim
  *                   - `surname`: Soyisim
@@ -127,7 +125,7 @@
  *                 default: ASC
  *                 description: |
  *                   Sıralama yönü
- *                   
+ *
  *                   - `ASC`: Artan sıralama (A-Z, 0-9, eski-yeni)
  *                   - `DESC`: Azalan sıralama (Z-A, 9-0, yeni-eski)
  *                 example: "ASC"
@@ -301,7 +299,7 @@
  *                   enum: [all, company, none]
  *                   description: |
  *                     Kullanıcının arama kapsamı
- *                     
+ *
  *                     - `all`: Tüm kullanıcılara erişebilir
  *                     - `company`: Sadece firma içi kullanıcılara erişebilir
  *                     - `none`: Hiçbir kullanıcıya erişemez
@@ -310,7 +308,7 @@
  *                   type: string
  *                   description: |
  *                     Arama yetkisinin verilme nedeni
- *                     
+ *
  *                     Olası değerler:
  *                     - `owner`: Firma sahibi
  *                     - `personnel_manager`: Personel yöneticisi yetkisi
@@ -480,9 +478,11 @@
 
 const express = require('express');
 const router = express.Router();
-const { canUserSearchUsers } = require('../../utils/permissionsManager');
+const { canUserSearchUsers, checkUserRoles} = require('../../utils/permissionsManager');
 const { searchAllUsers, searchUsersInCompany } = require('../../database/users/searchUsers');
 const { t } = require('../../config/i18nConfig');
+const {queryAsync} = require("../../database/utils/connection");
+const {getAccountsByUserId} = require("../../database/accounts");
 
 router.post('/', async (req, res) => {
     try {
@@ -540,6 +540,18 @@ router.post('/', async (req, res) => {
                 message: t('users:search.noPermission')
             });
         }
+
+        if (await checkUserRoles(userId, companyId, ['can_view_other_users_transfer_history'])) {
+            result.data.users = await Promise.all(
+                result.data.users.map(async user => {
+                    const { accounts } = await getAccountsByUserId(user.id, ['balance'], companyId);
+                    const balance = accounts[0]?.balance || 0;
+                    return { ...user, balance };
+                })
+            );
+        }
+
+        console.log(result.data.users);
 
         return res.status(200).json({
             success: true,
