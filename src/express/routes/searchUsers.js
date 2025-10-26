@@ -543,9 +543,10 @@ router.post('/', async (req, res) => {
         if (await checkUserRoles(userId, companyId, ['can_view_other_users_transfer_history'])) {
             result.data.users = await Promise.all(
                 result.data.users.map(async user => {
-                    const { accounts } = await getAccountsByUserId(user.id, ['balance'], companyId);
+                    const { accounts } = await getAccountsByUserId(user.id, ['balance','currency'], companyId);
                     const balance = accounts[0]?.balance || 0;
-                    return { ...user, balance };
+                    const currency = accounts[0].currency;
+                    return { ...user, balance, currency };
                 })
             );
         }
