@@ -1,43 +1,6 @@
 const tablesConfig = require('../../config/tablesConfig');
 const { queryAsync } = require('../utils/connection');
 
-
-// TODO: Veri tabanı yönetimini güncelleştir. Düzgün çalışmıyor !
-
-// Sütun tipini normalleştir (boşlukları temizle, büyük harfe çevir)
-const normalizeColumnType = (type) => {
-    return type
-        .toUpperCase()
-        .replace(/\s+/g, '') // Tüm boşlukları kaldır
-        .replace(/,/g, ', ') // Virgülden sonra boşluk ekle (tekrar normalleştirme için)
-        .replace(/\s+/g, ''); // Tekrar tüm boşlukları kaldır
-};
-
-// MySQL tip eşdeğerliklerini kontrol et
-const areTypesEquivalent = (configType, dbType) => {
-    const normalizedConfig = normalizeColumnType(configType);
-    const normalizedDb = normalizeColumnType(dbType);
-
-    // Tam eşleşme varsa true döndür
-    if (normalizedConfig.includes(normalizedDb) || normalizedDb.includes(normalizedConfig)) {
-        return true;
-    }
-
-    // BOOLEAN -> TINYINT(1) eşdeğerliği
-    if ((normalizedConfig.includes('BOOLEAN') || normalizedConfig.includes('BOOL')) 
-        && normalizedDb.includes('TINYINT(1)')) {
-        return true;
-    }
-
-    // INT -> INTEGER eşdeğerliği
-    if ((normalizedConfig.includes('INTEGER') && normalizedDb.includes('INT'))
-        || (normalizedConfig.includes('INT') && normalizedDb.includes('INTEGER'))) {
-        return true;
-    }
-
-    return false;
-};
-
 const checkTables = async () => {
 
     try {
@@ -98,70 +61,21 @@ const checkTables = async () => {
 
             // Sütun kontrolü ve güncellemesi
             for (const [colName, colDef] of Object.entries(columns)) {
-                try {
-                    const existingCol = await queryAsync(`
-                        SELECT COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT, COLUMN_KEY, EXTRA
-                        FROM INFORMATION_SCHEMA.COLUMNS
-                        WHERE TABLE_NAME = '${tableName}' AND COLUMN_NAME = '${colName}' AND TABLE_SCHEMA = DATABASE();
-                    `);
+                const existingCol = await queryAsync(`
+                    SELECT COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT, COLUMN_KEY, EXTRA
+                    FROM INFORMATION_SCHEMA.COLUMNS
+                    WHERE TABLE_NAME = '${tableName}' AND COLUMN_NAME = '${colName}';
+                `);
 
-                    if (existingCol.length === 0) {
-                        // Sütun yoksa ekle
-                        console.log(`${tableName} tablosuna ${colName} sütunu ekleniyor...`);
-                        await queryAsync(`ALTER TABLE ${tableName} ADD COLUMN \`${colName}\` ${colDef};`);
-                        console.log(`${tableName} tablosuna ${colName} sütunu başarıyla eklendi.`);
-                    } else {
-                        // Sütun mevcut, tip kontrolü yap
-                        const currentCol = existingCol[0];
-                        const currentType = currentCol.COLUMN_TYPE;
-                        const isNullable = currentCol.IS_NULLABLE === 'YES';
-                        const hasDefault = currentCol.COLUMN_DEFAULT !== null;
-
-                        // Tip eşdeğerliğini kontrol et - sadece gerçekten değişiklik gerekiyorsa güncelle
-                        const needsUpdate = !areTypesEquivalent(colDef, currentType);
-
-                        if (needsUpdate) {
-                            console.log(`${tableName} tablosundaki ${colName} sütunu güncelleniyor...`);
-                            await queryAsync(`ALTER TABLE ${tableName} MODIFY COLUMN \`${colName}\` ${colDef};`);
-                            console.log(`${tableName} tablosundaki ${colName} sütunu başarıyla güncellendi.`);
-                        }
+                if (existingCol.length === 0) {
+                    // Sütun yoksa ekle
+                    await queryAsync(`ALTER TABLE ${tableName} ADD COLUMN \`${colName}\` ${colDef};`);
+                } else {
+                    // Sütun mevcut ama farklıysa güncelle
+                    const currentType = `${existingCol[0].COLUMN_TYPE} ${existingCol[0].IS_NULLABLE === 'NO' ? 'NOT NULL' : ''}`;
+                    if (currentType !== colDef) {
+                        await queryAsync(`ALTER TABLE ${tableName} MODIFY COLUMN \`${colName}\` ${colDef};`);
                     }
-                } catch (columnError) {
-                    console.error(`${tableName}.${colName} sütunu işlenirken hata:`, columnError.message);
-                    // Sütun hatası durumunda diğer sütunları işlemeye devam et
-                    continue;
-                }
-            }
-
-            // UNIQUE index kontrolü ve eklenmesi
-            for (const [colName, colDef] of Object.entries(columns)) {
-                try {
-                    // Sütun tanımında UNIQUE var mı kontrol et
-                    if (colDef.toUpperCase().includes('UNIQUE')) {
-                        // Mevcut UNIQUE index'i kontrol et
-                        const existingIndex = await queryAsync(`
-                            SELECT INDEX_NAME
-                            FROM INFORMATION_SCHEMA.STATISTICS
-                            WHERE TABLE_NAME = '${tableName}' 
-                            AND COLUMN_NAME = '${colName}' 
-                            AND TABLE_SCHEMA = DATABASE()
-                            AND NON_UNIQUE = 0;
-                        `);
-
-                        if (existingIndex.length === 0) {
-                            // UNIQUE index yoksa ekle
-                            const indexName = `uq_${tableName}_${colName}`;
-                            console.log(`${tableName} tablosuna ${colName} için UNIQUE index ekleniyor...`);
-                            await queryAsync(`ALTER TABLE ${tableName} ADD UNIQUE INDEX \`${indexName}\` (\`${colName}\`);`);
-                            console.log(`${tableName} tablosuna ${colName} için UNIQUE index başarıyla eklendi.`);
-                        }
-                    }
-                } catch (indexError) {
-                    // Index zaten varsa veya başka bir hata oluşursa
-                    if (indexError.code !== 'ER_DUP_KEYNAME') {
-                        console.error(`${tableName}.${colName} için UNIQUE index eklenirken hata:`, indexError.message);
-                    }
-                    continue;
                 }
             }
         }
