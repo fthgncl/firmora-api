@@ -832,8 +832,8 @@ async function handleExternalToUser(transferData) {
 
         await queryAsync(insertQuery, [
             transferData.id,
-            user_id,
-            company_id,
+            null,
+            null,
             to_user_id,
             company_id,
             from_scope,
@@ -902,8 +902,8 @@ async function handleExternalToCompany(transferData) {
 
         await queryAsync(insertQuery, [
             transferData.id,
-            user_id,
-            company_id,
+            null,
+            null,
             null, // to_user_id yok, firmaya giriş
             company_id,
             from_scope,
