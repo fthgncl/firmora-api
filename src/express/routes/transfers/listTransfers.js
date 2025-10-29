@@ -2,7 +2,259 @@
 
 /**
  * @swagger
- * ... (Swagger kısmı aynı kalabilir, kısalttım)
+ * /transfers/list:
+ *   post:
+ *     summary: Transfer geçmişini listele
+ *     description: |
+ *       Belirtilen kriterlere göre transfer geçmişini listeler.
+ *       Kullanıcı yetkilendirmesine göre kendi geçmişini, diğer kullanıcıların geçmişini veya firma geneli geçmişi görüntüleyebilir.
+ *       
+ *       Yetki Kapsamları:
+ *       - **Own (Kendi)**: Kullanıcı kendi transfer geçmişini her zaman görüntüleyebilir
+ *       - **Other Users**: Diğer kullanıcıların geçmişini görüntülemek için `can_view_other_users_transfer_history` yetkisi gerekir
+ *       - **Company Wide**: Firma geneli geçmişi görüntülemek için `can_view_company_transfer_history` yetkisi gerekir
+ *     tags:
+ *       - Transfers
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - companyId
+ *             properties:
+ *               searchTerm:
+ *                 type: string
+ *                 description: Genel arama terimi (açıklama, notlar vb. içinde aranır)
+ *                 example: ""
+ *               entitySearch:
+ *                 type: string
+ *                 description: Varlık bazlı arama (kullanıcı ID, firma ID vb.)
+ *                 example: ""
+ *               companyId:
+ *                 type: integer
+ *                 description: Gönderici firma ID (zorunlu)
+ *                 example: 1
+ *               userId:
+ *                 type: integer
+ *                 nullable: true
+ *                 description: Gönderici kullanıcı ID (filtreleme için)
+ *                 example: null
+ *               toUserId:
+ *                 type: integer
+ *                 nullable: true
+ *                 description: Alıcı kullanıcı ID (filtreleme için)
+ *                 example: null
+ *               toUserCompanyId:
+ *                 type: integer
+ *                 nullable: true
+ *                 description: Alıcı firma ID (filtreleme için)
+ *                 example: null
+ *               transferType:
+ *                 type: string
+ *                 nullable: true
+ *                 description: Transfer tipi (örn. "internal", "external", "company")
+ *                 enum: [internal, external, company]
+ *                 example: null
+ *               status:
+ *                 type: string
+ *                 nullable: true
+ *                 description: Transfer durumu (örn. "pending", "completed", "cancelled")
+ *                 enum: [pending, completed, cancelled, failed]
+ *                 example: null
+ *               currency:
+ *                 type: string
+ *                 nullable: true
+ *                 description: Para birimi kodu (örn. "TRY", "USD", "EUR")
+ *                 example: null
+ *               fromScope:
+ *                 type: string
+ *                 nullable: true
+ *                 description: Gönderici kapsam (örn. "user", "company")
+ *                 enum: [user, company]
+ *                 example: null
+ *               toScope:
+ *                 type: string
+ *                 nullable: true
+ *                 description: Alıcı kapsam (örn. "user", "company")
+ *                 enum: [user, company]
+ *                 example: null
+ *               startDate:
+ *                 type: string
+ *                 format: date-time
+ *                 nullable: true
+ *                 description: Başlangıç tarihi (ISO 8601 formatında)
+ *                 example: null
+ *               endDate:
+ *                 type: string
+ *                 format: date-time
+ *                 nullable: true
+ *                 description: Bitiş tarihi (ISO 8601 formatında)
+ *                 example: null
+ *               limit:
+ *                 type: integer
+ *                 description: Sayfa başına kayıt sayısı
+ *                 default: 20
+ *                 minimum: 1
+ *                 maximum: 100
+ *                 example: 20
+ *               offset:
+ *                 type: integer
+ *                 description: Kaç kayıt atlanacağı (page ile birlikte kullanılmaz)
+ *                 default: 0
+ *                 minimum: 0
+ *                 example: 0
+ *               page:
+ *                 type: integer
+ *                 description: Sayfa numarası (offset yerine kullanılabilir, 1'den başlar)
+ *                 minimum: 1
+ *                 example: 1
+ *               sortBy:
+ *                 type: string
+ *                 description: Sıralama yapılacak alan
+ *                 default: created_at
+ *                 enum: [created_at, updated_at, amount, status, transfer_type]
+ *                 example: created_at
+ *               sortOrder:
+ *                 type: string
+ *                 description: Sıralama yönü
+ *                 default: DESC
+ *                 enum: [ASC, DESC]
+ *                 example: DESC
+ *     responses:
+ *       200:
+ *         description: Transfer listesi başarıyla getirildi
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Transferler başarıyla listelendi"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     transfers:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           id:
+ *                             type: integer
+ *                             description: Transfer ID
+ *                           from_user_id:
+ *                             type: integer
+ *                             description: Gönderici kullanıcı ID
+ *                           to_user_id:
+ *                             type: integer
+ *                             description: Alıcı kullanıcı ID
+ *                           from_company_id:
+ *                             type: integer
+ *                             description: Gönderici firma ID
+ *                           to_company_id:
+ *                             type: integer
+ *                             description: Alıcı firma ID
+ *                           amount:
+ *                             type: number
+ *                             format: decimal
+ *                             description: Transfer tutarı
+ *                           currency:
+ *                             type: string
+ *                             description: Para birimi
+ *                           transfer_type:
+ *                             type: string
+ *                             description: Transfer tipi
+ *                           status:
+ *                             type: string
+ *                             description: Transfer durumu
+ *                           from_scope:
+ *                             type: string
+ *                             description: Gönderici kapsam
+ *                           to_scope:
+ *                             type: string
+ *                             description: Alıcı kapsam
+ *                           description:
+ *                             type: string
+ *                             description: Transfer açıklaması
+ *                           created_at:
+ *                             type: string
+ *                             format: date-time
+ *                             description: Oluşturulma tarihi
+ *                           updated_at:
+ *                             type: string
+ *                             format: date-time
+ *                             description: Güncellenme tarihi
+ *                     total:
+ *                       type: integer
+ *                       description: Toplam kayıt sayısı
+ *                     limit:
+ *                       type: integer
+ *                       description: Sayfa başına kayıt sayısı
+ *                     offset:
+ *                       type: integer
+ *                       description: Atlanan kayıt sayısı
+ *       400:
+ *         description: Geçersiz istek parametreleri
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Firma ID zorunludur"
+ *       401:
+ *         description: Kimlik doğrulama hatası
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Token eksik veya geçersiz"
+ *       403:
+ *         description: Yetkisiz erişim
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Diğer kullanıcıların transfer geçmişini görüntüleme yetkiniz yok"
+ *       500:
+ *         description: Sunucu hatası
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Sunucu hatası"
+ *                 error:
+ *                   type: string
+ *                   description: Hata detayları
  */
 
 const express = require('express');
