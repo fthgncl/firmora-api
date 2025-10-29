@@ -540,6 +540,26 @@ router.post('/', async (req, res) => {
             });
         }
 
+        result.data.users = await Promise.all(
+            result.data.users.map(async user => {
+                const additionalData = {};
+                if (await checkUserRoles(userId, companyId, ['can_view_other_users_transfer_history'])) {
+                    const { accounts } = await getAccountsByUserId(user.id, ['balance','currency'], companyId);
+                    additionalData.balance = accounts[0]?.balance || 0;
+                    additionalData.currency = accounts[0].currency;
+                }
+
+                if (!await checkUserRoles(userId, companyId, ['personnel_manager'])) {
+                    delete user.permissions;
+                }
+
+                return { ...user, ...additionalData };
+            })
+        );
+
+
+
+
         if (await checkUserRoles(userId, companyId, ['can_view_other_users_transfer_history'])) {
             result.data.users = await Promise.all(
                 result.data.users.map(async user => {

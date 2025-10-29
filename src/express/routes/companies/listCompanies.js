@@ -185,7 +185,7 @@ router.get('/', async (req, res) => {
         const userPermissionsData = await readUserPermissions(userId);
 
         for (const { companyId } of userPermissionsData.permissions) {
-            if (await checkUserRoles(userId, companyId, ['personnel_manager'])) {
+            if (await checkUserRoles(userId, companyId, ['personnel_manager','can_view_company_transfer_history','can_view_other_users_transfer_history'])) {
                 authorizedCompanyIds.push(companyId);
             }
         }
