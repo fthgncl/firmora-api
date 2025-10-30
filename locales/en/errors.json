@@ -98,5 +98,9 @@
     "targetUserIdRequired": "Hedef kullanıcı ID'si belirtilmelidir.",
     "companyIdRequired": "Firma ID'si belirtilmelidir.",
     "permissionsRequired": "Yetkiler belirtilmeli ve dizi formatında olmalıdır."
+  },
+  "responses": {
+    "serverError": "A server error occurred",
+    "unknownError": "An unknown error occurred"
   }
 }

@@ -44,11 +44,10 @@ function error(res, message, statusCode = 400, additionalData = {}) {
  */
 async function serverError(res, error) {
     await logError(error.message, error);
-
     return res.status(500).json({
         status: 'error',
-        message: t('responses.serverError'),
-        error: error.message || t('responses.unknownError')
+        message: t('errors:responses.serverError'),
+        error: error.message || t('errors:responses.unknownError')
     });
 }
 

@@ -98,5 +98,9 @@
     "targetUserIdRequired": "Hedef kullanıcı ID'si belirtilmelidir.",
     "companyIdRequired": "Firma ID'si belirtilmelidir.",
     "permissionsRequired": "Yetkiler belirtilmeli ve dizi formatında olmalıdır."
+  },
+  "responses": {
+    "serverError": "Sunucu hatası oluştu",
+    "unknownError": "Bilinmeyen bir hata oluştu"
   }
 }

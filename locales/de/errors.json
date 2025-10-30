@@ -98,5 +98,9 @@
     "targetUserIdRequired": "Zielbenutzer-ID muss angegeben werden.",
     "companyIdRequired": "Firmen-ID muss angegeben werden.",
     "permissionsRequired": "Berechtigungen müssen angegeben und im Array-Format sein."
+  },
+  "responses": {
+    "serverError": "Serverfehler aufgetreten",
+    "unknownError": "Unbekannter Fehler ist aufgetreten",
   }
 }
