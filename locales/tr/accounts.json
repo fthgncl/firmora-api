@@ -18,5 +18,16 @@
     "userIdRequired": "Kullanıcı ID'si gereklidir",
     "noAccountsFound": "Kullanıcıya ait hesap bulunamadı",
     "error": "Hesaplar getirilirken hata oluştu"
+  },
+  "getById": {
+    "error": "Hesap getirilirken hata oluştu",
+    "success": "Hesap başarıyla getirildi",
+    "accountIdRequired": "Hesap ID'si gereklidir",
+    "invalidFieldsLog": "getById fonksiyonunda geçersiz alanlar istendi",
+    "validFieldsRequired": "En az bir geçerli alan belirtilmelidir",
+    "notFound": "Hesap bulunamadı",
+    "userFetchError": "Kullanıcı bilgileri getirilirken hata oluştu",
+    "companyFetchError": "Firma bilgileri getirilirken hata oluştu",
+    "unauthorized": "Bu hesaba erişim yetkiniz yok"
   }
 }

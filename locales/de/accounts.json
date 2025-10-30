@@ -18,5 +18,16 @@
     "userIdRequired": "Benutzer-ID ist erforderlich",
     "noAccountsFound": "Keine Konten für Benutzer gefunden",
     "error": "Fehler beim Abrufen der Konten"
-  }
+  },
+    "getById": {
+        "error": "Fehler beim Abrufen des Kontos",
+        "success": "Konto erfolgreich abgerufen",
+        "accountIdRequired": "Konto-ID ist erforderlich",
+        "invalidFieldsLog": "Ungültige Felder in der Funktion getById angefordert",
+        "validFieldsRequired": "Mindestens ein gültiges Feld muss angegeben werden",
+        "notFound": "Konto nicht gefunden",
+        "userFetchError": "Fehler beim Abrufen der Benutzerinformationen",
+        "companyFetchError": "Fehler beim Abrufen der Unternehmensinformationen",
+        "unauthorized": "Sie sind nicht berechtigt, auf dieses Konto zuzugreifen"
+    }
 }

@@ -18,5 +18,16 @@
     "userIdRequired": "User ID is required",
     "noAccountsFound": "No accounts found for user",
     "error": "Error occurred while retrieving accounts"
+  },
+  "getById": {
+    "error": "Error occurred while retrieving account",
+    "success": "Account retrieved successfully",
+    "accountIdRequired": "Account ID is required",
+    "invalidFieldsLog": "Invalid fields requested in getById function",
+    "validFieldsRequired": "At least one valid field must be specified",
+    "notFound": "Account not found",
+    "userFetchError": "Error occurred while retrieving user information",
+    "companyFetchError": "Error occurred while retrieving company information",
+    "unauthorized": "You are not authorized to access this account"
   }
 }
