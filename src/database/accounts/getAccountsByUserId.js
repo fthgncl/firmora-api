@@ -67,7 +67,10 @@ const getAccountsByUserId = async (userId, fields = null, companyId = null) => {
                 if (account.company_id) {
                     try {
                         const company = await getCompanyById(account.company_id, ['id', 'company_name', 'sector', 'currency']);
+                        account.name = account.name || `${user.name} ${user.surname}`.trim();
                         delete account.company_id;
+
+
                         return {
                             ...account,
                             company: company || null
