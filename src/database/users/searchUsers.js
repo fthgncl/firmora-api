@@ -1,6 +1,7 @@
 const { queryAsync } = require('../utils/connection');
 const { t } = require('../../config/i18nConfig');
 const { readUserPermissions } = require('../../utils/permissionsManager');
+const getAccountsByUserId = require('../accounts/getAccountsByUserId');
 
 /**
  * Kullanıcıları arar ve sayfalama ile sonuçları döndürür
@@ -110,20 +111,34 @@ async function searchUsers(options = {}) {
         const usersParams = [...params, validLimit, validOffset];
         const users = await queryAsync(usersQuery, usersParams);
 
-        // Her kullanıcı için yetki kodlarını al
+        // Her kullanıcı için yetki kodlarını ve hesap ID'sini al
         const usersWithPermissions = await Promise.all(
             users.map(async (user) => {
                 try {
                     const permissionsResult = await readUserPermissions(user.id, companyId);
+
+                    // Kullanıcının hesap ID'sini al
+                    let accountId = null;
+                    try {
+                        const accountsResult = await getAccountsByUserId(user.id, ['id'], companyId);
+                        if (accountsResult.accounts && accountsResult.accounts.length > 0) {
+                            accountId = accountsResult.accounts[0].id;
+                        }
+                    } catch (accountError) {
+                        // Hesap bilgisi alınamazsa null olarak bırak
+                    }
+
                     return {
                         ...user,
-                        permissions: permissionsResult.permissions || []
+                        permissions: permissionsResult.permissions || [],
+                        accountId: accountId
                     };
                 } catch (error) {
                     // Yetki okuma hatası durumunda boş array döndür
                     return {
                         ...user,
-                        permissionCodes: []
+                        permissionCodes: [],
+                        accountId: null
                     };
                 }
             })
