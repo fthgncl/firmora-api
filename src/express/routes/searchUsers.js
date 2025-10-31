@@ -546,7 +546,7 @@ router.post('/', async (req, res) => {
                 if (await checkUserRoles(userId, companyId, ['can_view_other_users_transfer_history'])) {
                     const { accounts } = await getAccountsByUserId(user.id, ['balance','currency'], companyId);
                     additionalData.balance = accounts[0]?.balance || 0;
-                    additionalData.currency = accounts[0].currency;
+                    additionalData.currency = accounts[0]?.currency || null;
                 }
 
                 if (!await checkUserRoles(userId, companyId, ['personnel_manager'])) {
@@ -565,7 +565,7 @@ router.post('/', async (req, res) => {
                 result.data.users.map(async user => {
                     const { accounts } = await getAccountsByUserId(user.id, ['balance','currency'], companyId);
                     const balance = accounts[0]?.balance || 0;
-                    const currency = accounts[0].currency;
+                    const currency = accounts[0]?.currency || null;
                     return { ...user, balance, currency };
                 })
             );
@@ -580,6 +580,7 @@ router.post('/', async (req, res) => {
         });
 
     } catch (error) {
+        console.log(error)
         const statusCode = error.status || 500;
         const message = error.message || t('users:search.error');
 
