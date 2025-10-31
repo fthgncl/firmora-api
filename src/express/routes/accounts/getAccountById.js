@@ -1,26 +1,26 @@
 /**
  * @swagger
- * /accounts/{accountId}:
- *   get:
+ * /accounts/get:
+ *   post:
  *     summary: ID'ye göre hesap bilgisi getir
- *     description: Belirtilen ID'ye sahip hesabın detaylı bilgilerini getirir. Hesap, token sahibi kullanıcıya ait olmalıdır.
+ *     description: Belirtilen ID'ye sahip hesabın detaylı bilgilerini getirir. Kullanıcının hesabı görüntüleme yetkisi olmalıdır.
  *     tags:
  *       - Accounts
- *     parameters:
- *       - in: path
- *         name: accountId
- *         required: true
- *         schema:
- *           type: string
- *         description: Hesap ID'si
- *         example: "ACC_1a2b3c4d5e6f7g8h"
- *       - in: query
- *         name: fields
- *         required: false
- *         schema:
- *           type: string
- *         description: Virgülle ayrılmış alan isimleri (opsiyonel, belirtilmezse tüm alanlar getirilir)
- *         example: "id,name,balance,currency"
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - accountId
+ *             properties:
+ *               accountId:
+ *                 type: string
+ *                 description: Hesap ID'si
+ *                 example: "ACC_1a2b3c4d5e6f7g8h"
  *     responses:
  *       200:
  *         description: Hesap bilgisi başarıyla getirildi
@@ -38,6 +38,9 @@
  *                 data:
  *                   type: object
  *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Hesap başarıyla getirildi"
  *                     account:
  *                       type: object
  *                       properties:
@@ -68,24 +71,24 @@
  *                           type: string
  *                           format: date-time
  *                           example: "2024-01-20T14:45:00Z"
- *                         company:
- *                           type: object
+ *                     company:
+ *                       type: object
+ *                       nullable: true
+ *                       description: Hesaba ait firma bilgileri
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                           example: "COM_547dc37210f0157d"
+ *                         company_name:
+ *                           type: string
+ *                           example: "Örnek Teknoloji A.Ş."
+ *                         sector:
+ *                           type: string
  *                           nullable: true
- *                           description: Hesaba ait firma bilgileri
- *                           properties:
- *                             id:
- *                               type: string
- *                               example: "COM_547dc37210f0157d"
- *                             company_name:
- *                               type: string
- *                               example: "Örnek Teknoloji A.Ş."
- *                             sector:
- *                               type: string
- *                               nullable: true
- *                               example: "Teknoloji"
- *                             currency:
- *                               type: string
- *                               example: "TRY"
+ *                           example: "Teknoloji"
+ *                         currency:
+ *                           type: string
+ *                           example: "TRY"
  *       400:
  *         description: Geçersiz istek parametreleri
  *         content:
@@ -113,7 +116,7 @@
  *                   type: string
  *                   example: "Geçersiz token"
  *       403:
- *         description: Yetkisiz erişim - Hesap başka bir kullanıcıya ait
+ *         description: Yetkisiz erişim - Kullanıcının hesabı görüntüleme yetkisi yok
  *         content:
  *           application/json:
  *             schema:
