@@ -99,6 +99,9 @@ const permissions = {
     }
 };
 
+// TODO: Firma gideri ekleme izni vb. izinler ekle
+// TODO: Kişisel gider ekleme izni vb. izinler ekle
+
 function getTranslatedPermissions(lang = process.env.DEFAULT_LANGUAGE) {
     const translatedPermissions = {};
     for (const [key, permission] of Object.entries(permissions)) {
