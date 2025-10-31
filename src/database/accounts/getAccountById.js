@@ -103,7 +103,6 @@ const getAccountById = async (accountId, fields = null) => {
 
         // Gereksiz alanları temizle
         delete account.company_id;
-        delete account.user_id;
 
         return {
             status: 'success',
