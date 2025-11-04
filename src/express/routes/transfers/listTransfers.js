@@ -275,7 +275,7 @@ const isNonEmpty = v => v !== null && v !== undefined && `${v}`.trim() !== '';
  * - otherUsers: başka bir kullanıcının geçmişi hedefleniyor mu?
  * - companyWide: kullanıcı filtresi olmadan firma geneli mi isteniyor?
  */
-function resolveAccessScope(initiatorUserId, {userId, toUserId, companyId, toUserCompanyId,}) {
+function resolveAccessScope(initiatorUserId, {userId, toUserId, companyId, toUserCompanyId, entitySearch}) {
     // Kullanıcı filtreleri set mi?
     const hasUserFilter =
         (isNonEmpty(userId) && userId !== initiatorUserId) ||
@@ -300,7 +300,7 @@ function resolveAccessScope(initiatorUserId, {userId, toUserId, companyId, toUse
         true;
 
     // own: yalnızca kendi geçmişi hedefleniyor (explicit veya implicit)
-    const own = targetsOwnExplicit && !hasUserFilter;
+    const own = initiatorUserId === entitySearch || (targetsOwnExplicit && !hasUserFilter);
 
     // otherUsers: başkalarının geçmişi hedefleniyor
     const otherUsers = hasUserFilter;
@@ -337,7 +337,7 @@ async function authorizeAndNormalizeFilters(initiatorUserId, body) {
     } = resolveAccessScope(initiatorUserId, body);
 
     // 1) Kendi geçmişi her zaman serbest
-    if (own && !otherUsers && !companyWide) {
+    if (own && !otherUsers) {
         return body; // değişiklik yok
     }
 
