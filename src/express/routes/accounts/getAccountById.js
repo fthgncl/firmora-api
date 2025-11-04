@@ -177,7 +177,7 @@ router.post('/get', async (req, res) => {
         const result = await getAccountById(accountId);
         const {data:{account,company}} = result;
 
-        if ( !await checkUserRoles(userId, company.id, ['can_view_other_users_transfer_history'] ) ){
+        if ( account.user_id !== userId && !await checkUserRoles(userId, company.id, ['can_view_other_users_transfer_history'] ) ){
             return responseHelper.error(res, t('accounts:getById.unauthorized'), 403);
         }
 
