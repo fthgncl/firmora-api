@@ -193,6 +193,10 @@ async function listTransfers(options = {}) {
                 transfers.transfer_type,
                 transfers.sender_final_balance,
                 transfers.receiver_final_balance,
+                CASE 
+                    WHEN transfers.files IS NULL THEN 0
+                    ELSE JSON_LENGTH(transfers.files)
+                END AS files_count,
                 sender_user.name AS sender_name,
                 sender_user.surname AS sender_surname,
                 sender_company.company_name AS sender_company_name,
