@@ -102,5 +102,16 @@
   "responses": {
     "serverError": "Serverfehler aufgetreten",
     "unknownError": "Unbekannter Fehler ist aufgetreten",
+  },
+  "upload": {
+    "missingUploadType": "Bitte geben Sie den Upload-Typ an.",
+    "invalidUploadType": "Ungültiger Upload-Typ.",
+    "noFile": "Keine Datei zum Hochladen gefunden.",
+    "emptyFile": "Die hochgeladene Datei ist leer.",
+    "invalidFileType": "Ungültiger Dateityp.",
+    "fileSizeExceeded": "Dateigrößenlimit überschritten. Maximal zulässige Größe: {{maxSize}} MB.",
+    "uploadFailed": "Datei-Upload fehlgeschlagen.",
+    "allFilesFailed": "Keine der Dateien konnte hochgeladen werden.",
+    "maxFileCountExceeded": "Maximale Dateianzahl überschritten. Maximal zulässige Dateianzahl: {{maxCount}}."
   }
 }

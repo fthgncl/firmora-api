@@ -9,7 +9,7 @@
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -82,6 +82,12 @@
  *                 description: Sistem dışı alıcı adı (opsiyonel)
  *                 maxLength: 120
  *                 example: "Harici Tedarikçi A.Ş."
+ *               attachments:
+ *                 type: array
+ *                 description: Transfer ile ilgili ekler (makbuz, fatura vb. - opsiyonel, maksimum dosya sayısı uploadConfig'de tanımlı)
+ *                 items:
+ *                   type: string
+ *                   format: binary
  *     responses:
  *       200:
  *         description: Transfer başarıyla oluşturuldu
@@ -128,24 +134,37 @@ const router = express.Router();
 const createTransfer = require('../../../database/transfers/createTransfer');
 const responseHelper = require('../../utils/responseHelper');
 const { t } = require('../../../config/i18nConfig');
+const { uploadConfig } = require('../../config/uploadConfig');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
-router.post('/create', async (req, res) => {
+router.post('/create',upload.array('attachments'), async (req, res) => {
     try {
         const userId = req.tokenPayload?.id;
         const transferData = req.body;
+        const uploadedFiles = req.files || null;
 
         // Token kontrolü
         if (!userId) {
             return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
 
-        // Firma ID kontrolü
-        if (!transferData?.company_id) {
-            return responseHelper.error(res, t('companies:companyIdRequired'), 400);
+        // Dosya sayısı kontrolü
+        if (uploadedFiles && uploadedFiles.length > uploadConfig.receipt.maxFileCount) {
+            return responseHelper.error(
+                res, 
+                t('errors:upload.maxFileCountExceeded', { maxCount: uploadConfig.receipt.maxFileCount }), 
+                400
+            );
         }
 
-        // Transfer oluştur
-        const result = await createTransfer(req.body, userId, transferData.company_id);
+        // Firma ID kontrolü
+        if (!transferData?.company_id) {
+            return responseHelper.error(res, t('companies:get.companyIdRequired'), 400);
+        }
+
+        // Transfer oluştur - dosyaları da parametre olarak gönder
+        const result = await createTransfer(transferData, userId, transferData.company_id, uploadedFiles);
 
         return responseHelper.success(res, {
             message: result.message,
@@ -153,6 +172,8 @@ router.post('/create', async (req, res) => {
         });
 
     } catch (error) {
+
+        console.log('Create Transfer Error:', error);
 
         if (error.status) {
             return responseHelper.error(res, error.message, error.status);

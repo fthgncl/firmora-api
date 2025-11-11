@@ -102,5 +102,16 @@
   "responses": {
     "serverError": "Sunucu hatası oluştu",
     "unknownError": "Bilinmeyen bir hata oluştu"
+  },
+  "upload": {
+    "missingUploadType": "Lütfen yükleme türünü belirtin.",
+    "invalidUploadType": "Geçersiz yükleme türü.",
+    "noFile": "Yüklenecek dosya bulunamadı.",
+    "emptyFile": "Yüklenen dosya boş.",
+    "invalidFileType": "Geçersiz dosya türü.",
+    "fileSizeExceeded": "Dosya boyutu sınırı aşıldı. Maksimum izin verilen boyut: {{maxSize}} MB.",
+    "uploadFailed": "Dosya yükleme işlemi başarısız.",
+    "allFilesFailed": "Hiç bir dosya yüklenemedi.",
+    "maxFileCountExceeded": "Maksimum dosya sayısı aşıldı. İzin verilen maksimum dosya sayısı: {{maxCount}}."
   }
 }

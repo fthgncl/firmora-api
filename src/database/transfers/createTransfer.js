@@ -9,10 +9,11 @@ const {
     validateAmount,
     validateCompanyBalance
 } = require("../utils/validators");
+const {handleFileUpload} = require("../../express/utils/fileUploadHandler");
 const {deductCompanyBalance, addCompanyBalance, getCompanyById} = require("../companies");
 const {addAccountBalance, deductAccountBalance, getAccountsByUserId} = require("../accounts");
 
-const createTransfer = async (transferData, userId, companyId) => {
+const createTransfer = async (transferData, userId, companyId, uploadedFiles) => {
 
     const {transfer_type, currency} = transferData;
 
@@ -26,11 +27,35 @@ const createTransfer = async (transferData, userId, companyId) => {
 
     await calculateFinalBalances(transferData, userId, companyId)
 
-    console.log(transferData);
-
     transferData.id = await generateUniqueId('TRF', 'transfers');
     transferData.user_id = userId;
     transferData.company_id = companyId;
+
+    // Dosya yükleme işlemi
+    let uploadedFilePaths = null;
+    if (uploadedFiles && uploadedFiles.length > 0) {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const targetSubDir = `${year}/${month}`;
+
+        try {
+            const uploadResult = await handleFileUpload(
+                uploadedFiles,
+                'receipt',
+                targetSubDir
+            );
+
+            if (uploadResult.uploadedFiles && uploadResult.uploadedFiles.length > 0) {
+                uploadedFilePaths = uploadResult.uploadedFiles.map(file => file.relativePath);
+            }
+        } catch (error) {
+            console.error('Dosya yükleme hatası:', error);
+        }
+    }
+
+    transferData.files = uploadedFilePaths ? JSON.stringify(uploadedFilePaths) : null;
+
 
     try {
         await queryAsync('START TRANSACTION');
@@ -157,9 +182,9 @@ async function handleCompanyToUserSame(transferData) {
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
-                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
-                                   sender_final_balance, receiver_final_balance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status,
+                                   sender_final_balance, receiver_final_balance, files)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -175,7 +200,8 @@ async function handleCompanyToUserSame(transferData) {
             'company_to_user_same',
             transferData.description || null,
             transferData.sender_final_balance,
-            transferData.receiver_final_balance
+            transferData.receiver_final_balance,
+            transferData.files
         ]);
 
         return {
@@ -236,9 +262,9 @@ async function handleCompanyToUserOther(transferData) {
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
-                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
-                                   sender_final_balance, receiver_final_balance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status,
+                                   sender_final_balance, receiver_final_balance, files)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -254,7 +280,8 @@ async function handleCompanyToUserOther(transferData) {
             'company_to_user_other',
             transferData.description || null,
             transferData.sender_final_balance,
-            transferData.receiver_final_balance
+            transferData.receiver_final_balance,
+            transferData.files
         ]);
 
         return {
@@ -311,9 +338,9 @@ async function handleCompanyToCompanyOther(transferData) {
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
-                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
-                                   sender_final_balance, receiver_final_balance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status,
+                                   sender_final_balance, receiver_final_balance, files)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -329,7 +356,8 @@ async function handleCompanyToCompanyOther(transferData) {
             'company_to_company_other',
             transferData.description || null,
             transferData.sender_final_balance,
-            transferData.receiver_final_balance
+            transferData.receiver_final_balance,
+            transferData.files
         ]);
 
         return {
@@ -387,9 +415,9 @@ async function handleUserToUserSame(transferData) {
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
-                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
-                                   sender_final_balance, receiver_final_balance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status,
+                                   sender_final_balance, receiver_final_balance, files)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -405,7 +433,8 @@ async function handleUserToUserSame(transferData) {
             'user_to_user_same',
             transferData.description || null,
             transferData.sender_final_balance,
-            transferData.receiver_final_balance
+            transferData.receiver_final_balance,
+            transferData.files
         ]);
 
         return {
@@ -471,9 +500,9 @@ async function handleUserToUserOther(transferData) {
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
-                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
-                                   sender_final_balance, receiver_final_balance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status,
+                                   sender_final_balance, receiver_final_balance, files)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -489,7 +518,8 @@ async function handleUserToUserOther(transferData) {
             'user_to_user_other',
             transferData.description || null,
             transferData.sender_final_balance,
-            transferData.receiver_final_balance
+            transferData.receiver_final_balance,
+            transferData.files
         ]);
 
         return {
@@ -536,9 +566,9 @@ async function handleUserToCompanySame(transferData) {
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
-                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
-                                   sender_final_balance, receiver_final_balance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status,
+                                   sender_final_balance, receiver_final_balance, files)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -554,7 +584,8 @@ async function handleUserToCompanySame(transferData) {
             'user_to_company_same',
             transferData.description || null,
             transferData.sender_final_balance,
-            transferData.receiver_final_balance
+            transferData.receiver_final_balance,
+            transferData.files
         ]);
 
         return {
@@ -610,9 +641,9 @@ async function handleUserToCompanyOther(transferData) {
         // Transfer kaydını veritabanına ekle
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
-                                   from_scope, to_scope, amount, currency, transfer_type, description, status, 
-                                   sender_final_balance, receiver_final_balance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
+                                   from_scope, to_scope, amount, currency, transfer_type, description, status,
+                                   sender_final_balance, receiver_final_balance, files)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -628,7 +659,8 @@ async function handleUserToCompanyOther(transferData) {
             'user_to_company_other',
             transferData.description || null,
             transferData.sender_final_balance,
-            transferData.receiver_final_balance
+            transferData.receiver_final_balance,
+            transferData.files
         ]);
 
         return {
@@ -680,8 +712,8 @@ async function handleUserToExternal(transferData) {
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, to_external_name, description,
-                                   status, sender_final_balance, receiver_final_balance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
+                                   status, sender_final_balance, receiver_final_balance, files)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -698,7 +730,8 @@ async function handleUserToExternal(transferData) {
             to_external_name,
             transferData.description || null,
             transferData.sender_final_balance,
-            transferData.receiver_final_balance
+            transferData.receiver_final_balance,
+            transferData.files
         ]);
 
         return {
@@ -751,8 +784,8 @@ async function handleCompanyToExternal(transferData) {
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, to_external_name, description,
-                                   status, sender_final_balance, receiver_final_balance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
+                                   status, sender_final_balance, receiver_final_balance, files)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -769,7 +802,8 @@ async function handleCompanyToExternal(transferData) {
             to_external_name,
             transferData.description || null,
             transferData.sender_final_balance,
-            transferData.receiver_final_balance
+            transferData.receiver_final_balance,
+            transferData.files
         ]);
 
         return {
@@ -826,8 +860,8 @@ async function handleExternalToUser(transferData) {
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, from_external_name,
-                                   description, status, sender_final_balance, receiver_final_balance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
+                                   description, status, sender_final_balance, receiver_final_balance, files)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -844,7 +878,8 @@ async function handleExternalToUser(transferData) {
             from_external_name,
             transferData.description || null,
             transferData.sender_final_balance,
-            transferData.receiver_final_balance
+            transferData.receiver_final_balance,
+            transferData.files
         ]);
 
         return {
@@ -896,8 +931,8 @@ async function handleExternalToCompany(transferData) {
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, from_external_name,
-                                   description, status, sender_final_balance, receiver_final_balance)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)
+                                   description, status, sender_final_balance, receiver_final_balance, files)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -914,7 +949,8 @@ async function handleExternalToCompany(transferData) {
             from_external_name,
             transferData.description || null,
             transferData.sender_final_balance,
-            transferData.receiver_final_balance
+            transferData.receiver_final_balance,
+            transferData.files
         ]);
 
         return {

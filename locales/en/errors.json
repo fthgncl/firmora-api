@@ -102,5 +102,16 @@
   "responses": {
     "serverError": "A server error occurred",
     "unknownError": "An unknown error occurred"
+  },
+  "upload": {
+    "missingUploadType": "Please specify the upload type.",
+    "invalidUploadType": "Invalid upload type.",
+    "noFile": "No file found to upload.",
+    "emptyFile": "The uploaded file is empty.",
+    "invalidFileType": "Invalid file type.",
+    "fileSizeExceeded": "File size limit exceeded. Maximum allowed size: {{maxSize}} MB.",
+    "uploadFailed": "File upload failed.",
+    "allFilesFailed": "None of the files could be uploaded.",
+    "maxFileCountExceeded": "Maximum file count exceeded. Maximum allowed file count: {{maxCount}}."
   }
 }

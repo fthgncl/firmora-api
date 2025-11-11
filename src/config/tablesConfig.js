@@ -25,8 +25,6 @@ module.exports = {
         company_id: 'VARCHAR(36) NOT NULL',
         permissions: 'VARCHAR(100) NOT NULL DEFAULT \'\' CHECK (permissions REGEXP \'^[a-zA-Z]*$\')',
         updated_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
-        // Not: user_id + company_id için composite UNIQUE eklemek lazım
-        // ALTER TABLE user_company_permissions ADD UNIQUE uq_user_company (user_id, company_id);
     },
     user_accounts: {
         id: 'VARCHAR(36) NOT NULL UNIQUE',
@@ -53,6 +51,7 @@ module.exports = {
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
         sender_final_balance: 'DECIMAL(15,2) NULL DEFAULT NULL',
         receiver_final_balance: 'DECIMAL(15,2) NULL DEFAULT NULL',
+        files: 'TEXT NULL DEFAULT NULL',
 
         // transfer_type: transfer türü
         // - company_to_user_same      – Firma hesabından aynı firmadaki bir kullanıcıya
