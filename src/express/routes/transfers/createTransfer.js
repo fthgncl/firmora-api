@@ -135,10 +135,9 @@ const createTransfer = require('../../../database/transfers/createTransfer');
 const responseHelper = require('../../utils/responseHelper');
 const { t } = require('../../../config/i18nConfig');
 const { uploadConfig } = require('../../config/uploadConfig');
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const uploadMiddleware = require('../../middleware/uploadMiddleware');
 
-router.post('/create',upload.array('attachments'), async (req, res) => {
+router.post('/create', uploadMiddleware(uploadConfig.receipt.maxFileCount), async (req, res) => {
     try {
         const userId = req.tokenPayload?.id;
         const transferData = req.body;
@@ -147,15 +146,6 @@ router.post('/create',upload.array('attachments'), async (req, res) => {
         // Token kontrolü
         if (!userId) {
             return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
-        }
-
-        // Dosya sayısı kontrolü
-        if (uploadedFiles && uploadedFiles.length > uploadConfig.receipt.maxFileCount) {
-            return responseHelper.error(
-                res, 
-                t('errors:upload.maxFileCountExceeded', { maxCount: uploadConfig.receipt.maxFileCount }), 
-                400
-            );
         }
 
         // Firma ID kontrolü
