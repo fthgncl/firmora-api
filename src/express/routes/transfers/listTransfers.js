@@ -183,6 +183,10 @@
  *                           description:
  *                             type: string
  *                             description: Transfer açıklaması
+ *                           files_count:
+ *                             type: integer
+ *                             description: Transfer ile ilişkili dosya sayısı
+ *                             example: 3
  *                           created_at:
  *                             type: string
  *                             format: date-time
