@@ -9,7 +9,9 @@
   "getById": {
     "transferIdRequired": "Transfer ID'si gereklidir",
     "invalidTransferId": "Geçersiz transfer ID formatı",
-    "notFound": "Transfer bulunamadı"
+    "notFound": "Transfer bulunamadı",
+    "invalidFieldsLog": "Geçersiz alanlar: {{fields}}",
+    "validFieldsRequired": "En az bir geçerli alan belirtilmelidir"
   },
   "list": {
     "success": "Transferler listesi başarıyla alındı",

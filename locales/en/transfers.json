@@ -9,7 +9,9 @@
   "getById": {
     "transferIdRequired": "Transfer ID is required.",
     "invalidTransferId": "Invalid transfer ID format.",
-    "notFound": "Transfer not found."
+    "notFound": "Transfer not found.",
+    "invalidFieldsLog": "Invalid fields: {{fields}}",
+    "validFieldsRequired": "At least one valid field must be specified"
   },
   "list": {
     "success": "Transfer list retrieved successfully.",

@@ -9,7 +9,9 @@
   "getById": {
     "transferIdRequired": "Transfer-ID ist erforderlich.",
     "invalidTransferId": "Ungültiges Format der Transfer-ID.",
-    "notFound": "Überweisung wurde nicht gefunden."
+    "notFound": "Überweisung wurde nicht gefunden.",
+    "invalidFieldsLog": "Ungültige Felder: {{fields}}",
+    "validFieldsRequired": "Es muss mindestens ein gültiges Feld angegeben werden"
   },
   "list": {
     "success": "Überweisungsliste erfolgreich abgerufen.",
