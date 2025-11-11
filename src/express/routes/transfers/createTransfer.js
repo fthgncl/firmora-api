@@ -163,8 +163,6 @@ router.post('/create', uploadMiddleware(uploadConfig.receipt.maxFileCount), asyn
 
     } catch (error) {
 
-        console.log('Create Transfer Error:', error);
-
         if (error.status) {
             return responseHelper.error(res, error.message, error.status);
         }
