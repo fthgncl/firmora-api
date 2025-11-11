@@ -50,7 +50,7 @@ const createTransfer = async (transferData, userId, companyId, uploadedFiles) =>
                 uploadedFilePaths = uploadResult.uploadedFiles.map(file => file.relativePath);
             }
         } catch (error) {
-            console.error('Dosya yükleme hatası:', error);
+            throw new Error(t('errors:upload.upload_failed') + ' ' + (error.message || ''));
         }
     }
 

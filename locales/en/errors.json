@@ -112,6 +112,7 @@
     "fileSizeExceeded": "File size limit exceeded. Maximum allowed size: {{maxSize}} MB.",
     "uploadFailed": "File upload failed.",
     "allFilesFailed": "None of the files could be uploaded.",
-    "maxFileCountExceeded": "Maximum file count exceeded. Maximum allowed file count: {{maxCount}}."
+    "maxFileCountExceeded": "Maximum file count exceeded. Maximum allowed file count: {{maxCount}}.",
+    "upload_failed": "File upload failed."
   }
 }

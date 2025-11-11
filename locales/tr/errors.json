@@ -112,6 +112,7 @@
     "fileSizeExceeded": "Dosya boyutu sınırı aşıldı. Maksimum izin verilen boyut: {{maxSize}} MB.",
     "uploadFailed": "Dosya yükleme işlemi başarısız.",
     "allFilesFailed": "Hiç bir dosya yüklenemedi.",
-    "maxFileCountExceeded": "Maksimum dosya sayısı aşıldı. İzin verilen maksimum dosya sayısı: {{maxCount}}."
+    "maxFileCountExceeded": "Maksimum dosya sayısı aşıldı. İzin verilen maksimum dosya sayısı: {{maxCount}}.",
+    "upload_failed": "Dosya yükleme başarısız."
   }
 }

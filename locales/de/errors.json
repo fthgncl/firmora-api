@@ -112,6 +112,7 @@
     "fileSizeExceeded": "Dateigrößenlimit überschritten. Maximal zulässige Größe: {{maxSize}} MB.",
     "uploadFailed": "Datei-Upload fehlgeschlagen.",
     "allFilesFailed": "Keine der Dateien konnte hochgeladen werden.",
-    "maxFileCountExceeded": "Maximale Dateianzahl überschritten. Maximal zulässige Dateianzahl: {{maxCount}}."
+    "maxFileCountExceeded": "Maximale Dateianzahl überschritten. Maximal zulässige Dateianzahl: {{maxCount}}.",
+    "upload_failed": "Datei-Upload fehlgeschlagen."
   }
 }
