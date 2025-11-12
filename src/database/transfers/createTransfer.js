@@ -25,6 +25,9 @@ const createTransfer = async (transferData, userId, companyId, uploadedFiles) =>
         throw new Error(t('errors:transfer.currency_required'));
     }
 
+    // Amount değerini sayıya dönüştür
+    transferData.amount = parseFloat(transferData.amount);
+
     await calculateFinalBalances(transferData, userId, companyId)
 
     transferData.id = await generateUniqueId('TRF', 'transfers');
