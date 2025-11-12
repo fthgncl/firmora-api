@@ -11,7 +11,8 @@
     "invalidTransferId": "Geçersiz transfer ID formatı",
     "notFound": "Transfer bulunamadı",
     "invalidFieldsLog": "Geçersiz alanlar: {{fields}}",
-    "validFieldsRequired": "En az bir geçerli alan belirtilmelidir"
+    "validFieldsRequired": "En az bir geçerli alan belirtilmelidir",
+    "success": "Transfer başarıyla alındı"
   },
   "list": {
     "success": "Transferler listesi başarıyla alındı",

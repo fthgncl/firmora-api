@@ -11,7 +11,8 @@
     "invalidTransferId": "Invalid transfer ID format.",
     "notFound": "Transfer not found.",
     "invalidFieldsLog": "Invalid fields: {{fields}}",
-    "validFieldsRequired": "At least one valid field must be specified"
+    "validFieldsRequired": "At least one valid field must be specified",
+    "success": "Transfer retrieved successfully."
   },
   "list": {
     "success": "Transfer list retrieved successfully.",

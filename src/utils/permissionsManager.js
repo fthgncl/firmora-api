@@ -379,6 +379,47 @@ async function canUserAccessCompanySettings(userId, companyId) {
     }
 }
 
+/**
+ * Transfer'a erişim yetkisi kontrolü yapar
+ * @param {string} userId - Kullanıcı ID
+ * @param {Object} transfer - Transfer nesnesi
+ * @returns {Promise<boolean>} Erişim yetkisi var mı?
+ */
+const canUserViewTransfer = async (userId, transfer) => {
+    const {user_id, company_id, to_user_id, to_user_company_id, from_scope, to_scope} = transfer;
+
+    // Kullanıcı transfer'ın gönderen veya alıcısı mı?
+    if (user_id === userId || to_user_id === userId) {
+        return true;
+    }
+
+    // Gönderen firma ise, kullanıcı o firmada yetkili mi?
+    if (from_scope === 'company') {
+        if (await checkUserRoles(userId, company_id, ['can_view_company_transfer_history'])) {
+            return true;
+        }
+    }
+
+    // Alıcı firma ise, kullanıcı o firmada yetkili mi?
+    if (to_scope === 'company') {
+        if (await checkUserRoles(userId, to_user_company_id, ['can_view_company_transfer_history'])) {
+            return true;
+        }
+    }
+
+    // Kullanıcı gönderen firmada diğer kullanıcıların transfer geçmişini görme yetkisine sahip mi?
+    if (await checkUserRoles(userId, company_id, ['can_view_other_users_transfer_history'])) {
+        return true;
+    }
+
+    // Kullanıcı alıcı firmada transfer geçmişini görme yetkisine sahip mi?
+    if (to_user_company_id && await checkUserRoles(userId, to_user_company_id, ['can_view_company_transfer_history'])) {
+        return true;
+    }
+
+    return false;
+};
 
 
-module.exports = {readUserPermissions, checkUserRoles, checkRoles, addUserPermissions, setUserPermissions, removeUserPermissions, canUserCreateCompany, canUserSearchUsers, canUserAccessCompanySettings};
+
+module.exports = {readUserPermissions, checkUserRoles, checkRoles, addUserPermissions, setUserPermissions, removeUserPermissions, canUserCreateCompany, canUserSearchUsers, canUserAccessCompanySettings, canUserViewTransfer};

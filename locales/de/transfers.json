@@ -11,7 +11,8 @@
     "invalidTransferId": "Ungültiges Format der Transfer-ID.",
     "notFound": "Überweisung wurde nicht gefunden.",
     "invalidFieldsLog": "Ungültige Felder: {{fields}}",
-    "validFieldsRequired": "Es muss mindestens ein gültiges Feld angegeben werden"
+    "validFieldsRequired": "Es muss mindestens ein gültiges Feld angegeben werden",
+    "success": "Überweisung erfolgreich abgerufen."
   },
   "list": {
     "success": "Überweisungsliste erfolgreich abgerufen.",

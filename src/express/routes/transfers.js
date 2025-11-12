@@ -5,6 +5,7 @@ const router = express.Router();
 const createTransferRoute = require('./transfers/createTransfer');
 const listTransfersRoute = require('./transfers/listTransfers');
 // const getTransferByIdRoute = require('./transfers/getTransferById');
+const getTransferByIdRoute = require('./transfers/getTransferById');
 // const updateTransferRoute = require('./transfers/updateTransfer');
 // const deleteTransferRoute = require('./transfers/deleteTransfer');
 
@@ -12,6 +13,7 @@ const listTransfersRoute = require('./transfers/listTransfers');
 router.use('/', createTransferRoute);
 router.use('/', listTransfersRoute);
 // router.use('/', getTransferByIdRoute);
+router.use('/', getTransferByIdRoute);
 // router.use('/', updateTransferRoute);
 // router.use('/', deleteTransferRoute);
 
