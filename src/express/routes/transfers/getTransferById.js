@@ -248,6 +248,7 @@ const {t} = require('../../../config/i18nConfig');
 const responseHelper = require('../../utils/responseHelper');
 const {canUserViewTransfer} = require('../../../utils/permissionsManager');
 const getUserById = require("../../../database/users/getUserById");
+const filterTransfersByUserPermissions = require("../../../database/utils/filterTransfersByUserPermissions");
 
 router.post('/get', async (req, res) => {
     try {
@@ -267,6 +268,10 @@ router.post('/get', async (req, res) => {
         // Transfer bilgilerini çek
         const transfer = await getTransferById(transferId);
 
+        if (!await canUserViewTransfer(userId, transfer)) {
+            return responseHelper.error(res, t('errors:permissions.cannotViewOtherUserTransferHistory'), 403);
+        }
+
         if (!transfer) {
             return responseHelper.error(res, t('transfers:getById.notFound'), 404);
         }
@@ -274,16 +279,13 @@ router.post('/get', async (req, res) => {
         let sender = null;
         if (transfer.user_id) {
             sender = await getUserById(transfer.user_id, ['name', 'surname']);
+            await filterTransfersByUserPermissions(userId,transfer);
         }
+
 
         let receiver = null;
         if (transfer.user_id) {
             receiver = await getUserById(transfer.to_user_id, ['name', 'surname']);
-        }
-
-        // Yetki kontrolü
-        if (!await canUserViewTransfer(userId, transfer)) {
-            return responseHelper.error(res, t('errors:permissions.cannotViewOtherUserTransferHistory'), 403);
         }
 
         return responseHelper.success(res, {
