@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /transfers/get-transfer:
+ * /transfers/get:
  *   post:
  *     summary: Transfer detaylarını getir
  *     description: |
@@ -37,114 +37,143 @@
  *                   example: "success"
  *                 message:
  *                   type: string
- *                   example: "Transfer bilgileri başarıyla getirildi"
+ *                   example: "Transfer başarıyla alındı"
  *                 data:
  *                   type: object
  *                   properties:
- *                     id:
- *                       type: string
- *                       description: Transfer ID
- *                       example: "TRF_6370ee7e94b078d0"
- *                     user_id:
- *                       type: string
+ *                     transfer:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                           description: Transfer ID
+ *                           example: "TRF_8faff14f18396124"
+ *                         user_id:
+ *                           type: string
+ *                           nullable: true
+ *                           description: Gönderen kullanıcı ID (internal transferlerde)
+ *                           example: "USR_18ef2ebec4013b71"
+ *                         company_id:
+ *                           type: string
+ *                           nullable: true
+ *                           description: Gönderen firma ID (internal transferlerde)
+ *                           example: "COM_d1e589e2a7d9c699"
+ *                         to_user_id:
+ *                           type: string
+ *                           nullable: true
+ *                           description: Alıcı kullanıcı ID
+ *                           example: "USR_18ef2ebec4013b72"
+ *                         to_user_company_id:
+ *                           type: string
+ *                           nullable: true
+ *                           description: Alıcı kullanıcının firma ID
+ *                           example: "COM_d1e589e2a7d9c699"
+ *                         from_scope:
+ *                           type: string
+ *                           enum: [user, company, external]
+ *                           description: Para çıkışının kaynağı
+ *                           example: "user"
+ *                         to_scope:
+ *                           type: string
+ *                           enum: [user, company, external]
+ *                           description: Para girişinin hedefi
+ *                           example: "user"
+ *                         amount:
+ *                           type: number
+ *                           format: decimal
+ *                           description: Transfer miktarı (kuruş/cent cinsinden)
+ *                           example: 123
+ *                         currency:
+ *                           type: string
+ *                           description: Para birimi (ISO 4217)
+ *                           example: "TRY"
+ *                         description:
+ *                           type: string
+ *                           nullable: true
+ *                           description: Transfer açıklaması
+ *                           example: null
+ *                         status:
+ *                           type: string
+ *                           enum: [pending, completed, failed, cancelled]
+ *                           description: Transfer durumu
+ *                           example: "completed"
+ *                         to_external_name:
+ *                           type: string
+ *                           nullable: true
+ *                           description: Sistem dışı alıcı adı
+ *                           example: null
+ *                         from_external_name:
+ *                           type: string
+ *                           nullable: true
+ *                           description: Sistem dışı gönderici adı
+ *                           example: null
+ *                         created_at:
+ *                           type: string
+ *                           format: date-time
+ *                           description: Transfer oluşturma zamanı
+ *                           example: "2025-11-12T14:22:38.000Z"
+ *                         sender_final_balance:
+ *                           type: number
+ *                           nullable: true
+ *                           description: Gönderici son bakiye (kuruş/cent cinsinden)
+ *                           example: 258492
+ *                         receiver_final_balance:
+ *                           type: number
+ *                           nullable: true
+ *                           description: Alıcı son bakiye (kuruş/cent cinsinden)
+ *                           example: 174123
+ *                         transfer_type:
+ *                           type: string
+ *                           enum:
+ *                             - company_to_user_same
+ *                             - company_to_user_other
+ *                             - company_to_company_other
+ *                             - user_to_user_same
+ *                             - user_to_user_other
+ *                             - user_to_company_same
+ *                             - user_to_company_other
+ *                             - external_to_user
+ *                             - external_to_company
+ *                             - user_to_external
+ *                             - company_to_external
+ *                           description: Transfer tipi
+ *                           example: "user_to_user_same"
+ *                         receipt_files_files:
+ *                           type: string
+ *                           nullable: true
+ *                           description: Makbuz dosyaları (eski alan, kullanılmıyor)
+ *                           example: null
+ *                         files:
+ *                           type: string
+ *                           nullable: true
+ *                           description: JSON string formatında dosya yolları dizisi
+ *                           example: "[\"receipt\\\\2025\\\\11\\\\1762957358512_fd88856e47c00b6e.png\",\"receipt\\\\2025\\\\11\\\\1762957358513_e24b5c3d090d3811.png\",\"receipt\\\\2025\\\\11\\\\1762957358514_405fc5d4c3e9ad97.png\",\"receipt\\\\2025\\\\11\\\\1762957358514_1e958738e8885ab1.png\",\"receipt\\\\2025\\\\11\\\\1762957358515_ac8cc5f679031dcc.png\"]"
+ *                     sender:
+ *                       type: object
  *                       nullable: true
- *                       description: Gönderen kullanıcı ID (internal transferlerde)
- *                       example: null
- *                     company_id:
- *                       type: string
+ *                       description: Gönderen kullanıcı bilgileri
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           description: Gönderen kullanıcı adı
+ *                           example: "Fatih"
+ *                         surname:
+ *                           type: string
+ *                           description: Gönderen kullanıcı soyadı
+ *                           example: "Gencal"
+ *                     receiver:
+ *                       type: object
  *                       nullable: true
- *                       description: Gönderen firma ID (internal transferlerde)
- *                       example: null
- *                     to_user_id:
- *                       type: string
- *                       nullable: true
- *                       description: Alıcı kullanıcı ID
- *                       example: "USR_18ef2ebec4013b71"
- *                     to_user_company_id:
- *                       type: string
- *                       nullable: true
- *                       description: Alıcı kullanıcının firma ID
- *                       example: "COM_d1e589e2a7d9c699"
- *                     from_scope:
- *                       type: string
- *                       enum: [user, company, external]
- *                       description: Para çıkışının kaynağı
- *                       example: "external"
- *                     to_scope:
- *                       type: string
- *                       enum: [user, company, external]
- *                       description: Para girişinin hedefi
- *                       example: "user"
- *                     amount:
- *                       type: number
- *                       format: decimal
- *                       description: Transfer miktarı (kuruş/cent cinsinden)
- *                       example: 5000
- *                     currency:
- *                       type: string
- *                       description: Para birimi (ISO 4217)
- *                       example: "TRY"
- *                     description:
- *                       type: string
- *                       nullable: true
- *                       description: Transfer açıklaması
- *                       example: "Açıklama"
- *                     status:
- *                       type: string
- *                       enum: [pending, completed, failed, cancelled]
- *                       description: Transfer durumu
- *                       example: "completed"
- *                     to_external_name:
- *                       type: string
- *                       nullable: true
- *                       description: Sistem dışı alıcı adı
- *                       example: null
- *                     from_external_name:
- *                       type: string
- *                       nullable: true
- *                       description: Sistem dışı gönderici adı
- *                       example: "Müşteri Adı"
- *                     created_at:
- *                       type: string
- *                       format: date-time
- *                       description: Transfer oluşturma zamanı
- *                       example: "2025-11-12T11:33:36.000Z"
- *                     sender_final_balance:
- *                       type: number
- *                       nullable: true
- *                       description: Gönderici son bakiye (kuruş/cent cinsinden)
- *                       example: null
- *                     receiver_final_balance:
- *                       type: number
- *                       nullable: true
- *                       description: Alıcı son bakiye (kuruş/cent cinsinden)
- *                       example: 13005000
- *                     transfer_type:
- *                       type: string
- *                       enum:
- *                         - company_to_user_same
- *                         - company_to_user_other
- *                         - company_to_company_other
- *                         - user_to_user_same
- *                         - user_to_user_other
- *                         - user_to_company_same
- *                         - user_to_company_other
- *                         - external_to_user
- *                         - external_to_company
- *                         - user_to_external
- *                         - company_to_external
- *                       description: Transfer tipi
- *                       example: "external_to_user"
- *                     receipt_files_files:
- *                       type: string
- *                       nullable: true
- *                       description: Makbuz dosyaları (eski alan, kullanılmıyor)
- *                       example: null
- *                     files:
- *                       type: string
- *                       nullable: true
- *                       description: JSON string formatında dosya yolları dizisi
- *                       example: "[\"receipt\\\\2025\\\\11\\\\1762947216261_d423c2aed7975090.png\",\"receipt\\\\2025\\\\11\\\\1762947216262_3db51297fde0efcd.png\"]"
+ *                       description: Alıcı kullanıcı bilgileri
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           description: Alıcı kullanıcı adı
+ *                           example: "Hasan"
+ *                         surname:
+ *                           type: string
+ *                           description: Alıcı kullanıcı soyadı
+ *                           example: "Yılmaz"
  *       400:
  *         description: Geçersiz transfer ID
  *         content:
@@ -218,6 +247,7 @@ const getTransferById = require('../../../database/transfers/getTransferById');
 const {t} = require('../../../config/i18nConfig');
 const responseHelper = require('../../utils/responseHelper');
 const {canUserViewTransfer} = require('../../../utils/permissionsManager');
+const getUserById = require("../../../database/users/getUserById");
 
 router.post('/get', async (req, res) => {
     try {
@@ -241,13 +271,27 @@ router.post('/get', async (req, res) => {
             return responseHelper.error(res, t('transfers:getById.notFound'), 404);
         }
 
+        let sender = null;
+        if (transfer.user_id) {
+            sender = await getUserById(transfer.user_id, ['name', 'surname']);
+        }
+
+        let receiver = null;
+        if (transfer.user_id) {
+            receiver = await getUserById(transfer.to_user_id, ['name', 'surname']);
+        }
+
         // Yetki kontrolü
         if (!await canUserViewTransfer(userId, transfer)) {
             return responseHelper.error(res, t('errors:permissions.cannotViewOtherUserTransferHistory'), 403);
         }
 
         return responseHelper.success(res, {
-            data: transfer,
+            data: {
+                transfer,
+                sender,
+                receiver
+            },
             message: t('transfers:getById.success')
         });
 
