@@ -138,16 +138,6 @@
  *                             - company_to_external
  *                           description: Transfer tipi
  *                           example: "user_to_user_same"
- *                         receipt_files_files:
- *                           type: string
- *                           nullable: true
- *                           description: Makbuz dosyaları (eski alan, kullanılmıyor)
- *                           example: null
- *                         files:
- *                           type: string
- *                           nullable: true
- *                           description: JSON string formatında dosya yolları dizisi
- *                           example: "[\"receipt\\\\2025\\\\11\\\\1762957358512_fd88856e47c00b6e.png\",\"receipt\\\\2025\\\\11\\\\1762957358513_e24b5c3d090d3811.png\",\"receipt\\\\2025\\\\11\\\\1762957358514_405fc5d4c3e9ad97.png\",\"receipt\\\\2025\\\\11\\\\1762957358514_1e958738e8885ab1.png\",\"receipt\\\\2025\\\\11\\\\1762957358515_ac8cc5f679031dcc.png\"]"
  *                     sender:
  *                       type: object
  *                       nullable: true
@@ -275,6 +265,8 @@ router.post('/get', async (req, res) => {
         if (!transfer) {
             return responseHelper.error(res, t('transfers:getById.notFound'), 404);
         }
+
+        delete transfer.files;
 
         let sender = null;
         if (transfer.user_id) {
