@@ -18,5 +18,8 @@
     "success": "Transfer list retrieved successfully.",
     "failed": "Failed to retrieve transfer list.",
     "companyIdRequired": "Company ID is required."
-  }
+  },
+    "files": {
+        "noFiles": "No files attached"
+    }
 }

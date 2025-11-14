@@ -18,5 +18,8 @@
     "success": "Transferler listesi başarıyla alındı",
     "failed": "Transferler listesi alınamadı",
     "companyIdRequired": "Firma ID'si gereklidir"
+  },
+  "files": {
+    "noFiles": "Eklenmiş dosya yok"
   }
 }

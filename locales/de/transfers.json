@@ -18,5 +18,8 @@
     "success": "Überweisungsliste erfolgreich abgerufen.",
     "failed": "Fehler beim Abrufen der Überweisungsliste.",
     "companyIdRequired": "Unternehmens-ID ist erforderlich."
-  }
+  },
+    "files": {
+        "noFiles": "Keine Dateien angehängt"
+    }
 }

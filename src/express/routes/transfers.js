@@ -4,7 +4,7 @@ const router = express.Router();
 // Transfer route handlers
 const createTransferRoute = require('./transfers/createTransfer');
 const listTransfersRoute = require('./transfers/listTransfers');
-// const getTransferByIdRoute = require('./transfers/getTransferById');
+const getTransferFilesRoute = require('./transfers/getTransferFiles');
 const getTransferByIdRoute = require('./transfers/getTransferById');
 // const updateTransferRoute = require('./transfers/updateTransfer');
 // const deleteTransferRoute = require('./transfers/deleteTransfer');
@@ -12,7 +12,7 @@ const getTransferByIdRoute = require('./transfers/getTransferById');
 // Transfer routes
 router.use('/', createTransferRoute);
 router.use('/', listTransfersRoute);
-// router.use('/', getTransferByIdRoute);
+router.use('/', getTransferFilesRoute);
 router.use('/', getTransferByIdRoute);
 // router.use('/', updateTransferRoute);
 // router.use('/', deleteTransferRoute);
