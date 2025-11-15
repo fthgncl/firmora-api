@@ -276,7 +276,7 @@ router.post('/get', async (req, res) => {
 
 
         let receiver = null;
-        if (transfer.user_id) {
+        if (transfer.to_user_id) {
             receiver = await getUserById(transfer.to_user_id, ['name', 'surname']);
         }
 
