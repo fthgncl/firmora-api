@@ -51,22 +51,26 @@
  *                       items:
  *                         type: object
  *                         properties:
- *                           index:
- *                             type: integer
- *                             description: Dosya index'i
- *                             example: 0
  *                           fileName:
  *                             type: string
- *                             description: Dosya adı
- *                             example: "1762857472963_c22987a1673c8845.png"
+ *                             description: Dosyanın orijinal adı
+ *                             example: "original-name.pdf"
+ *                           mimeType:
+ *                             type: string
+ *                             description: Dosyanın MIME tipi
+ *                             example: "application/pdf"
+ *                           extension:
+ *                             type: string
+ *                             description: Dosya uzantısı
+ *                             example: "pdf"
  *                           size:
  *                             type: integer
  *                             description: Dosya boyutu (byte)
  *                             example: 204800
  *                           downloadUrl:
  *                             type: string
- *                             description: Dosya indirme URL'i
- *                             example: "/api/transfers/transfer-file/TRF_b1f51e8cf04888c6/0"
+ *                             description: JWT token içeren dosya indirme URL'i
+ *                             example: "/file/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cmFuc2ZlcklkIjoiVFJGX2IxZjUxZThjZjA0ODg4YzYiLCJmaWxlSW5kZXgiOjB9.xxxxx"
  *       400:
  *         description: Geçersiz transfer ID veya dosya bulunamadı
  *         content:
@@ -131,6 +135,43 @@ const responseHelper = require('../../utils/responseHelper');
 const {canUserViewTransfer} = require("../../../utils/permissionsManager");
 const {createToken, verifyToken} = require("../../../auth/jwt");
 
+/// MIME type belirleme fonksiyonu
+// TODO: Mime type tesbit etmek için ayrı bir dosya oluşturulabilir. Ayrıca mime-types paketi de kullanılabilir.
+const getMimeType = (extension) => {
+    const mimeTypes = {
+        'pdf': 'application/pdf',
+        'doc': 'application/msword',
+        'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'xls': 'application/vnd.ms-excel',
+        'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'ppt': 'application/vnd.ms-powerpoint',
+        'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'txt': 'text/plain',
+        'csv': 'text/csv',
+        'json': 'application/json',
+        'xml': 'application/xml',
+        'zip': 'application/zip',
+        'rar': 'application/x-rar-compressed',
+        '7z': 'application/x-7z-compressed',
+        'jpg': 'image/jpeg',
+        'jpeg': 'image/jpeg',
+        'png': 'image/png',
+        'gif': 'image/gif',
+        'bmp': 'image/bmp',
+        'svg': 'image/svg+xml',
+        'webp': 'image/webp',
+        'mp3': 'audio/mpeg',
+        'wav': 'audio/wav',
+        'ogg': 'audio/ogg',
+        'mp4': 'video/mp4',
+        'avi': 'video/x-msvideo',
+        'mkv': 'video/x-matroska',
+        'mov': 'video/quicktime',
+        'webm': 'video/webm'
+    };
+    return mimeTypes[extension.toLowerCase()] || 'application/octet-stream';
+};
+
 router.post('/files', async (req, res) => {
     try {
         const userId = req.tokenPayload?.id;
@@ -187,7 +228,15 @@ router.post('/files', async (req, res) => {
 
                 const fileToken = await createToken({transferId: transferId, fileIndex: i}, process.env.TOKEN_LIFETIME);
 
+                // Dosya bilgilerini al
+                const fileName = path.basename(normalizedPath);
+                const extension = path.extname(fileName).slice(1); // Nokta olmadan uzantı
+                const mimeType = getMimeType(extension);
+
                 fileResults.push({
+                    fileName: fileName,
+                    mimeType: mimeType,
+                    extension: extension,
                     size: fileStats.size,
                     downloadUrl: `/file/${fileToken}`
                 });
@@ -268,7 +317,7 @@ router.get('/file/:fileToken', async (req, res) => {
             transferId = decoded.transferId;
             fileIndex = decoded.fileIndex;
         } catch (tokenError) {
-            return responseHelper.error(res, t('errors:auth.invalidToken'), 401);
+            return responseHelper.error(res, t('errors:auth.tokenInvalid'), 401);
         }
 
         if (!userId) {
