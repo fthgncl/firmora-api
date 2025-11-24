@@ -12,10 +12,6 @@ const path = require('path');
  */
 const sendEmail = async (templateName, data, to, subject) => {
 
-    if (process.env.TEST_MODE === 'true') {
-        return;
-    }
-
     // Proje kök dizinini belirleme
     const projectRoot = process.cwd();
     const templatePath = path.join(projectRoot, 'src', 'emailTemplates', templateName);
@@ -39,11 +35,22 @@ const sendEmail = async (templateName, data, to, subject) => {
         }
     });
 
+
+    // Logo dosyasının yolunu belirle
+    const logoPath = path.join(projectRoot, 'src', 'images', 'logo192.png');
+
     const mailOptions = {
         from: `"Destek Ekibi" <${process.env.APP_SUPPORT_EMAIL}>`,
         to: to,
         subject: subject,
-        html: emailTemplate
+        html: emailTemplate,
+        attachments: [
+            {
+                filename: 'logo192.png',
+                path: logoPath,
+                cid: 'company-logo' // CID (Content-ID) referansı
+            }
+        ]
     };
 
     // E-posta gönderme işlemi
