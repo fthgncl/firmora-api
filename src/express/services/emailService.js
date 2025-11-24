@@ -1,5 +1,6 @@
 const {createToken} = require("../../auth/jwt");
 const {sendEmail} = require("../../services/emailService");
+const {t} = require("../../config/i18nConfig");
 
 /**
  * Kullanıcıya e-posta doğrulama bağlantısı gönderir
@@ -12,27 +13,52 @@ const sendVerificationEmail = async (user) => {
     const verificationLink = `${process.env.APP_DOMAIN}/verify-email/${token}`;
     const signUpLink = `${process.env.APP_DOMAIN}/sign-up`;
 
+    // Çeviri metinlerini al
+    const greeting = t('emails:templates.verification.greeting', { name: user.name });
+    const welcome = t('emails:templates.verification.welcome');
+    const instructions = t('emails:templates.verification.instructions');
+    const nameLabel = t('emails:templates.verification.name');
+    const surnameLabel = t('emails:templates.verification.surname');
+    const usernameLabel = t('emails:templates.verification.username');
+    const phoneLabel = t('emails:templates.verification.phone');
+    const verifyButton = t('emails:templates.verification.verifyButton');
+    const wrongInfoButton = t('emails:templates.verification.wrongInfoButton');
+    const subject = t('emails:templates.verification.subject');
+
     await sendEmail('verification.html', {
+        GREETING: greeting,
+        WELCOME: welcome,
+        INSTRUCTIONS: instructions,
+        NAME_LABEL: nameLabel,
+        SURNAME_LABEL: surnameLabel,
+        USERNAME_LABEL: usernameLabel,
+        PHONE_LABEL: phoneLabel,
         NAME: user.name,
         SURNAME: user.surname,
         USERNAME: user.username,
         PHONE: user.phone,
         VERIFY_LINK: verificationLink,
-        SIGNUP_URL: signUpLink
-    }, user.email, 'E-posta Doğrulama');
+        SIGNUP_URL: signUpLink,
+        VERIFY_BUTTON: verifyButton,
+        WRONG_INFO_BUTTON: wrongInfoButton
+    }, user.email, subject);
 };
 
 /**
  * Kullanıcıya şifre sıfırlama bağlantısı gönderir
  * @param {Object} user - Kullanıcı bilgileri
+ * @param {string} [language='tr'] - E-posta dili (varsayılan: tr)
  * @returns {Promise<void>}
  */
-const sendPasswordResetEmail = async (user) => {
+const sendPasswordResetEmail = async (user, language = 'tr') => {
 
     const token = createToken({id: user.id, email: user.email}, process.env.PASSWORD_RESET_TOKEN_LIFETIME );
 
     // Şifre sıfırlama bağlantısı
     const resetLink = `${process.env.APP_DOMAIN}/reset-password/${token}`;
+
+    // Çeviri metinlerini al
+    const subject = t('emails:templates.passwordReset.subject');
 
     // E-posta gönder
     await sendEmail('password-reset.html', {
@@ -40,7 +66,7 @@ const sendPasswordResetEmail = async (user) => {
         SURNAME: user.surname,
         USERNAME: user.username,
         RESET_LINK: resetLink
-    }, user.email, 'Şifre Sıfırlama');
+    }, user.email, subject);
 };
 
 
@@ -52,13 +78,17 @@ const sendPasswordResetEmail = async (user) => {
  * @param {string} options.newEmail - Yeni e-posta
  * @param {string} options.currentEmailToken - Mevcut e-posta doğrulama tokeni
  * @param {string} options.newEmailToken - Yeni e-posta doğrulama tokeni
+ * @param {string} [options.language='tr'] - E-posta dili (varsayılan: tr)
  * @returns {Promise<void>}
  */
-async function sendEmailChangeEmails({ user, currentEmail, newEmail, currentEmailToken, newEmailToken }) {
+async function sendEmailChangeEmails({ user, currentEmail, newEmail, currentEmailToken, newEmailToken, language = 'tr' }) {
     // Bağlantı URL'lerini oluştur
     const verifyCurrentLink = `${process.env.APP_DOMAIN}/verify-email-change/${encodeURIComponent(currentEmailToken)}`;
     const verifyNewLink = `${process.env.APP_DOMAIN}/verify-email-change/${encodeURIComponent(newEmailToken)}`;
     const cancelLink = `${process.env.APP_DOMAIN}/cancel-email-change/${encodeURIComponent(newEmailToken)}`;
+
+    // Çeviri metinlerini al
+    const subject = t('emails:templates.emailChange.subject');
 
     // Ortak değişkenler
     const commonVariables = {
@@ -75,12 +105,12 @@ async function sendEmailChangeEmails({ user, currentEmail, newEmail, currentEmai
             ...commonVariables,
             VERIFY_LINK: verifyCurrentLink,
             CANCEL_LINK: cancelLink
-        }, currentEmail, 'E-posta Değişikliği Onayı'),
+        }, currentEmail, subject),
         sendEmail('email-change-new.html', {
             ...commonVariables,
             VERIFY_LINK: verifyNewLink,
             CANCEL_LINK: cancelLink
-        }, newEmail, 'E-posta Değişikliği Onayı')
+        }, newEmail, subject)
     ]);
 }
 

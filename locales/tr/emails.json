@@ -8,5 +8,25 @@
     "accountCreatedWithVerification": "Kullanıcı başarıyla oluşturuldu. E-posta adresinize bir doğrulama bağlantısı gönderildi. Lütfen e-postanızı kontrol edin.",
     "accountCreated": "Kullanıcı başarıyla oluşturuldu.",
     "verificationEmailFailed": "Doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin veya destek ekibiyle iletişime geçin."
+  },
+  "templates": {
+    "verification": {
+      "subject": "E-posta Doğrulama",
+      "greeting": "Merhaba, {{name}}",
+      "welcome": "Firmora'ya hoş geldin",
+      "instructions": "Aşağıdaki bilgileri kontrol ettikten sonra hesabını onaylayabilirsin. Bilgilerinin yanlış olduğunu düşünüyorsanız lütfen hesabınızı yeniden oluşturun.",
+      "name": "Ad",
+      "surname": "Soyad",
+      "username": "Kullanıcı Adı",
+      "phone": "Telefon",
+      "verifyButton": "Hesabı Onayla",
+      "wrongInfoButton": "Bilgiler Yanlış Yeniden Hesap Oluştur !"
+    },
+    "passwordReset": {
+      "subject": "Şifre Sıfırlama"
+    },
+    "emailChange": {
+      "subject": "E-posta Değişikliği Onayı"
+    }
   }
 }

@@ -5,7 +5,7 @@ const path = require('path');
 /**
  * Genel amaçlı e-posta gönderme fonksiyonu
  * @param {string} templateName - E-posta şablonunun adı (örn: 'verification.html')
- * @param {Object} data - Şablonda değiştirilecek değerler
+ * @param {Object} data - Şablonda değiştirilecek değerler (çeviri metinleri de dahil)
  * @param {string} to - Alıcı e-posta adresi
  * @param {string} subject - E-posta konusu
  * @returns {Promise<void>}

@@ -8,5 +8,25 @@
     "accountCreatedWithVerification": "Benutzer wurde erfolgreich erstellt. Ein Bestätigungslink wurde an Ihre E-Mail-Adresse gesendet. Bitte überprüfen Sie Ihr Postfach.",
     "accountCreated": "Benutzer wurde erfolgreich erstellt.",
     "verificationEmailFailed": "Bestätigungs-E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es später erneut oder wenden Sie sich an den Support."
+  },
+  "templates": {
+    "verification": {
+      "subject": "E-Mail-Bestätigung",
+      "greeting": "Hallo, {{name}}",
+      "welcome": "Willkommen bei Firmora",
+      "instructions": "Nachdem du die folgenden Informationen überprüft hast, kannst du dein Konto bestätigen. Wenn du glaubst, dass die Angaben falsch sind, erstelle bitte dein Konto erneut.",
+      "name": "Vorname",
+      "surname": "Nachname",
+      "username": "Benutzername",
+      "phone": "Telefon",
+      "verifyButton": "Konto Bestätigen",
+      "wrongInfoButton": "Informationen falsch? Neues Konto erstellen!"
+    },
+    "passwordReset": {
+      "subject": "Passwort Zurücksetzen"
+    },
+    "emailChange": {
+      "subject": "Bestätigung der E-Mail-Änderung"
+    }
   }
 }

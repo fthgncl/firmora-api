@@ -8,5 +8,25 @@
     "accountCreatedWithVerification": "User created successfully. A verification link has been sent to your email address. Please check your inbox.",
     "accountCreated": "User created successfully.",
     "verificationEmailFailed": "Verification email could not be sent. Please try again later or contact support."
+  },
+  "templates": {
+    "verification": {
+      "subject": "Email Verification",
+      "greeting": "Hello, {{name}}",
+      "welcome": "Welcome to Firmora",
+      "instructions": "After reviewing the information below, you can verify your account. If you believe the information is incorrect, please create your account again.",
+      "name": "First Name",
+      "surname": "Last Name",
+      "username": "Username",
+      "phone": "Phone",
+      "verifyButton": "Verify Account",
+      "wrongInfoButton": "Information Incorrect? Create a New Account!"
+    },
+    "passwordReset": {
+      "subject": "Password Reset"
+    },
+    "emailChange": {
+      "subject": "Email Change Confirmation"
+    }
   }
 }
