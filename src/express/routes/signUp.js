@@ -164,6 +164,8 @@
 const express = require('express');
 const router = express.Router();
 const createUser = require('../../database/users/createUser');
+const updateUser = require('../../database/users/updateUser');
+const getUserByEmail = require('../../database/users/getUserByEmail');
 const validator = require('../../utils/validation');
 const responseHelper = require('../utils/responseHelper');
 const { isValidUsername, isValidPhone } = require("../../utils/validation");
@@ -260,7 +262,21 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        const result = await createUser({ name, surname, username, email, password, phone });
+        // Email adresinin daha önce kullanılıp kullanılmadığını kontrol et
+        const existingUser = await getUserByEmail(email);
+        let result;
+
+        // Eğer kullanıcı varsa ve email doğrulanmamışsa güncelle
+        if (existingUser && !existingUser.emailverified) {
+            result = await updateUser(existingUser.id, { name, surname, username, email, password, phone });
+        } else if (existingUser && existingUser.emailverified) {
+            // Email doğrulanmış kullanıcı varsa hata ver
+            const errorMessages = { email: t('errors:signUp.emailInUse') };
+            return responseHelper.error(res, t('errors:signUp.duplicateEntry'), 400, { errors: errorMessages });
+        } else {
+            // Yeni kullanıcı oluştur
+            result = await createUser({ name, surname, username, email, password, phone });
+        }
 
         let emailSent = true;
         try {
