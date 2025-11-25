@@ -36,7 +36,15 @@
       "resetButton": "Mein Passwort Zurücksetzen",
       "ignoreMessage": "Wenn du diese Anfrage nicht gestellt hast, kannst du diese E-Mail",
       "signature": "{{appName}} Support-Team",
-      "autoEmailNotice": "Diese E-Mail wurde automatisch als Antwort auf deine Passwort-Zur"
+      "autoEmailNotice": "Diese E-Mail wurde automatisch als Antwort auf deine Passwort-Zur",
+      "tokenAndPasswordRequired": "Token und neues Passwort sind erforderlich.",
+      "invalidPasswordFormat": "Das Passwort muss zwischen 8 und 20 Zeichen lang sein und einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.",
+      "tokenVerificationFailed": "Der Token konnte nicht verifiziert werden.",
+      "invalidTokenData": "Der Token ist ungültig und enthält nicht die erforderlichen Informationen.",
+      "tokenExpired": "Der Token ist abgelaufen. Bitte fordern Sie einen neuen Link zum Zurücksetzen des Passworts an.",
+      "invalidTokenFormat": "Ungültiges Token-Format. Der Link zum Zurücksetzen des Passworts könnte fehlerhaft sein.",
+      "tokenVerificationError": "Token-Verifizierungsfehler: {{error}}",
+      "passwordUpdated": "Ihr Passwort wurde erfolgreich aktualisiert."
     },
     "emailChange": {
       "subject": "Bestätigung der E-Mail-Änderung"

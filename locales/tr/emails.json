@@ -36,7 +36,15 @@
       "resetButton": "Şifremi Sıfırla",
       "ignoreMessage": "Bu talebi siz yapmadıysanız, bu e-postayı görmezden gelebilirsiniz.",
       "signature": "{{appName}} Destek Ekibi",
-      "autoEmailNotice": "Bu e-posta, şifre sıfırlama talebinize yanıt olarak otomatik gönderilmiştir. Lütfen bu e-postayı yanıtlamayın."
+      "autoEmailNotice": "Bu e-posta, şifre sıfırlama talebinize yanıt olarak otomatik gönderilmiştir. Lütfen bu e-postayı yanıtlamayın.",
+      "tokenAndPasswordRequired": "Token ve yeni şifre gereklidir.",
+      "invalidPasswordFormat": "Şifre 8 ile 20 karakter uzunluğunda olmalı, büyük harf, küçük harf, rakam ve özel karakter içermelidir.",
+      "tokenVerificationFailed": "Token doğrulanamadı.",
+      "invalidTokenData": "Token geçerli değil, gerekli bilgileri içermiyor.",
+      "tokenExpired": "Token süresi dolmuş. Lütfen yeni bir şifre sıfırlama bağlantısı talep edin.",
+      "invalidTokenFormat": "Geçersiz token formatı. Şifre sıfırlama bağlantısı hatalı olabilir.",
+      "tokenVerificationError": "Token doğrulama hatası: {{error}}",
+      "passwordUpdated": "Şifreniz başarıyla güncellendi."
     },
     "emailChange": {
       "subject": "E-posta Değişikliği Onayı"

@@ -36,7 +36,15 @@
       "resetButton": "Reset My Password",
       "ignoreMessage": "If you did not make this request, you can ignore this email",
       "signature": "{{appName}} Support Team",
-      "autoEmailNotice": "This email was sent automatically in response to your password reset request"
+      "autoEmailNotice": "This email was sent automatically in response to your password reset request",
+      "tokenAndPasswordRequired": "Token and new password are required.",
+      "invalidPasswordFormat": "Password must be between 8 and 20 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.",
+      "tokenVerificationFailed": "Token could not be verified.",
+      "invalidTokenData": "The token is not valid and does not contain the required information.",
+      "tokenExpired": "The token has expired. Please request a new password reset link.",
+      "invalidTokenFormat": "Invalid token format. The password reset link may be incorrect.",
+      "tokenVerificationError": "Token verification error: {{error}}",
+      "passwordUpdated": "Your password has been successfully updated."
     },
     "emailChange": {
       "subject": "Email Change Confirmation"
