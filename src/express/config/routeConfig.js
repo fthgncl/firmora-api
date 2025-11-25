@@ -11,6 +11,7 @@ const verifyEmail = require('../routes/verifyEmail');
 const searchUsersRouter = require('../routes/searchUsers');
 const getPermissionsRouter = require('../routes/getPermissions');
 const updatePermissionsRouter = require('../routes/updatePermissions');
+const passwordResetRouter = require('../routes/passwordReset');
 
 
 // Middleware
@@ -24,6 +25,7 @@ const setupRoutes = (app) => {
     app.use('/sign-in', strictRateLimit, signInRouter);
     app.use('/sign-up', strictRateLimit, signUp);
     app.use('/verify-email', verifyEmail);
+    app.use('/password-reset', strictRateLimit, passwordResetRouter);
 
 
     app.use('/', strictRateLimit, verifyTokenMiddleware);

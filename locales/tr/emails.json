@@ -23,7 +23,20 @@
       "wrongInfoButton": "Bilgiler Yanlış Yeniden Hesap Oluştur !"
     },
     "passwordReset": {
-      "subject": "Şifre Sıfırlama"
+      "subject": "Şifre Sıfırlama",
+      "emailRequired": "E-posta adresi gereklidir.",
+      "userNotFound": "Bu e-posta adresi ile kayıtlı kullanıcı bulunamadı.",
+      "emailSent": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.",
+      "greeting": "Merhaba, {{name}}",
+      "title": "Şifre Sıfırlama Talebi",
+      "instructions": "Şifrenizi sıfırlamak için bir talepte bulundunuz. Aşağıdaki bilgileri kontrol ettikten sonra şifrenizi sıfırlayabilirsiniz.",
+      "name": "Ad",
+      "surname": "Soyad",
+      "username": "Kullanıcı Adı",
+      "resetButton": "Şifremi Sıfırla",
+      "ignoreMessage": "Bu talebi siz yapmadıysanız, bu e-postayı görmezden gelebilirsiniz.",
+      "signature": "{{appName}} Destek Ekibi",
+      "autoEmailNotice": "Bu e-posta, şifre sıfırlama talebinize yanıt olarak otomatik gönderilmiştir. Lütfen bu e-postayı yanıtlamayın."
     },
     "emailChange": {
       "subject": "E-posta Değişikliği Onayı"

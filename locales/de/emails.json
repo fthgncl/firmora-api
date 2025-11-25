@@ -23,7 +23,20 @@
       "wrongInfoButton": "Informationen falsch? Neues Konto erstellen!"
     },
     "passwordReset": {
-      "subject": "Passwort Zurücksetzen"
+      "subject": "Passwort Zurücksetzen",
+      "emailRequired": "E-Mail-Adresse ist erforderlich.",
+      "userNotFound": "Benutzer nicht gefunden.",
+      "emailSent": "Passwort-Zurücksetzungs-E-Mail wurde erfolgreich gesendet.",
+      "greeting": "Hallo, {{name}}",
+      "title": "Passwort-Zurücksetzungs-Anfrage",
+      "instructions": "Du hast angefordert, dein Passwort zurückzusetzen. Nachdem du die folgenden Informationen überprüft hast",
+      "name": "Vorname",
+      "surname": "Nachname",
+      "username": "Benutzername",
+      "resetButton": "Mein Passwort Zurücksetzen",
+      "ignoreMessage": "Wenn du diese Anfrage nicht gestellt hast, kannst du diese E-Mail",
+      "signature": "{{appName}} Support-Team",
+      "autoEmailNotice": "Diese E-Mail wurde automatisch als Antwort auf deine Passwort-Zur"
     },
     "emailChange": {
       "subject": "Bestätigung der E-Mail-Änderung"

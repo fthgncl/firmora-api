@@ -47,10 +47,9 @@ const sendVerificationEmail = async (user) => {
 /**
  * Kullanıcıya şifre sıfırlama bağlantısı gönderir
  * @param {Object} user - Kullanıcı bilgileri
- * @param {string} [language='tr'] - E-posta dili (varsayılan: tr)
  * @returns {Promise<void>}
  */
-const sendPasswordResetEmail = async (user, language = 'tr') => {
+const sendPasswordResetEmail = async (user) => {
 
     const token = createToken({id: user.id, email: user.email}, process.env.PASSWORD_RESET_TOKEN_LIFETIME );
 
@@ -58,14 +57,34 @@ const sendPasswordResetEmail = async (user, language = 'tr') => {
     const resetLink = `${process.env.APP_DOMAIN}/reset-password/${token}`;
 
     // Çeviri metinlerini al
+    const greeting = t('emails:templates.passwordReset.greeting', { name: user.name });
+    const title = t('emails:templates.passwordReset.title');
+    const instructions = t('emails:templates.passwordReset.instructions');
+    const nameLabel = t('emails:templates.passwordReset.name');
+    const surnameLabel = t('emails:templates.passwordReset.surname');
+    const usernameLabel = t('emails:templates.passwordReset.username');
+    const resetButton = t('emails:templates.passwordReset.resetButton');
+    const ignoreMessage = t('emails:templates.passwordReset.ignoreMessage');
     const subject = t('emails:templates.passwordReset.subject');
+    const signature = t('emails:templates.passwordReset.signature', { appName: process.env.PROJECT_NAME });
+    const autoEmailNotice = t('emails:templates.passwordReset.autoEmailNotice');
 
     // E-posta gönder
     await sendEmail('password-reset.html', {
+        GREETING: greeting,
+        TITLE: title,
+        INSTRUCTIONS: instructions,
+        NAME_LABEL: nameLabel,
+        SURNAME_LABEL: surnameLabel,
+        USERNAME_LABEL: usernameLabel,
         NAME: user.name,
         SURNAME: user.surname,
         USERNAME: user.username,
-        RESET_LINK: resetLink
+        RESET_LINK: resetLink,
+        RESET_BUTTON: resetButton,
+        IGNORE_MESSAGE: ignoreMessage,
+        SIGNATURE: signature,
+        AUTO_EMAIL_NOTICE: autoEmailNotice
     }, user.email, subject);
 };
 
@@ -78,10 +97,9 @@ const sendPasswordResetEmail = async (user, language = 'tr') => {
  * @param {string} options.newEmail - Yeni e-posta
  * @param {string} options.currentEmailToken - Mevcut e-posta doğrulama tokeni
  * @param {string} options.newEmailToken - Yeni e-posta doğrulama tokeni
- * @param {string} [options.language='tr'] - E-posta dili (varsayılan: tr)
  * @returns {Promise<void>}
  */
-async function sendEmailChangeEmails({ user, currentEmail, newEmail, currentEmailToken, newEmailToken, language = 'tr' }) {
+async function sendEmailChangeEmails({ user, currentEmail, newEmail, currentEmailToken, newEmailToken }) {
     // Bağlantı URL'lerini oluştur
     const verifyCurrentLink = `${process.env.APP_DOMAIN}/verify-email-change/${encodeURIComponent(currentEmailToken)}`;
     const verifyNewLink = `${process.env.APP_DOMAIN}/verify-email-change/${encodeURIComponent(newEmailToken)}`;

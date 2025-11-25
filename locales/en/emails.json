@@ -23,7 +23,20 @@
       "wrongInfoButton": "Information Incorrect? Create a New Account!"
     },
     "passwordReset": {
-      "subject": "Password Reset"
+      "subject": "Password Reset",
+      "emailRequired": "Email address is required.",
+      "userNotFound": "User not found.",
+      "emailSent": "Password reset email has been sent successfully.",
+      "greeting": "Hello, {{name}}",
+      "title": "Password Reset Request",
+      "instructions": "You have requested to reset your password. After reviewing the information below",
+      "name": "First Name",
+      "surname": "Last Name",
+      "username": "Username",
+      "resetButton": "Reset My Password",
+      "ignoreMessage": "If you did not make this request, you can ignore this email",
+      "signature": "{{appName}} Support Team",
+      "autoEmailNotice": "This email was sent automatically in response to your password reset request"
     },
     "emailChange": {
       "subject": "Email Change Confirmation"
