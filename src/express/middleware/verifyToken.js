@@ -1,6 +1,6 @@
 const { verifyToken } = require('../../auth/jwt');
 const responseHelper = require('../utils/responseHelper');
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 
 /**
  * @swagger

@@ -75,7 +75,7 @@ const router = express.Router();
 const createCompany = require('../../../database/companies/createCompany');
 const { canUserCreateCompany, setUserPermissions } = require('../../../utils/permissionsManager');
 const responseHelper = require('../../utils/responseHelper');
-const { t } = require('../../../config/i18nConfig');
+const { t } = require('../../../config/i18n.config');
 const { beginTransaction, commit, rollback } = require('../../../database/utils/connection');
 
 router.post('/', async (req, res) => {

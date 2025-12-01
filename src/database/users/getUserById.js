@@ -1,7 +1,7 @@
 const { queryAsync } = require('../utils/connection');
 const logError = require('../../utils/logger');
-const tablesConfig = require('../../config/tablesConfig');
-const { t } = require('../../config/i18nConfig');
+const tablesConfig = require('../../config/tables.config');
+const { t } = require('../../config/i18n.config');
 
 /**
  * Kullanıcı bilgilerini ID'ye göre getirir

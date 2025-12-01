@@ -84,7 +84,7 @@ const { queryAsync } = require('../../../database/utils/connection');
 const { verifyToken } = require('../../../auth/jwt');
 const bcrypt = require('bcryptjs');
 const responseHelper = require("../../utils/responseHelper");
-const {t} = require("../../../config/i18nConfig");
+const {t} = require("../../../config/i18n.config");
 
 module.exports = async (req, res) => {
     const { token } = req.params;

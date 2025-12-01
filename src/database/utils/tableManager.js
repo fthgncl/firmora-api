@@ -1,4 +1,4 @@
-const tablesConfig = require('../../config/tablesConfig');
+const tablesConfig = require('../../config/tables.config');
 const { queryAsync } = require('../utils/connection');
 
 const checkTables = async () => {

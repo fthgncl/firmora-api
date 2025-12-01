@@ -75,7 +75,7 @@
 const { queryAsync } = require('../../../database/utils/connection');
 const { sendPasswordResetEmail } = require('../../services/emailService');
 const responseHelper = require('../../utils/responseHelper');
-const {t} = require("../../../config/i18nConfig");
+const {t} = require("../../../config/i18n.config");
 
 module.exports = async (req, res) => {
     const { email } = req.body;

@@ -1,6 +1,6 @@
 const { queryAsync } = require('../utils/connection');
 const { generateUniqueId } = require('../../utils/idUtils');
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 
 const createAccount = async (accountData) => {
     try {

@@ -168,7 +168,7 @@
 const express = require('express');
 const router = express.Router();
 const responseHelper = require('../../utils/responseHelper');
-const { t } = require('../../../config/i18nConfig');
+const { t } = require('../../../config/i18n.config');
 const { queryAsync } = require('../../../database/utils/connection');
 const { readUserPermissions, checkUserRoles } = require('../../../utils/permissionsManager');
 

@@ -1,6 +1,6 @@
 // src/database/utils/connection.js
 const util = require('util');
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 
 let connection = null;
 

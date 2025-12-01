@@ -170,8 +170,8 @@
 const express = require('express');
 const router = express.Router();
 const responseHelper = require('../utils/responseHelper');
-const { t } = require('../../config/i18nConfig');
-const permissions = require('../../config/permissionsConfig');
+const { t } = require('../../config/i18n.config');
+const permissions = require('../../config/permissions.config');
 
 router.get('/', async (req, res) => {
     try {

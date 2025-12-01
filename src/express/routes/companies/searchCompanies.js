@@ -108,7 +108,7 @@
 const express = require('express');
 const router = express.Router();
 const { searchCompanies } = require('../../../database/companies/searchCompanies');
-const { t } = require('../../../config/i18nConfig');
+const { t } = require('../../../config/i18n.config');
 
 router.get('/', async (req, res) => {
     try {

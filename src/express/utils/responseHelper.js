@@ -4,7 +4,7 @@
  */
 
 const logError = require("../../utils/logger");
-const { t } = require("../../config/i18nConfig");
+const { t } = require("../../config/i18n.config");
 
 /**
  * Başarılı yanıt döndürür (HTTP 200)

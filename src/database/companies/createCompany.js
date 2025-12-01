@@ -1,7 +1,7 @@
 const { queryAsync } = require('../utils/connection');
 const { generateUniqueId } = require('../../utils/idUtils');
 const capitalizeFirstLetters = require('../../utils/capitalizeFirstLetters');
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 const createAccount = require('../accounts/createAccount');
 
 const createCompany = async (companyData) => {

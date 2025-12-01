@@ -1,6 +1,6 @@
 const {createToken} = require("../../auth/jwt");
 const {sendEmail} = require("../../services/emailService");
-const {t} = require("../../config/i18nConfig");
+const {t} = require("../../config/i18n.config");
 
 /**
  * Kullanıcıya e-posta doğrulama bağlantısı gönderir

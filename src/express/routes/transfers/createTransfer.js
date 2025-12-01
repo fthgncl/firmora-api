@@ -133,7 +133,7 @@ const express = require('express');
 const router = express.Router();
 const createTransfer = require('../../../database/transfers/createTransfer');
 const responseHelper = require('../../utils/responseHelper');
-const { t } = require('../../../config/i18nConfig');
+const { t } = require('../../../config/i18n.config');
 const { uploadConfig } = require('../../config/uploadConfig');
 const uploadMiddleware = require('../../middleware/uploadMiddleware');
 

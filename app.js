@@ -2,7 +2,7 @@ const logError = require('./src/utils/logger');
 const loadEnv = require('./src/utils/loadEnv');
 const colors = require('ansi-colors');
 
-// TODO: .env dosyasını güncelle ( i18nConfig.js )
+// TODO: .env dosyasını güncelle ( i18n.config.js )
 
 (async () => {
     let t = null;
@@ -12,11 +12,11 @@ const colors = require('ansi-colors');
         const envResult = await loadEnv();
 
         // i18next'i başlat
-        const {initializeI18n} = require('./src/config/i18nConfig');
+        const {initializeI18n} = require('./src/config/i18n.config');
         const i18nResult = await initializeI18n();
 
         // i18n yüklendikten sonra t fonksiyonunu al
-        const i18nModule = require('./src/config/i18nConfig');
+        const i18nModule = require('./src/config/i18n.config');
         t = i18nModule.t;
 
         console.log(colors.bgGreen.black(`~~~ ${t('server:starting')} ~~~`));

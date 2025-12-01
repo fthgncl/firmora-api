@@ -4,7 +4,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { handleServerError } = require('../config/serverConfig');
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 
 /**
  * HTTP veya HTTPS sunucusunu başlatır

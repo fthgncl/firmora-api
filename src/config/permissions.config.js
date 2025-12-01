@@ -1,4 +1,4 @@
-const { t } = require('./i18nConfig');
+const { t } = require('./i18n.config');
 
 const permissions = {
     "sys_admin": {

@@ -8,7 +8,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { uploadConfig, isValidExtension, isValidMimeType, isValidFileSize } = require('../config/uploadConfig');
 const logError = require("../../utils/logger");
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 
 /**
  * Geçici klasörün var olduğundan emin olur, yoksa oluşturur

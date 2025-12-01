@@ -1,7 +1,7 @@
 const {queryAsync} = require("../utils/connection");
-const {t} = require("../../config/i18nConfig");
+const {t} = require("../../config/i18n.config");
 const logError = require('../../utils/logger');
-const tablesConfig = require('../../config/tablesConfig');
+const tablesConfig = require('../../config/tables.config');
 
 /**
  * Transfer ID'sine göre transfer bilgilerini getirir

@@ -1,4 +1,4 @@
-const { changeLanguage, t, getSupportedLanguages } = require('../../config/i18nConfig');
+const { changeLanguage, t, getSupportedLanguages } = require('../../config/i18n.config');
 
 const languageMiddleware = async (req, res, next) => {
     try {

@@ -1,6 +1,6 @@
 const {queryAsync} = require('../utils/connection');
-const {t} = require('../../config/i18nConfig');
-const tablesConfig = require('../../config/tablesConfig');
+const {t} = require('../../config/i18n.config');
+const tablesConfig = require('../../config/tables.config');
 const getCompanyById = require('../companies/getCompanyById');
 const getUserById = require('../users/getUserById');
 

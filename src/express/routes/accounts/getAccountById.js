@@ -160,7 +160,7 @@ const express = require('express');
 const router = express.Router();
 const getAccountById = require('../../../database/accounts/getAccountById');
 const responseHelper = require('../../utils/responseHelper');
-const { t } = require('../../../config/i18nConfig');
+const { t } = require('../../../config/i18n.config');
 const {checkUserRoles} = require("../../../utils/permissionsManager");
 
 router.post('/get', async (req, res) => {

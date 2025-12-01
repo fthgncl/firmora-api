@@ -1,6 +1,6 @@
 // src/express/middleware/rateLimitMiddleware.js
 const rateLimit = require('express-rate-limit');
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 
 /**
  * Genel rate limiter

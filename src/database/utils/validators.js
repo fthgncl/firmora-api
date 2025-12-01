@@ -1,6 +1,6 @@
 const { queryAsync } = require('./connection');
 const { readUserPermissions } = require('../../utils/permissionsManager');
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 const {isValidAmount} = require("../../utils/validation");
 
 /**

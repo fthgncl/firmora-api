@@ -1,5 +1,5 @@
 const { queryAsync } = require('../utils/connection');
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 
 /**
  * Transfer kayıtlarını listeler ve sayfalama ile sonuçları döndürür

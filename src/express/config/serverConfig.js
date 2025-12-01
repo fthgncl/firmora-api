@@ -1,5 +1,5 @@
 // src/express/config/serverConfig.js
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 
 /**
  * Port değerini normalize eder

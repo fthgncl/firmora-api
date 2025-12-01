@@ -171,7 +171,7 @@ const responseHelper = require('../utils/responseHelper');
 const { isValidUsername, isValidPhone } = require("../../utils/validation");
 const { cleanInputs } = require("../../utils/inputCleaner");
 const { sendVerificationEmail } = require('../../express/services/emailService');
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 
 // Error handling for duplicate entries
 const getErrorMessages = (error) => {

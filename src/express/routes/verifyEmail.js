@@ -136,7 +136,7 @@ const { queryAsync } = require("../../database/utils/connection");
 const { sendVerificationEmail } = require("../services/emailService");
 const { verifyToken } = require('../../auth/jwt');
 const responseHelper = require('../utils/responseHelper');
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 
 router.post('/send', async (req, res) => {
     const { emailOrUsername } = req.body;

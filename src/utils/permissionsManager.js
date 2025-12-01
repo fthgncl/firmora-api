@@ -1,6 +1,6 @@
-const permissions = require('../config/permissionsConfig');
+const permissions = require('../config/permissions.config');
 const {queryAsync} = require("../database/utils/connection");
-const { t } = require('../config/i18nConfig');
+const { t } = require('../config/i18n.config');
 const getCompaniesByOwnerId = require('../database/companies/getCompaniesByOwnerId');
 const sortAlphabetically = require('./sortAlphabetically');
 

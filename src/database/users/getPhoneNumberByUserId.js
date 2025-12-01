@@ -1,5 +1,5 @@
 const getUserById = require('./getUserById');
-const { t } = require('../../config/i18nConfig');
+const { t } = require('../../config/i18n.config');
 
 /**
  * Kullanıcı ID'si ile telefon numarasını getirme fonksiyonu

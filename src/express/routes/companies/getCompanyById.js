@@ -249,7 +249,7 @@
 const express = require('express');
 const router = express.Router();
 const { queryAsync } = require('../../../database/utils/connection');
-const { t } = require('../../../config/i18nConfig');
+const { t } = require('../../../config/i18n.config');
 require('../../../utils/validation');
 const { isValidCompanyId } = require("../../../utils/validation");
 const responseHelper = require("../../utils/responseHelper");
