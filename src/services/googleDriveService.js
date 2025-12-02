@@ -215,33 +215,48 @@ async function ensureRootBackupFolder() {
  * 3) Local klasörü içerikleriyle Drive'a "yoksa yükle" mantığıyla senkronize et
  */
 async function syncBackupFolders() {
-    const drive = getDriveClient();
+    try {
+        const drive = getDriveClient();
 
-    console.log('[GoogleDriveBackup] Starting backup sync...');
+        console.log('[GoogleDriveBackup] Starting backup sync...');
 
-    const rootFolderId = await ensureRootBackupFolder();
-    console.log('[GoogleDriveBackup] Root backup folder ID:', rootFolderId);
+        const rootFolderId = await ensureRootBackupFolder();
+        console.log('[GoogleDriveBackup] Root backup folder ID:', rootFolderId);
 
-    const backupFolders = googleConfig.backupFolders || [];
+        const backupFolders = googleConfig.backupFolders || [];
 
-    for (const folderName of backupFolders) {
-        // Local path (proje root'una göre)
-        const localPath = path.join(process.cwd(), folderName);
+        for (const folderName of backupFolders) {
+            // Local path (proje root'una göre)
+            const localPath = path.join(process.cwd(), folderName);
 
-        if (!fs.existsSync(localPath)) {
-            console.warn(`[GoogleDriveBackup] Local folder not found, skipping: ${localPath}`);
-            continue;
+            if (!fs.existsSync(localPath)) {
+                console.warn(`[GoogleDriveBackup] Local folder not found, skipping: ${localPath}`);
+                continue;
+            }
+
+            // Root altında bu klasörü oluştur / bul
+            const driveFolderId = await findOrCreateFolder(drive, folderName, rootFolderId);
+            console.log(`[GoogleDriveBackup] Syncing folder "${folderName}" to Drive (ID: ${driveFolderId})`);
+
+            // İçeriği senkronize et
+            await syncLocalFolderToDrive(drive, localPath, driveFolderId);
         }
 
-        // Root altında bu klasörü oluştur / bul
-        const driveFolderId = await findOrCreateFolder(drive, folderName, rootFolderId);
-        console.log(`[GoogleDriveBackup] Syncing folder "${folderName}" to Drive (ID: ${driveFolderId})`);
+        console.log('[GoogleDriveBackup] Backup sync finished.');
 
-        // İçeriği senkronize et
-        await syncLocalFolderToDrive(drive, localPath, driveFolderId);
+        // Başarılı durum
+        return {
+            status: 'success',
+            message: 'Google Drive yedekleme işlemi başarıyla tamamlandı.',
+        };
+    } catch (error) {
+        // Hata durumunda senin formatına uygun dön
+        return {
+            status: 'error',
+            error,
+            message: 'Google Drive yedekleme işlemi sırasında bir hata oluştu.',
+        };
     }
-
-    console.log('[GoogleDriveBackup] Backup sync finished.');
 }
 
 module.exports = {
