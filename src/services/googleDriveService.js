@@ -35,18 +35,17 @@ function getDriveClient() {
  * Belirli bir parent altında isimle klasör arar, bulamazsa oluşturur.
  * @param {object} drive
  * @param {string} name - Klasör adı
- * @param {string|null} parentId - Parent klasör ID'si (root için null)
+ * @param {string} parentId - Parent klasör ID'si (root için 'root')
  * @returns {Promise<string>} - Klasör ID
  */
-async function findOrCreateFolder(drive, name, parentId = null) {
-    const parentClause = parentId
-        ? `'${parentId}' in parents`
-        : `'root' in parents`;
+async function findOrCreateFolder(drive, name, parentId = 'root') {
+    // parentId ZORUNLU, yoksa root'a yazılmasını istemiyoruz
+    const effectiveParentId = parentId || 'root';
 
     const q = [
         `name = '${name.replace(/'/g, "\\'")}'`,
         `mimeType = 'application/vnd.google-apps.folder'`,
-        parentClause,
+        `'${effectiveParentId}' in parents`,
         'trashed = false'
     ].join(' and ');
 
@@ -64,7 +63,7 @@ async function findOrCreateFolder(drive, name, parentId = null) {
     const fileMetadata = {
         name,
         mimeType: 'application/vnd.google-apps.folder',
-        parents: parentId ? [parentId] : undefined
+        parents: [effectiveParentId]
     };
 
     const createRes = await drive.files.create({
@@ -108,6 +107,11 @@ async function getChildrenMap(drive, parentId) {
  * Tek bir dosyayı, parent klasör altına eğer yoksa yükler.
  */
 async function uploadFileIfNotExists(drive, parentId, fileName, filePath, existingChildrenMap) {
+    if (!parentId) {
+        // Güvenlik için: parentId yoksa root'a yazmayalım
+        throw new Error(`[GoogleDriveBackup] parentId boş geldi. Dosya root'a yazılmayacak: ${fileName}`);
+    }
+
     if (existingChildrenMap[fileName]) {
         // Zaten var, geç
         return existingChildrenMap[fileName].id;
@@ -205,7 +209,8 @@ async function ensureRootBackupFolder() {
         rootFolderName = `${rootFolderName} (${env})`;
     }
 
-    return await findOrCreateFolder(drive, rootFolderName, null);
+    // Root backup klasörü HER ZAMAN My Drive root altında
+    return await findOrCreateFolder(drive, rootFolderName, 'root'); // rootFolderId
 }
 
 /**
@@ -214,7 +219,7 @@ async function ensureRootBackupFolder() {
  * 2) Her backupFolders klasörünü root altında oluştur/kontrol
  * 3) Local klasörü içerikleriyle Drive'a "yoksa yükle" mantığıyla senkronize et
  */
-async function syncBackupFolders() {
+async function syncGoogleDriveBackupFolders() {
     try {
         const drive = getDriveClient();
 
@@ -234,9 +239,11 @@ async function syncBackupFolders() {
                 continue;
             }
 
-            // Root altında bu klasörü oluştur / bul
+            // Root backup klasörü altında bu klasörü oluştur / bul
             const driveFolderId = await findOrCreateFolder(drive, folderName, rootFolderId);
-            console.log(`[GoogleDriveBackup] Syncing folder "${folderName}" to Drive (ID: ${driveFolderId})`);
+            console.log(
+                `[GoogleDriveBackup] Syncing folder "${folderName}" to Drive (ID: ${driveFolderId})`
+            );
 
             // İçeriği senkronize et
             await syncLocalFolderToDrive(drive, localPath, driveFolderId);
@@ -261,6 +268,5 @@ async function syncBackupFolders() {
 
 module.exports = {
     getDriveClient,
-    syncBackupFolders,
-    findOrCreateFolder
+    syncGoogleDriveBackupFolders
 };
