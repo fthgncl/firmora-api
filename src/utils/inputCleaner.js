@@ -89,6 +89,20 @@ function cleanNameInput(text) {
         .join(' ');
 }
 
+/**
+ * Para birimi kodunu temizler (3 harfli büyük harf formatına çevirir)
+ * @param {string} currency - Temizlenecek para birimi kodu
+ * @returns {string} Temizlenmiş para birimi kodu (örn: TRY, USD, EUR)
+ */
+function cleanCurrencyInput(currency) {
+    if (!currency || typeof currency !== 'string') return '';
+    return currency
+        .replace(/\s+/g, '') // Tüm boşlukları kaldır
+        .replace(/[^a-zA-Z]/g, '') // Sadece harflere izin ver
+        .toUpperCase() // Büyük harfe çevir
+        .trim();
+}
+
 
 /**
  * Genel input temizleme fonksiyonu - anahtar ismine göre temizleme yapar ve güvenlik kontrolleri uygular
@@ -116,8 +130,14 @@ function cleanInputs(inputData) {
             case 'email':
                 cleanedData[key] = cleanEmailInput(value);
                 break;
-            case 'phone':
-                cleanedData[key] = cleanPhoneInput(value);
+            case 'company_name':
+                cleanedData[key] = cleanNameInput(value);
+                break;
+            case 'sector':
+                cleanedData[key] = cleanNameInput(value);
+                break;
+            case 'currency':
+                cleanedData[key] = cleanCurrencyInput(value);
                 break;
             default:
                 cleanedData[key] = value;

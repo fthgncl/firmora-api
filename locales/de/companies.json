@@ -13,8 +13,14 @@
   "update": {
     "success": "Unternehmen erfolgreich aktualisiert!",
     "notFound": "Unternehmen nicht gefunden",
+    "unknownError": "Beim Aktualisieren des Unternehmens ist ein unbekannter Fehler aufgetreten",
+    "noUpdateData": "Keine Unternehmensaktualisierungsdaten angegeben",
+    "youNotCompanyOwner": "Sie können das Unternehmen nicht aktualisieren, da Sie nicht der Eigentümer sind",
     "error": "Fehler beim Aktualisieren des Unternehmens",
-    "noValidFields": "Keine gültigen Felder zum Aktualisieren gefunden"
+    "noValidFields": "Keine gültigen Felder zum Aktualisieren gefunden",
+    "companyIdRequired": "Unternehmens-ID ist erforderlich",
+    "duplicateCompanyName": "Ein Unternehmen mit diesen Angaben existiert bereits",
+    "serverError": "Ein Serverfehler ist aufgetreten"
   },
   "getCompanyById": {
     "companyIdRequired": "Unternehmens-ID muss angegeben werden",

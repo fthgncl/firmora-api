@@ -13,8 +13,14 @@
   "update": {
     "success": "Firma başarıyla güncellendi!",
     "notFound": "Firma bulunamadı",
+    "unknownError": "Firma güncellenirken bilinmeyen bir hata oluştu",
+    "noUpdateData": "Firma güncelleme verisi sağlanmadı",
+    "youNotCompanyOwner": "Firma sahibi olmadığınız için güncelleme yapamazsınız",
     "error": "Firma güncellenirken hata oluştu",
-    "noValidFields": "Güncellenecek geçerli alan bulunamadı"
+    "noValidFields": "Güncellenecek geçerli alan bulunamadı",
+    "companyIdRequired": "Firma ID'si gereklidir",
+    "duplicateCompanyName": "Bu bilgilerle kayıtlı bir firma zaten var",
+    "serverError": "Sunucu hatası oluştu"
   },
   "getCompanyById": {
     "companyIdRequired": "Firma ID'si belirtilmelidir",

@@ -13,8 +13,14 @@
   "update": {
     "success": "Company updated successfully!",
     "notFound": "Company not found",
+    "unknownError": "An unknown error occurred while updating company",
+    "noUpdateData": "No company update data provided",
+    "youNotCompanyOwner": "You cannot update the company as you are not the owner",
     "error": "Error occurred while updating company",
-    "noValidFields": "No valid fields found to update"
+    "noValidFields": "No valid fields found to update",
+    "companyIdRequired": "Company ID is required",
+    "duplicateCompanyName": "A company with these details already exists",
+    "serverError": "A server error occurred"
   },
   "getCompanyById": {
     "companyIdRequired": "Company ID must be specified",
