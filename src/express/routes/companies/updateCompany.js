@@ -29,11 +29,6 @@
  *                 type: string
  *                 description: Sektör (opsiyonel)
  *                 example: "Teknoloji"
- *               currency:
- *                 type: string
- *                 description: Para birimi - 3 harfli kod (opsiyonel)
- *                 example: "TRY"
- *                 pattern: "^[A-Z]{3}$"
  *     responses:
  *       200:
  *         description: Firma başarıyla güncellendi.
@@ -58,9 +53,6 @@
  *                     sector:
  *                       type: string
  *                       example: "Teknoloji"
- *                     currency:
- *                       type: string
- *                       example: "TRY"
  *       400:
  *         description: Geçersiz giriş bilgileri, güncelleme verisi yok veya benzersizlik ihlali.
  *         content:

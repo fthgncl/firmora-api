@@ -61,7 +61,7 @@ const updateCompany = async (companyId, updateData) => {
 };
 
 const prepareUpdateData = async (updateData) => {
-    const allowedFields = ['company_name', 'sector', 'currency'];
+    const allowedFields = ['company_name', 'sector'];
     const processedData = {};
 
     // Sadece izin verilen alanları işle
