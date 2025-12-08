@@ -19,6 +19,7 @@ module.exports = {
         balance: 'DECIMAL(15, 2) NOT NULL DEFAULT 0',
         owner_id: 'VARCHAR(36) NOT NULL',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
+        auto_approve_incoming_transfers: 'TINYINT(1) NOT NULL DEFAULT 0'
     },
     user_company_permissions: {
         user_id: 'VARCHAR(36) NOT NULL',

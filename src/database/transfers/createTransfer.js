@@ -33,6 +33,7 @@ const createTransfer = async (transferData, userId, companyId, uploadedFiles) =>
     transferData.id = await generateUniqueId('TRF', 'transfers');
     transferData.user_id = userId;
     transferData.company_id = companyId;
+    await applyApprovalRequirement(transferData); // transferData.requires_approval = true/false yapar.
 
     // Dosya yükleme işlemi
     let uploadedFilePaths = null;
@@ -126,13 +127,36 @@ const createTransfer = async (transferData, userId, companyId, uploadedFiles) =>
     }
 };
 
+async function applyApprovalRequirement(transferData) {
+
+    const {user_id, company_id, transfer_type} = transferData;
+
+    // Onay gereksinimini belirle
+    transferData.requires_approval = !transfer_type.includes('external'); // Sistem dışı transferler onay gerektirmez
+
+    // Para girdisi firmaya ise ve onay gerekmiyorsa, otomatik onay kontrolleri
+    if ( !transferData.requires_approval && transfer_type.includes('to_company') ) {
+
+        // Firmanın otomatik onay ayarını kontrol et. Aktifse onay gereksinimini kaldır.
+        const company = await getCompanyById(company_id, ['auto_approve_incoming_transfers']);
+        if ( company && company.auto_approve_incoming_transfers ) {
+            transferData.requires_approval = false;
+        }
+        // Kullanıcının onay yetkisi var mı kontrol et. Varsa onay gereksinimini kaldır.
+        else if ( await checkUserRoles(user_id, company_id, ['can_approve_transfers']) ) {
+            transferData.requires_approval = false;
+        }
+    }
+
+}
+
 async function calculateFinalBalances(transferData, userId, companyId) {
     let fromCurrentBalance = null;
     if (transferData.from_scope === 'company') {
         const company = await getCompanyById(companyId, ['balance']);
         fromCurrentBalance = company?.balance ?? null;
     } else if (transferData.from_scope === 'user') {
-        const { accounts } = await getAccountsByUserId(userId, ['balance'], companyId);
+        const {accounts} = await getAccountsByUserId(userId, ['balance'], companyId);
         fromCurrentBalance = accounts.length > 0 ? accounts[0].balance : null;
     }
     transferData.sender_final_balance = fromCurrentBalance == null ? null : fromCurrentBalance - transferData.amount;
@@ -143,7 +167,7 @@ async function calculateFinalBalances(transferData, userId, companyId) {
         toCurrentBalance = company?.balance ?? null;
     } else if (transferData.to_scope === 'user' && transferData.to_user_id) {
         const targetCompanyId = transferData.to_user_company_id || companyId;
-        const { accounts } = await getAccountsByUserId(transferData.to_user_id, ['balance'], targetCompanyId);
+        const {accounts} = await getAccountsByUserId(transferData.to_user_id, ['balance'], targetCompanyId);
         toCurrentBalance = accounts.length > 0 ? accounts[0].balance : null;
     }
     transferData.receiver_final_balance = toCurrentBalance == null ? null : toCurrentBalance + transferData.amount;
