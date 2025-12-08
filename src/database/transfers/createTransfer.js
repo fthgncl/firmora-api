@@ -148,6 +148,9 @@ async function applyApprovalRequirement(transferData) {
         }
     }
 
+    // Transfer durumunu belirle
+    transferData.status = transferData.requires_approval ? 'pending' : 'completed';
+
 }
 
 async function calculateFinalBalances(transferData, userId, companyId) {
@@ -216,7 +219,6 @@ async function handleCompanyToUserSame(transferData) {
         }
 
         // Transfer kaydını veritabanına ekle
-        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
@@ -236,7 +238,7 @@ async function handleCompanyToUserSame(transferData) {
             currency,
             'company_to_user_same',
             transferData.description || null,
-            transferStatus,
+            transferData.status,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -302,7 +304,6 @@ async function handleCompanyToUserOther(transferData) {
         }
 
         // Transfer kaydını veritabanına ekle
-        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
@@ -322,7 +323,7 @@ async function handleCompanyToUserOther(transferData) {
             currency,
             'company_to_user_other',
             transferData.description || null,
-            transferStatus,
+            transferData.status,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -384,7 +385,6 @@ async function handleCompanyToCompanyOther(transferData) {
         }
 
         // Transfer kaydını veritabanına ekle
-        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
@@ -404,7 +404,7 @@ async function handleCompanyToCompanyOther(transferData) {
             currency,
             'company_to_company_other',
             transferData.description || null,
-            transferStatus,
+            transferData.status,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -467,7 +467,6 @@ async function handleUserToUserSame(transferData) {
         }
 
         // Transfer kaydını veritabanına ekle
-        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
@@ -487,7 +486,7 @@ async function handleUserToUserSame(transferData) {
             currency,
             'user_to_user_same',
             transferData.description || null,
-            transferStatus,
+            transferData.status,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -558,7 +557,6 @@ async function handleUserToUserOther(transferData) {
         }
 
         // Transfer kaydını veritabanına ekle
-        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
@@ -578,7 +576,7 @@ async function handleUserToUserOther(transferData) {
             currency,
             'user_to_user_other',
             transferData.description || null,
-            transferStatus,
+            transferData.status,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -630,7 +628,6 @@ async function handleUserToCompanySame(transferData) {
         }
 
         // Transfer kaydını veritabanına ekle
-        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
@@ -650,7 +647,7 @@ async function handleUserToCompanySame(transferData) {
             currency,
             'user_to_company_same',
             transferData.description || null,
-            transferStatus,
+            transferData.status,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -711,7 +708,6 @@ async function handleUserToCompanyOther(transferData) {
         }
 
         // Transfer kaydını veritabanına ekle
-        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
@@ -731,7 +727,7 @@ async function handleUserToCompanyOther(transferData) {
             currency,
             'user_to_company_other',
             transferData.description || null,
-            transferStatus,
+            transferData.status,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -787,7 +783,7 @@ async function handleUserToExternal(transferData) {
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, to_external_name, description,
                                    status, sender_final_balance, receiver_final_balance, files)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -803,6 +799,7 @@ async function handleUserToExternal(transferData) {
             'user_to_external',
             to_external_name,
             transferData.description || null,
+            transferData.status,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -859,7 +856,7 @@ async function handleCompanyToExternal(transferData) {
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, to_external_name, description,
                                    status, sender_final_balance, receiver_final_balance, files)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -875,6 +872,7 @@ async function handleCompanyToExternal(transferData) {
             'company_to_external',
             to_external_name,
             transferData.description || null,
+            transferData.status,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -935,7 +933,7 @@ async function handleExternalToUser(transferData) {
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, from_external_name,
                                    description, status, sender_final_balance, receiver_final_balance, files)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -951,6 +949,7 @@ async function handleExternalToUser(transferData) {
             'external_to_user',
             from_external_name,
             transferData.description || null,
+            transferData.status,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -1006,7 +1005,7 @@ async function handleExternalToCompany(transferData) {
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, from_external_name,
                                    description, status, sender_final_balance, receiver_final_balance, files)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -1022,6 +1021,7 @@ async function handleExternalToCompany(transferData) {
             'external_to_company',
             from_external_name,
             transferData.description || null,
+            transferData.status,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
