@@ -19,7 +19,12 @@
     "failed": "Fehler beim Abrufen der Überweisungsliste.",
     "companyIdRequired": "Unternehmens-ID ist erforderlich."
   },
-    "files": {
-        "noFiles": "Keine Dateien angehängt"
-    }
+  "files": {
+    "noFiles": "Keine Dateien angehängt"
+  },
+  "approveTransfer": {
+    "success": "Überweisung erfolgreich genehmigt.",
+    "transferAlreadyApproved": "Die Überweisung wurde bereits genehmigt.",
+    "unknownTransferStatus": "Unbekannter Überweisungsstatus."
+  }
 }

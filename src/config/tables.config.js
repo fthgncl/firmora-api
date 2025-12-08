@@ -46,7 +46,7 @@ module.exports = {
         amount: 'DECIMAL(15,2) NOT NULL',
         currency: "VARCHAR(3) NOT NULL CHECK (currency REGEXP '^[A-Z]{3}$')",
         description: 'VARCHAR(255) NULL DEFAULT NULL',
-        status: "ENUM('pending','completed','failed','reversed') NOT NULL DEFAULT 'completed'",
+        status: "ENUM('pending','completed') NOT NULL",
         to_external_name: 'VARCHAR(120) NULL DEFAULT NULL',
         from_external_name: 'VARCHAR(120) NULL DEFAULT NULL',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',

@@ -21,5 +21,10 @@
   },
   "files": {
     "noFiles": "Eklenmiş dosya yok"
+  },
+  "approveTransfer": {
+    "success": "Transfer başarıyla onaylandı.",
+    "transferAlreadyApproved": "Transfer zaten onaylandı.",
+    "unknownTransferStatus": "Bilinmeyen transfer durumu."
   }
 }

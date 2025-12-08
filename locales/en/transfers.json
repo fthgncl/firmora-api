@@ -19,7 +19,12 @@
     "failed": "Failed to retrieve transfer list.",
     "companyIdRequired": "Company ID is required."
   },
-    "files": {
-        "noFiles": "No files attached"
-    }
+  "files": {
+    "noFiles": "No files attached"
+  },
+  "approveTransfer": {
+    "success": "Transfer approved successfully.",
+    "transferAlreadyApproved": "Transfer has already been approved.",
+    "unknownTransferStatus": "Unknown transfer status."
+  }
 }
