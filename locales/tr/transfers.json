@@ -24,7 +24,7 @@
   },
   "approveTransfer": {
     "success": "Transfer başarıyla onaylandı.",
-    "transferAlreadyApproved": "Transfer zaten onaylandı.",
+    "transferAlreadyApproved": "Transfer zaten onaylanmış.",
     "unknownTransferStatus": "Bilinmeyen transfer durumu."
   }
 }
