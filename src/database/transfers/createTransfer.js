@@ -161,16 +161,21 @@ async function calculateFinalBalances(transferData, userId, companyId) {
     }
     transferData.sender_final_balance = fromCurrentBalance == null ? null : fromCurrentBalance - transferData.amount;
 
-    let toCurrentBalance = null;
-    if (transferData.to_scope === 'company' && transferData.to_user_company_id) {
-        const company = await getCompanyById(transferData.to_user_company_id, ['balance']);
-        toCurrentBalance = company?.balance ?? null;
-    } else if (transferData.to_scope === 'user' && transferData.to_user_id) {
-        const targetCompanyId = transferData.to_user_company_id || companyId;
-        const {accounts} = await getAccountsByUserId(transferData.to_user_id, ['balance'], targetCompanyId);
-        toCurrentBalance = accounts.length > 0 ? accounts[0].balance : null;
+    // Onay gerekiyorsa receiver_final_balance hesaplanmaz (null kalır)
+    if (!transferData.requires_approval) {
+        let toCurrentBalance = null;
+        if (transferData.to_scope === 'company' && transferData.to_user_company_id) {
+            const company = await getCompanyById(transferData.to_user_company_id, ['balance']);
+            toCurrentBalance = company?.balance ?? null;
+        } else if (transferData.to_scope === 'user' && transferData.to_user_id) {
+            const targetCompanyId = transferData.to_user_company_id || companyId;
+            const {accounts} = await getAccountsByUserId(transferData.to_user_id, ['balance'], targetCompanyId);
+            toCurrentBalance = accounts.length > 0 ? accounts[0].balance : null;
+        }
+        transferData.receiver_final_balance = toCurrentBalance == null ? null : toCurrentBalance + transferData.amount;
+    } else {
+        transferData.receiver_final_balance = null;
     }
-    transferData.receiver_final_balance = toCurrentBalance == null ? null : toCurrentBalance + transferData.amount;
 }
 
 
@@ -204,14 +209,19 @@ async function handleCompanyToUserSame(transferData) {
         await validateCompanyBalance(company_id, amount);
 
         await deductCompanyBalance(company_id, amount);
-        await addAccountBalance(to_user_id, company_id, amount);
+
+        // Onay gerekmiyorsa alıcı bakiyesini hemen artır
+        if (!transferData.requires_approval) {
+            await addAccountBalance(to_user_id, company_id, amount);
+        }
 
         // Transfer kaydını veritabanına ekle
+        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
                                    sender_final_balance, receiver_final_balance, files)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -226,6 +236,7 @@ async function handleCompanyToUserSame(transferData) {
             currency,
             'company_to_user_same',
             transferData.description || null,
+            transferStatus,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -284,14 +295,19 @@ async function handleCompanyToUserOther(transferData) {
         await validateCompanyBalance(company_id, amount);
 
         await deductCompanyBalance(company_id, amount);
-        await addAccountBalance(to_user_id, to_user_company_id, amount);
+
+        // Onay gerekmiyorsa alıcı bakiyesini hemen artır
+        if (!transferData.requires_approval) {
+            await addAccountBalance(to_user_id, to_user_company_id, amount);
+        }
 
         // Transfer kaydını veritabanına ekle
+        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
                                    sender_final_balance, receiver_final_balance, files)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -306,6 +322,7 @@ async function handleCompanyToUserOther(transferData) {
             currency,
             'company_to_user_other',
             transferData.description || null,
+            transferStatus,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -360,14 +377,19 @@ async function handleCompanyToCompanyOther(transferData) {
         await validateCompanyBalance(company_id, amount);
 
         await deductCompanyBalance(company_id, amount);
-        await addCompanyBalance(to_user_company_id, amount);
+
+        // Onay gerekmiyorsa alıcı bakiyesini hemen artır
+        if (!transferData.requires_approval) {
+            await addCompanyBalance(to_user_company_id, amount);
+        }
 
         // Transfer kaydını veritabanına ekle
+        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
                                    sender_final_balance, receiver_final_balance, files)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -382,6 +404,7 @@ async function handleCompanyToCompanyOther(transferData) {
             currency,
             'company_to_company_other',
             transferData.description || null,
+            transferStatus,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -437,14 +460,19 @@ async function handleUserToUserSame(transferData) {
 
         // Gönderen kullanıcının yeterli bakiyesi var mı kontrol et (deductAccountBalance içinde kontrol ediliyor)
         await deductAccountBalance(user_id, company_id, amount);
-        await addAccountBalance(to_user_id, company_id, amount);
+
+        // Onay gerekmiyorsa alıcı bakiyesini hemen artır
+        if (!transferData.requires_approval) {
+            await addAccountBalance(to_user_id, company_id, amount);
+        }
 
         // Transfer kaydını veritabanına ekle
+        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
                                    sender_final_balance, receiver_final_balance, files)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -459,6 +487,7 @@ async function handleUserToUserSame(transferData) {
             currency,
             'user_to_user_same',
             transferData.description || null,
+            transferStatus,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -522,14 +551,19 @@ async function handleUserToUserOther(transferData) {
         await validateUserInCompany(to_user_id, to_user_company_id);
 
         await deductAccountBalance(user_id, company_id, amount);
-        await addAccountBalance(to_user_id, to_user_company_id, amount);
+
+        // Onay gerekmiyorsa alıcı bakiyesini hemen artır
+        if (!transferData.requires_approval) {
+            await addAccountBalance(to_user_id, to_user_company_id, amount);
+        }
 
         // Transfer kaydını veritabanına ekle
+        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
                                    sender_final_balance, receiver_final_balance, files)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -544,6 +578,7 @@ async function handleUserToUserOther(transferData) {
             currency,
             'user_to_user_other',
             transferData.description || null,
+            transferStatus,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -588,14 +623,19 @@ async function handleUserToCompanySame(transferData) {
         validateAmount(amount);
 
         await deductAccountBalance(user_id, company_id, amount);
-        await addCompanyBalance(company_id, amount);
+
+        // Onay gerekmiyorsa alıcı bakiyesini hemen artır
+        if (!transferData.requires_approval) {
+            await addCompanyBalance(company_id, amount);
+        }
 
         // Transfer kaydını veritabanına ekle
+        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
                                    sender_final_balance, receiver_final_balance, files)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -610,6 +650,7 @@ async function handleUserToCompanySame(transferData) {
             currency,
             'user_to_company_same',
             transferData.description || null,
+            transferStatus,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
@@ -663,14 +704,19 @@ async function handleUserToCompanyOther(transferData) {
         validateAmount(amount);
 
         await deductAccountBalance(user_id, company_id, amount);
-        await addCompanyBalance(to_user_company_id, amount);
+
+        // Onay gerekmiyorsa alıcı bakiyesini hemen artır
+        if (!transferData.requires_approval) {
+            await addCompanyBalance(to_user_company_id, amount);
+        }
 
         // Transfer kaydını veritabanına ekle
+        const transferStatus = transferData.requires_approval ? 'pending' : 'completed';
         const insertQuery = `
             INSERT INTO transfers (id, user_id, company_id, to_user_id, to_user_company_id,
                                    from_scope, to_scope, amount, currency, transfer_type, description, status,
                                    sender_final_balance, receiver_final_balance, files)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await queryAsync(insertQuery, [
@@ -685,6 +731,7 @@ async function handleUserToCompanyOther(transferData) {
             currency,
             'user_to_company_other',
             transferData.description || null,
+            transferStatus,
             transferData.sender_final_balance,
             transferData.receiver_final_balance,
             transferData.files
