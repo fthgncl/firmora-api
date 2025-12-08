@@ -96,6 +96,12 @@ const permissions = {
         "category": "permissions:categories.financial",
         "name": "permissions:can_view_other_users_transfer_history.name",
         "description": "permissions:can_view_other_users_transfer_history.description"
+    },
+    "can_approve_transfers": {
+        "code": "q",
+        "category": "permissions:categories.financial",
+        "name": "permissions:can_approve_transfers.name",
+        "description": "permissions:can_approve_transfers.description"
     }
 };
 

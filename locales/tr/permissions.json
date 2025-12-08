@@ -74,6 +74,10 @@
     "name": "Diğer kullanıcıların para transfer geçmişini görüntüleme",
     "description": "Kullanıcı, firmadaki diğer kullanıcıların yaptığı para transferlerinin geçmişini görüntüleyebilir."
   },
+  "can_approve_transfers": {
+    "name": "Gelen transfer onayı",
+    "description": "Kullanıcı, firmaya gönderilen transferleri onaylayabilir veya reddedebilir. Onaylanan tutar firmaya geçer, reddedilen tutar göndericiye iade edilir."
+  },
   "checkUserRoles": {
     "error": "Kullanıcı rolleri kontrol edilirken hata oluştu (userId: {{userId}})"
   },

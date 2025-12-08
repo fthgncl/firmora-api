@@ -68,6 +68,10 @@
     "name": "Überweisungshistorie anderer Benutzer anzeigen",
     "description": "Der Benutzer kann den Verlauf der Finanztransaktionen anderer Benutzer innerhalb desselben Unternehmens einsehen."
   },
+  "can_approve_transfers": {
+    "name": "Eingehende Überweisungsfreigabe",
+    "description": "Der Benutzer kann an das Unternehmen gesendete Überweisungen genehmigen oder ablehnen. Genehmigte Beträge werden dem Unternehmen gutgeschrieben, abgelehnte Überweisungen werden an den Absender zurückerstattet."
+  },
   "readUser": {
     "success": "Benutzerberechtigungen abgerufen",
     "noPermissions": "Keine Berechtigungen für den Benutzer gefunden",

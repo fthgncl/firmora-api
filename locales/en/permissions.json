@@ -68,6 +68,10 @@
     "name": "View other users' transfer history",
     "description": "The user can view the financial transaction history of other users within the same company."
   },
+  "can_approve_transfers": {
+    "name": "Incoming Transfer Approval",
+    "description": "The user can approve or reject transfers sent to the company. Approved amounts are credited to the company, while rejected transfers are refunded to the sender."
+  },
   "readUser": {
     "success": "User permissions retrieved",
     "noPermissions": "No permissions found for the user",
