@@ -228,7 +228,7 @@ router.get('/pending', async (req, res) => {
                 // Firmaya gönderilen pending transferleri al
                 const companyTransfersResult = await listTransfers({
                     toUserCompanyId: perm.companyId,
-                    fromScope: 'company',
+                    toScope: 'company',
                     status: 'pending'
                 });
 
