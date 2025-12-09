@@ -129,13 +129,16 @@ const createTransfer = async (transferData, userId, companyId, uploadedFiles) =>
 
 async function applyApprovalRequirement(transferData) {
 
-    const {user_id, company_id, transfer_type} = transferData;
+    const {user_id, to_user_id, company_id, from_scope, to_scope} = transferData;
 
     // Onay gereksinimini belirle
-    transferData.requires_approval = !transfer_type.includes('external'); // Sistem dışı transferler onay gerektirmez
+    transferData.requires_approval = from_scope !== 'external' && to_scope !== 'external'; // Sistem dışı transferler onay gerektirmez
+
+    if ( to_user_id === user_id )
+        transferData.requires_approval = false;
 
     // Para girdisi firmaya ise ve onay gerekmiyorsa, otomatik onay kontrolleri
-    if ( !transferData.requires_approval && transfer_type.includes('to_company') ) {
+    if ( !transferData.requires_approval && from_scope === 'company' ) {
 
         // Firmanın otomatik onay ayarını kontrol et. Aktifse onay gereksinimini kaldır.
         const company = await getCompanyById(company_id, ['auto_approve_incoming_transfers']);
