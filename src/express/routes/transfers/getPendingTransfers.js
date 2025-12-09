@@ -245,7 +245,7 @@ router.get('/pending', async (req, res) => {
         // Transferleri tarihe göre sırala (en yeni önce)
         allTransfers.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-        return responseHelper.success(res, {
+        const data = {
             transfers: allTransfers,
             pagination: {
                 total: allTransfers.length,
@@ -256,7 +256,9 @@ router.get('/pending', async (req, res) => {
                 hasNextPage: false,
                 hasPrevPage: false
             }
-        });
+        }
+
+        return responseHelper.success(res, { data } );
 
     } catch (error) {
         if (error.status === 500) {
