@@ -23,8 +23,13 @@
     "noFiles": "No files attached"
   },
   "approveTransfer": {
+    "userIdRequired": "User ID is required.",
     "success": "Transfer approved successfully.",
     "transferAlreadyApproved": "Transfer has already been approved.",
-    "unknownTransferStatus": "Unknown transfer status."
+    "unknownTransferStatus": "Unknown transfer status.",
+    "noPermission": "You do not have permission to approve this transfer.",
+    "updateFailed": "Update failed.",
+    "currencyMismatch": "Currencies do not match.",
+    "invalidToScope": "Invalid to scope."
   }
 }

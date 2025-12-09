@@ -23,8 +23,13 @@
     "noFiles": "Eklenmiş dosya yok"
   },
   "approveTransfer": {
+    "userIdRequired": "Kullanıcı ID'si gereklidir",
     "success": "Transfer başarıyla onaylandı.",
     "transferAlreadyApproved": "Transfer zaten onaylanmış.",
-    "unknownTransferStatus": "Bilinmeyen transfer durumu."
+    "unknownTransferStatus": "Bilinmeyen transfer durumu.",
+    "noPermission": "Bu transferi onaylama izniniz yok.",
+    "updateFailed": "Güncelleme başarısız oldu.",
+    "currencyMismatch": "Para birimleri aynı değil.",
+    "invalidToScope": "Hedef kapsam geçersiz."
   }
 }

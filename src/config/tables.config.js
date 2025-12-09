@@ -50,6 +50,8 @@ module.exports = {
         to_external_name: 'VARCHAR(120) NULL DEFAULT NULL',
         from_external_name: 'VARCHAR(120) NULL DEFAULT NULL',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
+        approved_by: 'VARCHAR(36) NULL DEFAULT NULL',
+        approved_at: 'DATETIME NULL DEFAULT NULL',
         sender_final_balance: 'DECIMAL(15,2) NULL DEFAULT NULL',
         receiver_final_balance: 'DECIMAL(15,2) NULL DEFAULT NULL',
         files: 'TEXT NULL DEFAULT NULL',

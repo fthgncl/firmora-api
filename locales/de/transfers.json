@@ -23,8 +23,13 @@
     "noFiles": "Keine Dateien angehängt"
   },
   "approveTransfer": {
+    "userIdRequired": "Benutzer-ID ist erforderlich.",
     "success": "Überweisung erfolgreich genehmigt.",
     "transferAlreadyApproved": "Die Überweisung wurde bereits genehmigt.",
-    "unknownTransferStatus": "Unbekannter Überweisungsstatus."
+    "unknownTransferStatus": "Unbekannter Überweisungsstatus.",
+    "noPermission": "Sie haben keine Berechtigung, diese Überweisung zu genehmigen.",
+    "updateFailed": "Aktualisierung fehlgeschlagen.",
+    "currencyMismatch": "Währungen stimmen nicht überein.",
+    "invalidToScope": "Ungültiger Zielbereich."
   }
 }
