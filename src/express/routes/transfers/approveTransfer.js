@@ -141,14 +141,14 @@ router.post('/approve', async (req, res) => {
         }
 
         // Transfer bilgilerini çek
-        const transfer = await getTransferById(transferId, ['company_id', 'to_scope']);
+        const transfer = await getTransferById(transferId, ['user_id', 'to_user_company_id', 'to_scope']);
 
         if (!transfer) {
             return responseHelper.error(res, t('transfers:getById.notFound'), 404);
         }
 
         if (transfer.user_id !== userId && transfer.to_scope === 'company') {
-            if (!await checkUserRoles(transfer.user_id, transfer.company_id, ['can_approve_transfers'])) {
+            if (!await checkUserRoles(transfer.user_id, transfer.to_user_company_id, ['can_approve_transfers'])) {
                 return responseHelper.error(res, t('transfers:approveTransfer.noPermission'), 403);
             }
         }
