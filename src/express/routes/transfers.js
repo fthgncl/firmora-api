@@ -7,6 +7,7 @@ const listTransfersRoute = require('./transfers/listTransfers');
 const getTransferFilesRoute = require('./transfers/getTransferFiles');
 const getTransferByIdRoute = require('./transfers/getTransferById');
 const approveTransferRoute = require('./transfers/approveTransfer');
+const getPendingTransfers = require('./transfers/getPendingTransfers');
 
 // Transfer routes
 router.use('/', createTransferRoute);
@@ -14,6 +15,7 @@ router.use('/', listTransfersRoute);
 router.use('/', getTransferFilesRoute);
 router.use('/', getTransferByIdRoute);
 router.use('/', approveTransferRoute);
+router.use('/', getPendingTransfers);
 // router.use('/', deleteTransferRoute);
 
 module.exports = router;
