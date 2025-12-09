@@ -6,12 +6,16 @@
  *     description: |
  *       Kullanıcının onaylaması gereken bekleyen (pending) transferleri listeler.
  *       
- *       **Listelenen Transferler:**
+ *       **companyId Parametresi:**
+ *       - Eğer `companyId` verilirse, sadece o firmaya ait bekleyen transferler listelenir
+ *       - Kullanıcının belirtilen firmada `can_approve_transfers` yetkisi olmalıdır
+ *       
+ *       **companyId Verilmezse:**
  *       
  *       1. **Kişisel Transferler:** Kullanıcıya doğrudan gönderilen bekleyen transferler
  *       
  *       2. **Firma Transferleri:** Kullanıcının `can_approve_transfers` yetkisine sahip olduğu 
- *          firmalara gönderilen bekleyen transferler
+ *          tüm firmalara gönderilen bekleyen transferler
  *       
  *       **Özellikler:**
  *       - Transferler tarihe göre sıralanır (en yeni önce)
@@ -20,6 +24,14 @@
  *       - Transfers
  *     security:
  *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: companyId
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Firma ID (belirli bir firmaya ait transferleri filtrelemek için)
+ *         example: "CMP_1234567890abcdef"
  *     responses:
  *       200:
  *         description: Bekleyen transferler başarıyla listelendi
@@ -114,6 +126,21 @@
  *                 message:
  *                   type: string
  *                   example: "Token eksik veya geçersiz"
+ *       403:
+ *         description: |
+ *           Erişim izni yok - Kullanıcının belirtilen firmada 
+ *           'can_approve_transfers' yetkisi bulunmuyor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "Bu transfer'ı onaylama yetkiniz yok"
  *       500:
  *         description: Sunucu hatası
  *         content:
@@ -139,12 +166,49 @@ const { readUserPermissions, checkUserRoles } = require("../../../utils/permissi
 router.get('/pending', async (req, res) => {
     try {
         const userId = req.tokenPayload?.id;
+        const { companyId } = req.query;
 
         // Token kontrolü
         if (!userId) {
             return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
 
+        // Eğer companyId parametresi verilmişse, sadece o firmaya ait transferleri listele
+        if (companyId) {
+            // Kullanıcının bu firmada yetkisi var mı kontrol et
+            const hasPermission = await checkUserRoles(userId, companyId, ['can_approve_transfers']);
+
+            if (!hasPermission) {
+                return responseHelper.error(res, t('transfers:approveTransfer.noPermission'), 403);
+            }
+
+            // Sadece belirtilen firmaya gönderilen pending transferleri listele
+            const companyTransfersResult = await listTransfers({
+                toUserCompanyId: companyId,
+                fromScope: 'company',
+                status: 'pending'
+            });
+
+            // Transferleri tarihe göre sırala (en yeni önce)
+            const transfers = companyTransfersResult.data.transfers.sort(
+                (a, b) => new Date(b.created_at) - new Date(a.created_at)
+            );
+
+            return responseHelper.success(res, {
+                transfers: transfers,
+                pagination: {
+                    total: transfers.length,
+                    limit: transfers.length,
+                    offset: 0,
+                    currentPage: 1,
+                    totalPages: 1,
+                    hasNextPage: false,
+                    hasPrevPage: false
+                }
+            });
+        }
+
+        // companyId yoksa, tüm yetkili transferleri listele
         // Kullanıcıya gönderilen pending transferleri listele
         const userTransfersResult = await listTransfers({
             toUserId: userId,
