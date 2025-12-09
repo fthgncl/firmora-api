@@ -5,8 +5,10 @@
  *     summary: Transfer'ı onayla
  *     description: |
  *       Belirtilen transfer ID'sine ait transfer'ı onaylar (pending -> completed).
- *       Kullanıcı, transfer'ı onaylama yetkisine sahip olmalıdır.
- *       (Transfer'ın gönderen veya alıcısı ya da ilgili firma yetkilisi olmalıdır)
+ *       
+ *       Yetkilendirme kuralları:
+ *       - Transfer sahibi her zaman onaylayabilir
+ *       - Transfer şirket adına yapıldıysa kullanıcının ilgili şirkette 'can_approve_transfers' yetkisi olmalıdır
  *     tags:
  *       - Transfers
  *     security:
@@ -38,14 +40,16 @@
  *                 message:
  *                   type: string
  *                   example: "Transfer başarıyla onaylandı"
- *                 data:
- *                   type: object
- *                   properties:
- *                     success:
- *                       type: boolean
- *                       example: true
+ *                 transferId:
+ *                   type: string
+ *                   description: Onaylanan transfer ID
+ *                   example: "TRF_6370ee7e94b078d0"
  *       400:
- *         description: Geçersiz transfer ID veya transfer zaten onaylanmış
+ *         description: |
+ *           Geçersiz istek - Olası durumlar:
+ *           - Transfer ID eksik veya geçersiz
+ *           - Transfer zaten onaylanmış
+ *           - Transfer onaylanamaz durumda
  *         content:
  *           application/json:
  *             schema:
@@ -58,7 +62,7 @@
  *                   type: string
  *                   example: "Transfer ID gereklidir"
  *       401:
- *         description: Kimlik doğrulama hatası
+ *         description: Kimlik doğrulama hatası - Token eksik veya geçersiz
  *         content:
  *           application/json:
  *             schema:
@@ -71,7 +75,9 @@
  *                   type: string
  *                   example: "Token eksik veya geçersiz"
  *       403:
- *         description: Erişim izni yok
+ *         description: |
+ *           Erişim izni yok - Kullanıcı transfer sahibi değil ve 
+ *           ilgili şirkette 'can_approve_transfers' yetkisi yok
  *         content:
  *           application/json:
  *             schema:

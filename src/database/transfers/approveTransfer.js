@@ -36,7 +36,7 @@ async function approveTransfer(transferId, userId) {
                 throw new Error(t('transfers:approveTransfer.unknownTransferStatus'));
         }
 
-        return {status: "success", message: t('transfers:approveTransfer.success')};
+        return {status: "success", message: t('transfers:approveTransfer.success'), transferId: transfer.id};
     } catch (error) {
         throw error
     }
