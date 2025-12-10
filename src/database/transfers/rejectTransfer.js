@@ -53,6 +53,8 @@ async function pendingToReject(transfer, userId) {
             `UPDATE transfers
              SET status = 'reject',
                  processed_by = ?,
+                 sender_final_balance = NULL,
+                 receiver_final_balance = NULL,
                  processed_at = NOW()
              WHERE id = ?`,
             [userId, transfer.id]
