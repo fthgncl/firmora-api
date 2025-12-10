@@ -1,8 +1,8 @@
 const {queryAsync} = require("../utils/connection");
 const {t} = require("../../config/i18n.config");
 const getTransferById = require("./getTransferById");
-const {deductCompanyBalance} = require("../companies");
-const {deductAccountBalance} = require("../accounts");
+const {addCompanyBalance} = require("../companies");
+const {addAccountBalance} = require("../accounts");
 
 async function rejectTransfer(transferId, userId) {
 
@@ -65,10 +65,10 @@ async function pendingToReject(transfer, userId) {
         // Alıcının bakiyesini güncelle
         switch (transfer.from_scope) {
             case 'company':
-                await deductCompanyBalance(transfer.company_id, transfer.amount);
+                await addCompanyBalance(transfer.company_id, transfer.amount);
                 break;
             case 'user':
-                await deductAccountBalance(transfer.user_id, transfer.company_id, transfer.amount);
+                await addAccountBalance(transfer.user_id, transfer.company_id, transfer.amount);
                 break;
             case 'external':
                 // Sistem dışı transfer, bakiye güncellenmez
