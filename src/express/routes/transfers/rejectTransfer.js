@@ -1,14 +1,14 @@
 /**
  * @swagger
- * /transfers/approve:
+ * /transfers/reject:
  *   post:
- *     summary: Transfer'ı onayla
+ *     summary: Transfer'ı reddet
  *     description: |
- *       Belirtilen transfer ID'sine ait transfer'ı onaylar (pending -> completed).
- *       
+ *       Belirtilen transfer ID'sine ait transfer'ı reddeder (pending -> rejected).
+ *
  *       Yetkilendirme kuralları:
- *       - Transfer sahibi her zaman onaylayabilir
- *       - Transfer şirket adına yapıldıysa kullanıcının ilgili şirkette 'can_approve_transfers' yetkisi olmalıdır
+ *       - Transfer alıcısı (to_scope='user' ise to_user_id kontrolü)
+ *       - Transfer şirket adına yapıldıysa (to_scope='company') kullanıcının ilgili şirkette 'can_approve_transfers' yetkisi olmalıdır
  *     tags:
  *       - Transfers
  *     security:
@@ -28,7 +28,7 @@
  *                 example: "TRF_6370ee7e94b078d0"
  *     responses:
  *       200:
- *         description: Transfer başarıyla onaylandı
+ *         description: Transfer başarıyla reddedildi
  *         content:
  *           application/json:
  *             schema:
@@ -39,17 +39,17 @@
  *                   example: "success"
  *                 message:
  *                   type: string
- *                   example: "Transfer başarıyla onaylandı"
+ *                   example: "Transfer başarıyla reddedildi"
  *                 transferId:
  *                   type: string
- *                   description: Onaylanan transfer ID
+ *                   description: Reddedilen transfer ID
  *                   example: "TRF_6370ee7e94b078d0"
  *       400:
  *         description: |
  *           Geçersiz istek - Olası durumlar:
  *           - Transfer ID eksik veya geçersiz
- *           - Transfer zaten onaylanmış
- *           - Transfer onaylanamaz durumda
+ *           - Transfer zaten reddedilmiş veya onaylanmış
+ *           - Transfer reddedilemez durumda
  *         content:
  *           application/json:
  *             schema:
@@ -76,7 +76,7 @@
  *                   example: "Token eksik veya geçersiz"
  *       403:
  *         description: |
- *           Erişim izni yok - Kullanıcı transfer sahibi değil ve 
+ *           Erişim izni yok - Kullanıcı transfer alıcısı değil ve
  *           ilgili şirkette 'can_approve_transfers' yetkisi yok
  *         content:
  *           application/json:
@@ -88,7 +88,7 @@
  *                   example: "error"
  *                 message:
  *                   type: string
- *                   example: "Bu transfer'ı onaylama yetkiniz yok"
+ *                   example: "Bu transfer'ı reddetme yetkiniz yok"
  *       404:
  *         description: Transfer bulunamadı
  *         content:
@@ -119,13 +119,13 @@
 
 const express = require('express');
 const router = express.Router();
-const approveTransfer = require('../../../database/transfers/approveTransfer');
 const getTransferById = require('../../../database/transfers/getTransferById');
 const {t} = require('../../../config/i18n.config');
 const responseHelper = require('../../utils/responseHelper');
 const {checkUserRoles} = require("../../../utils/permissionsManager");
+const {rejectTransfer} = require("../../../database/transfers");
 
-router.post('/approve', async (req, res) => {
+router.post('/reject', async (req, res) => {
     try {
         const userId = req.tokenPayload?.id;
         const {transferId} = req.body;
@@ -149,17 +149,17 @@ router.post('/approve', async (req, res) => {
 
         if (transfer.to_scope === 'company') {
             if (!await checkUserRoles(transfer.user_id, transfer.to_user_company_id, ['can_approve_transfers'])) {
-                return responseHelper.error(res, t('transfers:approveTransfer.noPermission'), 403);
+                return responseHelper.error(res, t('transfers:rejectTransfer.noPermission'), 403);
             }
         }
         if (transfer.to_scope === 'user') {
             if (transfer.to_user_id !== userId) {
-                return responseHelper.error(res, t('transfers:approveTransfer.noPermission'), 403);
+                return responseHelper.error(res, t('transfers:rejectTransfer.noPermission'), 403);
             }
         }
 
         // Transfer'ı onayla
-        const result = await approveTransfer(transferId, userId);
+        const result = await rejectTransfer(transferId, userId);
         return responseHelper.success(res, result);
 
     } catch (error) {

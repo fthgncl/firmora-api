@@ -32,6 +32,8 @@ async function approveTransfer(transferId, userId) {
                 break;
             case 'completed':
                 throw new Error(t('transfers:approveTransfer.transferAlreadyApproved'));
+            case 'reject':
+                throw new Error(t('transfers:approveTransfer.transferAlreadyRejected'));
             default:
                 throw new Error(t('transfers:approveTransfer.unknownTransferStatus'));
         }
@@ -50,7 +52,7 @@ async function pendingToCompleted(transfer, userId) {
 
         // Transfer'ı onayla
         const result = await queryAsync(
-            `UPDATE transfers SET status = 'completed', approved_by = ?, approved_at = NOW(), receiver_final_balance = ? WHERE id = ?`, 
+            `UPDATE transfers SET status = 'completed', processed_by = ?, processed_at = NOW(), receiver_final_balance = ? WHERE id = ?`,
             [userId, receiver_final_balance, transfer.id]
         );
 

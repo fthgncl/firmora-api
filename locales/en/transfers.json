@@ -28,8 +28,17 @@
     "transferAlreadyApproved": "Transfer has already been approved.",
     "unknownTransferStatus": "Unknown transfer status.",
     "noPermission": "You do not have permission to approve this transfer.",
-    "updateFailed": "Update failed.",
+    "updateFailed": "Approval failed.",
     "currencyMismatch": "Currencies do not match.",
     "invalidToScope": "Invalid to scope."
+  },
+  "rejectTransfer": {
+    "userIdRequired": "User ID is required.",
+    "success": "The transfer has been successfully rejected.",
+    "transferAlreadyRejected": "The transfer has already been rejected.",
+    "transferAlreadyApproved": "The transfer is already approved.",
+    "unknownTransferStatus": "Unknown transfer status.",
+    "noPermission": "You do not have permission to reject this transfer.",
+    "updateFailed": "Rejection failed."
   }
 }

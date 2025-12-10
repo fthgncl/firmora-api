@@ -28,8 +28,17 @@
     "transferAlreadyApproved": "Die Überweisung wurde bereits genehmigt.",
     "unknownTransferStatus": "Unbekannter Überweisungsstatus.",
     "noPermission": "Sie haben keine Berechtigung, diese Überweisung zu genehmigen.",
-    "updateFailed": "Aktualisierung fehlgeschlagen.",
+    "updateFailed": "Genehmigung fehlgeschlagen.",
     "currencyMismatch": "Währungen stimmen nicht überein.",
     "invalidToScope": "Ungültiger Zielbereich."
+  },
+  "rejectTransfer": {
+    "userIdRequired": "Benutzer-ID ist erforderlich.",
+    "success": "Die Überweisung wurde erfolgreich abgelehnt.",
+    "transferAlreadyRejected": "Die Überweisung wurde bereits abgelehnt.",
+    "transferAlreadyApproved": "Die Überweisung wurde bereits genehmigt.",
+    "unknownTransferStatus": "Unbekannter Überweisungsstatus.",
+    "noPermission": "Sie haben keine Berechtigung, diese Überweisung abzulehnen.",
+    "updateFailed": "Ablehnung fehlgeschlagen."
   }
 }
