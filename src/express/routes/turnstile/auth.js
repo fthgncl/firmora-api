@@ -80,7 +80,7 @@ router.post('/auth', async (req, res) => {
         const user = await getUserById(userId,['id','name','surname']);
 
         const turnstileTokenPayload = {
-            company_id: companyId,
+            companyId: companyId,
             createdBy: user
         };
 

@@ -22,6 +22,16 @@ const { strictRateLimit } = require('../middleware/rateLimitMiddleware');
 
 const setupRoutes = (app) => {
 
+    // Token middleware'lerinin çalışmayacağı özel rotalar
+    const excludedRoutes = [
+        '/turnstile/get-token'
+    ];
+
+    // Rotanın exclude listesinde olup olmadığını kontrol eden fonksiyon
+    const isRouteExcluded = (path) => {
+        return excludedRoutes.some(route => path.startsWith(route));
+    };
+
     app.use('/server-status', strictRateLimit, statusRouter);
     app.use('/sign-in', strictRateLimit, signInRouter);
     app.use('/sign-up', strictRateLimit, signUp);
@@ -29,8 +39,20 @@ const setupRoutes = (app) => {
     app.use('/password-reset', strictRateLimit, passwordResetRouter);
 
 
-    app.use('/', strictRateLimit, verifyTokenMiddleware);
-    app.use('/', strictRateLimit, refreshTokenMiddleware);
+    // Token middleware'lerini sadece excludedRoutes dışındaki rotalarda çalıştır
+    app.use('/', strictRateLimit, (req, res, next) => {
+        if (isRouteExcluded(req.path)) {
+            return next();
+        }
+        verifyTokenMiddleware(req, res, next);
+    });
+
+    app.use('/', strictRateLimit, (req, res, next) => {
+        if (isRouteExcluded(req.path)) {
+            return next();
+        }
+        refreshTokenMiddleware(req, res, next);
+    });
 
     // Korumalı rotalar
     app.use('/companies', strictRateLimit, companiesRouter);
