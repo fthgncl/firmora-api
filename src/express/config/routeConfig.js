@@ -12,6 +12,7 @@ const searchUsersRouter = require('../routes/searchUsers');
 const getPermissionsRouter = require('../routes/getPermissions');
 const updatePermissionsRouter = require('../routes/updatePermissions');
 const passwordResetRouter = require('../routes/passwordReset');
+const turnstileRouter = require('../routes/turnstile');
 
 
 // Middleware
@@ -38,6 +39,7 @@ const setupRoutes = (app) => {
     app.use('/search-users', strictRateLimit, searchUsersRouter);
     app.use('/permissions', strictRateLimit, getPermissionsRouter);
     app.use('/update-permissions', strictRateLimit, updatePermissionsRouter);
+    app.use('/turnstile', strictRateLimit, turnstileRouter);
 
     // 404 hata handler'ı - hiçbir rotaya eşleşmeyen istekler için
     app.use((req, res, next) => {

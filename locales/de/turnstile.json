@@ -1,0 +1,7 @@
+{
+  "turnstileMode": {
+    "enabled": "Drehkreuzmodus aktiviert.",
+    "forbidden": "Sie sind nicht berechtigt, in den Drehkreuzmodus zu wechseln.",
+    "companyIdRequired": "Die Firmen-ID ist erforderlich, um in den Drehkreuzmodus zu wechseln."
+  }
+}

@@ -60,12 +60,6 @@
     "name": "Yetki Dokunulmazlığı",
     "description": "Bu yetkiye sahip kullanıcının izinleri yalnızca şirketin kurucusu tarafından değiştirilebilir."
   },
-  "readUser": {
-    "success": "Kullanıcı yetkileri getirildi",
-    "noPermissions": "Kullanıcıya ait herhangi bir yetki bulunamadı",
-    "noPermissionsForCompany": "Bu firmaya ait yetki bulunamadı",
-    "error": "Kullanıcı yetkileri getirilirken hata oluştu"
-  },
   "can_view_company_transfer_history": {
     "name": "Şirketin para transfer geçmişini görüntüleme",
     "description": "Kullanıcı, bağlı olduğu şirketin gerçekleştirdiği tüm para transferlerinin geçmişini görüntüleyebilir."
@@ -77,6 +71,16 @@
   "can_approve_transfers": {
     "name": "Gelen transfer onayı",
     "description": "Kullanıcı, firmaya gönderilen transferleri onaylayabilir veya reddedebilir. Onaylanan tutar firmaya geçer, reddedilen tutar göndericiye iade edilir."
+  },
+  "can_act_as_turnstile": {
+    "name": "Turnike moduna geçme",
+    "description": "Cihazın, kullanıcı oturumundan çıkış yaparak sistemde turnike modu altında çalışmasını ve giriş-çıkış işlemlerini gerçekleştirmesini sağlar."
+  },
+  "readUser": {
+    "success": "Kullanıcı yetkileri getirildi",
+    "noPermissions": "Kullanıcıya ait herhangi bir yetki bulunamadı",
+    "noPermissionsForCompany": "Bu firmaya ait yetki bulunamadı",
+    "error": "Kullanıcı yetkileri getirilirken hata oluştu"
   },
   "checkUserRoles": {
     "error": "Kullanıcı rolleri kontrol edilirken hata oluştu (userId: {{userId}})"

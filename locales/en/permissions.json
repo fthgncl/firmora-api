@@ -72,6 +72,10 @@
     "name": "Incoming Transfer Approval",
     "description": "The user can approve or reject transfers sent to the company. Approved amounts are credited to the company, while rejected transfers are refunded to the sender."
   },
+  "can_act_as_turnstile": {
+    "name": "Switch to turnstile mode",
+    "description": "Allows the device to log out of the user session and operate in turnstile mode to perform entry and exit operations within the system."
+  },
   "readUser": {
     "success": "User permissions retrieved",
     "noPermissions": "No permissions found for the user",

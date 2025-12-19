@@ -1,0 +1,7 @@
+{
+  "turnstileMode": {
+    "enabled": "Turnike modu etkinleştirildi.",
+    "forbidden": "Turnike moduna geçiş için yetkiniz yok.",
+    "companyIdRequired": "Turnike moduna geçiş için şirket kimliği gereklidir."
+  }
+}

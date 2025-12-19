@@ -72,6 +72,10 @@
     "name": "Eingehende Überweisungsfreigabe",
     "description": "Der Benutzer kann an das Unternehmen gesendete Überweisungen genehmigen oder ablehnen. Genehmigte Beträge werden dem Unternehmen gutgeschrieben, abgelehnte Überweisungen werden an den Absender zurückerstattet."
   },
+  "can_act_as_turnstile": {
+    "name": "In den Drehkreuzmodus wechseln",
+    "description": "Ermöglicht es dem Gerät, sich von der Benutzersitzung abzumelden und im Drehkreuzmodus Ein- und Austrittsvorgänge im System durchzuführen."
+  },
   "readUser": {
     "success": "Benutzerberechtigungen abgerufen",
     "noPermissions": "Keine Berechtigungen für den Benutzer gefunden",

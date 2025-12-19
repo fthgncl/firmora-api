@@ -102,6 +102,12 @@ const permissions = {
         "category": "permissions:categories.financial",
         "name": "permissions:can_approve_transfers.name",
         "description": "permissions:can_approve_transfers.description"
+    },
+    "can_act_as_turnstile": {
+        "code": "r",
+        "category": "permissions:categories.system",
+        "name": "permissions:can_act_as_turnstile.name",
+        "description": "permissions:can_act_as_turnstile.description"
     }
 };
 

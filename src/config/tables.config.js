@@ -69,5 +69,13 @@ module.exports = {
         // - external_to_user        – Sistem dışı bir kaynaktan kullanıcı hesabına
         // - external_to_company     – Sistem dışı bir kaynaktan firma hesabına
         transfer_type: "ENUM('company_to_user_same','company_to_user_other','company_to_company_other','user_to_user_same','user_to_user_other','user_to_company_same','user_to_company_other','user_to_external','company_to_external','external_to_user','external_to_company') NOT NULL",
+    },
+    user_company_entries: {
+        id: 'VARCHAR(36) NOT NULL UNIQUE',
+        user_id: 'VARCHAR(36) NOT NULL',
+        company_id: 'VARCHAR(36) NOT NULL',
+        entry_type: "ENUM('entry','exit') NOT NULL",
+        note: 'VARCHAR(255) NULL DEFAULT NULL',
+        created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP'
     }
 };

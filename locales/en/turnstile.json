@@ -1,0 +1,7 @@
+{
+  "turnstileMode": {
+    "enabled": "Turnstile mode enabled.",
+    "forbidden": "You do not have permission to switch to turnstile mode.",
+    "companyIdRequired": "Company ID is required to switch to turnstile mode."
+  }
+}
