@@ -5,6 +5,7 @@ const responseHelper = require('../../utils/responseHelper');
 const {t} = require('../../../config/i18n.config');
 const {checkUserRoles} = require("../../../utils/permissionsManager");
 const {createToken} = require("../../../auth/jwt");
+const {getCompanyById} = require("../../../database/companies");
 
 /**
  * @swagger
@@ -78,9 +79,10 @@ router.post('/auth', async (req, res) => {
         }
 
         const user = await getUserById(userId,['id','name','surname']);
+        const company = getCompanyById(companyId, ['id','company_name'])
 
         const turnstileTokenPayload = {
-            companyId: companyId,
+            company,
             createdBy: user
         };
 
