@@ -41,24 +41,20 @@ const {createToken, verifyToken} = require("../../../auth/jwt");
  *                 success:
  *                   type: boolean
  *                   example: true
- *                 data:
- *                   type: object
- *                   properties:
- *                     message:
- *                       type: string
- *                       example: "Token başarıyla oluşturuldu"
- *                     token:
- *                       type: string
- *                       description: QR koda dönüştürülecek kullanıcı tokeni
- *                       example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55SWQiOiI1NTBlODQwMCJ9.xyz789"
+ *                 message:
+ *                   type: string
+ *                   example: "Token başarıyla oluşturuldu"
+ *                 token:
+ *                   type: string
+ *                   description: QR koda dönüştürülecek kullanıcı tokeni
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55SWQiOiI1NTBlODQwMCJ9.xyz789"
  *             examples:
  *               success:
  *                 summary: Başarılı token oluşturma
  *                 value:
  *                   success: true
- *                   data:
- *                     message: "Token başarıyla oluşturuldu"
- *                     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                   message: "Token başarıyla oluşturuldu"
+ *                   token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  *       400:
  *         description: Turnstile token eksik
  *         content:
