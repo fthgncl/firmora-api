@@ -106,7 +106,7 @@ router.get('/get-token/:turnstileToken', async (req, res) => {
 
         try {
             const turnstileTokenData = await verifyToken(turnstileToken);
-            companyId = turnstileTokenData.companyId;
+            companyId = turnstileTokenData.company.id;
         } catch (tokenError) {
             return responseHelper.error(res, t('errors:auth.tokenInvalid'), 401);
         }
