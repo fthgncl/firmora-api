@@ -8,7 +8,12 @@
   "getToken": {
     "tokenGenerated": "Token successfully generated."
   },
-    "scan": {
-        "invalidOrExpiredToken": "Invalid or expired token for turnstile mode."
-    }
+  "scan": {
+    "invalidOrExpiredToken": "Invalid or expired token for turnstile mode.",
+    "missingRequiredFields": "Missing required fields: {{fields}}.",
+    "invalidEntryType": "Invalid entry type: {{validTypes}}.",
+    "noteMustBeString": "Note must be a string.",
+    "noteTooLong": "Note can be at most {{maxLength}} characters.",
+    "userNotInCompany": "User does not belong to this company."
+  }
 }

@@ -8,7 +8,12 @@
   "getToken": {
     "tokenGenerated": "Token erfolgreich generiert."
   },
-    "scan": {
-        "invalidOrExpiredToken": "Ungültiges oder abgelaufenes Token für den Drehkreuzmodus."
-    }
+  "scan": {
+    "invalidOrExpiredToken": "Ungültiges oder abgelaufenes Token für den Drehkreuzmodus.",
+    "missingRequiredFields": "Fehlende erforderliche Felder: {{fields}}.",
+    "invalidEntryType": "Ungültiger Eintragstyp: {{validTypes}}.",
+    "noteMustBeString": "Die Notiz muss eine Zeichenkette sein.",
+    "noteTooLong": "Die Notiz kann höchstens {{maxLength}} Zeichen lang sein.",
+    "userNotInCompany": "Der Benutzer gehört nicht zu diesem Unternehmen."
+  }
 }
