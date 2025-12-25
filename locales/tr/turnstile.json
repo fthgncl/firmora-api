@@ -2,9 +2,18 @@
   "turnstileMode": {
     "enabled": "Turnike modu etkinleştirildi.",
     "forbidden": "Turnike moduna geçiş için yetkiniz yok.",
-    "companyIdRequired": "Turnike moduna geçiş için şirket kimliği gereklidir."
+    "companyIdRequired": "Turnike moduna geçiş için şirket kimliği gereklidir.",
+    "tokenMissing": "Turnike modu için token geçerli değil veya eksik."
   },
   "getToken": {
     "tokenGenerated": "Token başarıyla oluşturuldu."
+  },
+  "scan": {
+    "invalidOrExpiredToken": "Turnike modu için geçersiz veya süresi dolmuş token.",
+    "missingRequiredFields": "Gerekli alanlar eksik: {{fields}}.",
+    "invalidEntryType": "Geçersiz giriş türü: {{validTypes}}.",
+    "noteMustBeString": "Not bir metin olmalıdır.",
+    "noteTooLong": "Not en fazla {{maxLength}} karakter olabilir.",
+    "userNotInCompany": "Kullanıcı bu şirkete ait değil."
   }
 }

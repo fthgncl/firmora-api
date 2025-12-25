@@ -2,9 +2,13 @@
   "turnstileMode": {
     "enabled": "Drehkreuzmodus aktiviert.",
     "forbidden": "Sie sind nicht berechtigt, in den Drehkreuzmodus zu wechseln.",
-    "companyIdRequired": "Die Firmen-ID ist erforderlich, um in den Drehkreuzmodus zu wechseln."
+    "companyIdRequired": "Die Firmen-ID ist erforderlich, um in den Drehkreuzmodus zu wechseln.",
+    "tokenMissing": "Token ist ungültig oder fehlt für den Drehkreuzmodus."
   },
   "getToken": {
     "tokenGenerated": "Token erfolgreich generiert."
-  }
+  },
+    "scan": {
+        "invalidOrExpiredToken": "Ungültiges oder abgelaufenes Token für den Drehkreuzmodus."
+    }
 }
