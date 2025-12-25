@@ -16,7 +16,7 @@ const getUserById = require('../users/getUserById');
 const getAccountsByUserId = async (userId, fields = null, companyId = null) => {
     try {
         if (!userId) {
-            throw new Error(t('accounts.getByUserId.userIdRequired'));
+            throw new Error(t('accounts:getById.userIdRequired'));
         }
 
         // Eğer fields belirtilmemişse tüm alanları getir
@@ -33,11 +33,11 @@ const getAccountsByUserId = async (userId, fields = null, companyId = null) => {
 
             // Geçersiz alanları logla
             if (invalidFields.length > 0) {
-                await logError(`${t('accounts.getByUserId.invalidFieldsLog')}: ${invalidFields.join(', ')}`);
+                await logError(`${t('accounts:getById.invalidFieldsLog')}: ${invalidFields.join(', ')}`);
             }
 
             if (validFields.length === 0) {
-                throw new Error(t('accounts.getByUserId.validFieldsRequired'));
+                throw new Error(t('accounts:getById.validFieldsRequired'));
             }
 
             // Firma bilgilerini getirmek için company_id'nin mutlaka çekilmesi gerekiyor
@@ -77,7 +77,7 @@ const getAccountsByUserId = async (userId, fields = null, companyId = null) => {
                         };
                     } catch (error) {
                         // Firma bilgisi alınamazsa null olarak ekle
-                        await logError(`${t('accounts.getByUserId.companyFetchError')}: ${error.message}`);
+                        await logError(`${t('accounts:getById.companyFetchError')}: ${error.message}`);
                         return {
                             ...account,
                             company: null
@@ -93,14 +93,14 @@ const getAccountsByUserId = async (userId, fields = null, companyId = null) => {
 
         return {
             status: 'success',
-            message: t('accounts.getByUserId.success'),
+            message: t('accounts:getById.success'),
             user,
             accounts: accountsWithCompany || []
         };
     } catch (error) {
         throw {
             status: 500,
-            message: error.message || t('accounts.getByUserId.error'),
+            message: error.message || t('accounts:getById.error'),
             error
         };
     }
