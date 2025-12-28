@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /transfers/create-transfer:
+ * /transfers/create:
  *   post:
  *     summary: Yeni transfer oluştur
  *     description: Farklı transfer tipleri ile para transferi gerçekleştirir (ilgili yetki gerekli)
