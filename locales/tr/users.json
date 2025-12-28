@@ -3,6 +3,10 @@
     "success": "Kullanıcı başarıyla oluşturuldu!",
     "error": "Kullanıcı oluşturulurken hata oluştu"
   },
+  "update": {
+    "success": "Kullanıcı başarıyla güncellendi!",
+    "error": "Kullanıcı güncellenirken hata oluştu"
+  },
   "delete": {
     "success": "Kullanıcı başarıyla silindi!",
     "notFound": "Kullanıcı bulunamadı.",
