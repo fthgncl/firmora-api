@@ -11,9 +11,10 @@ function setWorkingStatus(userId, companyId, isWorking) {
                 throw new Error('isWorking must be a boolean value.');
             }
 
-            const { data } = await getWorkingStatus(userId, companyId);
+            const { accounts } = await getWorkingStatus(userId, companyId);
+            const account = accounts[0];
 
-            if (data.is_working === isWorking) {
+            if (account?.is_working === isWorking) {
                 return resolve({
                     status: 'success',
                     message: t('accounts:workingStatus.noChange', {status: isWorking ? t('accounts:workingStatus.working') : t('accounts:workingStatus.notWorking')}),
@@ -26,7 +27,7 @@ function setWorkingStatus(userId, companyId, isWorking) {
                 updateData.last_worked_at = new Date();
             }
 
-            await updateAccount(data.accountId, updateData)
+            await updateAccount(account.accountId, updateData)
                 .then((result) => {
                     resolve({
                         ...result,

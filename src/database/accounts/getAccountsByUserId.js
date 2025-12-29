@@ -9,7 +9,7 @@ const getUserById = require('../users/getUserById');
  * Kullanıcının hesaplarını getirir
  * @param {string} userId - Kullanıcı ID
  * @param {string[]} fields - Çekilecek alanlar (opsiyonel, verilmezse tüm alanlar)
- * @param {string} companyId - Firma ID filtresi (opsiyonel)
+ * @param {null} companyId - Firma ID filtresi (opsiyonel)
  * @returns {Promise<{status: string, message: string, user: Object|null, accounts}>} Kullanıcının hesapları
  * @throws {Error} Geçerli alan belirtilmezse veya alan doğrulaması başarısız olursa
  */

@@ -1,8 +1,8 @@
 const {t} = require("../../config/i18n.config");
-const {getAccountsByUserId} = require("./index");
+const getAccountsByUserId = require("./getAccountsByUserId");
 
 
-function getWorkingStatus(userId, companyId) {
+function getWorkingStatus(userId, companyId = null) {
     return new Promise(async (resolve, reject) => {
         try {
             const result = await getAccountsByUserId(userId, ['id', 'is_working', 'last_worked_at'], companyId);
