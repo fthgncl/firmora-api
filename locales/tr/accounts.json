@@ -29,5 +29,9 @@
     "userFetchError": "Kullanıcı bilgileri getirilirken hata oluştu",
     "companyFetchError": "Firma bilgileri getirilirken hata oluştu",
     "unauthorized": "Bu hesaba erişim yetkiniz yok"
+  },
+  "update": {
+    "success": "Hesap başarıyla güncellendi",
+    "error": "Hesap güncellenirken hata oluştu"
   }
 }

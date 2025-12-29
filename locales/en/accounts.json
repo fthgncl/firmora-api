@@ -29,5 +29,9 @@
     "userFetchError": "Error occurred while retrieving user information",
     "companyFetchError": "Error occurred while retrieving company information",
     "unauthorized": "You are not authorized to access this account"
+  },
+  "update": {
+    "success": "Account updated successfully",
+    "error": "An error occurred while updating account"
   }
 }
