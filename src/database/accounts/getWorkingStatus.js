@@ -11,15 +11,15 @@ function getWorkingStatus(userId, companyId) {
                 throw new Error(t('accounts:workingStatus.accountsNotFound'));
             }
 
-            const account = result.accounts[0];
+            const accounts = result.accounts.map(account => ({
+                accountId: account.id,
+                isWorking: account.is_working,
+                lastWorkedAt: account.is_working ? new Date() : account.last_worked_at
+            }));
 
             resolve({
                 status: 'success',
-                data: {
-                    accountId: account.id,
-                    isWorking: account.is_working,
-                    lastWorkedAt: account.is_working ? new Date() : account.last_worked_at
-                }
+                accounts
             });
 
         } catch (error) {
