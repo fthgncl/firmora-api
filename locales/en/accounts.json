@@ -33,5 +33,12 @@
   "update": {
     "success": "Account updated successfully",
     "error": "An error occurred while updating account"
+  },
+  "workingStatus": {
+    "success": "User's working status updated to '{{status}}' successfully",
+    "working": "Working",
+    "notWorking": "Not Working",
+    "accountsNotFound": "Accounts not found",
+    "noChange": "Working status is already '{{status}}'"
   }
 }

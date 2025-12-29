@@ -34,6 +34,8 @@ module.exports = {
         currency: "VARCHAR(3) NOT NULL CHECK (currency REGEXP '^[A-Z]{3}$')",
         balance: 'DECIMAL(15,2) NOT NULL DEFAULT 0',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
+        is_working: 'TINYINT(1) NOT NULL DEFAULT 0',
+        last_worked_at: 'DATETIME NULL DEFAULT NULL'
     },
     transfers: {
         id: 'VARCHAR(36) NOT NULL UNIQUE',

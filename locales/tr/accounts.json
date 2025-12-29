@@ -33,5 +33,12 @@
   "update": {
     "success": "Hesap başarıyla güncellendi",
     "error": "Hesap güncellenirken hata oluştu"
+  },
+  "workingStatus": {
+    "success": "Kullanıcının çalışma durumu '{{status}}' olarak güncellendi",
+    "working": "Çalışıyor",
+    "notWorking": "Çalışmıyor",
+    "accountsNotFound": "Hesap bulunamadı",
+    "noChange": "Çalışma durumu zaten '{{status}}'"
   }
 }
