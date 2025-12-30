@@ -58,7 +58,6 @@
  *                         - permissions: Kullanıcının şirket bazlı yetkileri (array)
  *                         - max_companies: Kullanıcının oluşturabileceği maksimum şirket sayısı
  *                         - rememberMe: Beni hatırla durumu
- *                         - workingStatus: Hesapların çalışma durumu bilgileri (array)
  *                       example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  *             examples:
  *               successWithPermissions:
@@ -79,10 +78,6 @@
  *                           permissions: "xyz"
  *                       max_companies: 5
  *                       rememberMe: false
- *                       workingStatus:
- *                         - accountId: "ACC_123"
- *                           isWorking: 1
- *                           lastWorkedAt: "2025-12-29T10:30:00.000Z"
  *               successWithoutPermissions:
  *                 summary: Yetkisiz kullanıcı girişi
  *                 value:
@@ -97,7 +92,6 @@
  *                       permissions: []
  *                       max_companies: 5
  *                       rememberMe: false
- *                       workingStatus: []
  *       400:
  *         description: Gerekli alanlar eksik
  *         content:
