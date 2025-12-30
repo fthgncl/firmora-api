@@ -13,6 +13,8 @@ const getPermissionsRouter = require('../routes/getPermissions');
 const updatePermissionsRouter = require('../routes/updatePermissions');
 const passwordResetRouter = require('../routes/passwordReset');
 const turnstileRouter = require('../routes/turnstile');
+const oauthKeysRouter = require('../routes/oauthKeys');
+
 
 
 // Middleware
@@ -24,8 +26,11 @@ const setupRoutes = (app) => {
 
     // Token middleware'lerinin çalışmayacağı özel rotalar
     const excludedRoutes = [
-        '/turnstile/get-token'
+        '/turnstile/get-token',
+        '/oauth-keys/google/callback',
+        '/oauth-keys/google/auth'
     ];
+
 
     // Rotanın exclude listesinde olup olmadığını kontrol eden fonksiyon
     const isRouteExcluded = (path) => {
@@ -37,6 +42,7 @@ const setupRoutes = (app) => {
     app.use('/sign-up', strictRateLimit, signUp);
     app.use('/verify-email', verifyEmail);
     app.use('/password-reset', strictRateLimit, passwordResetRouter);
+    app.use('/oauth-keys', strictRateLimit, oauthKeysRouter);
 
 
     // Token middleware'lerini sadece excludedRoutes dışındaki rotalarda çalıştır

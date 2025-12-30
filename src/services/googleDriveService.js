@@ -4,30 +4,19 @@ const fs = require('fs');
 const path = require('path');
 const mime = require('mime-types'); // npm install mime-types
 const googleConfig = require('../config/google.config');
+const { getGoogleOAuthClientFromDb } = require('./googleOAuthService');
 
 let driveClient = null;
 
 /**
  * Google Drive client'ı tekil (singleton) olacak şekilde döndürür
  */
-function getDriveClient() {
+async function getDriveClient() {
     if (driveClient) return driveClient;
 
-    const oAuth2Client = new google.auth.OAuth2(
-        googleConfig.credentials.clientId,
-        googleConfig.credentials.clientSecret,
-        googleConfig.credentials.redirectUri
-    );
-
-    oAuth2Client.setCredentials({
-        access_token: googleConfig.tokens.accessToken,
-        refresh_token: googleConfig.tokens.refreshToken,
-        scope: googleConfig.tokens.scope,
-        token_type: googleConfig.tokens.tokenType,
-        expiry_date: googleConfig.tokens.expiryDate
-    });
-
+    const { oAuth2Client } = await getGoogleOAuthClientFromDb();
     driveClient = google.drive({ version: 'v3', auth: oAuth2Client });
+
     return driveClient;
 }
 
@@ -200,7 +189,7 @@ async function syncLocalFolderToDrive(drive, localFolderPath, driveFolderId) {
  * @returns {Promise<string>} rootFolderId
  */
 async function ensureRootBackupFolder() {
-    const drive = getDriveClient();
+    const drive = await getDriveClient();
     const env = process.env.NODE_ENV || 'development';
 
     let rootFolderName = googleConfig.drive.rootFolderName;
@@ -221,7 +210,7 @@ async function ensureRootBackupFolder() {
  */
 async function syncGoogleDriveBackupFolders() {
     try {
-        const drive = getDriveClient();
+        const drive = await getDriveClient();
 
         console.log('[GoogleDriveBackup] Starting backup sync...');
 

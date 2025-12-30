@@ -79,5 +79,20 @@ module.exports = {
         entry_type: "ENUM('entry','exit') NOT NULL",
         note: 'VARCHAR(255) NULL DEFAULT NULL',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP'
+    },
+    oauth_keys: {
+        id: 'VARCHAR(36) NOT NULL UNIQUE',
+        provider: "ENUM('google','microsoft','apple') NOT NULL",
+        client_id: 'TEXT NOT NULL',
+        client_secret: 'TEXT NOT NULL',
+        redirect_uri: 'TEXT NOT NULL',
+        access_token: 'TEXT NULL DEFAULT NULL',
+        refresh_token: 'TEXT NULL DEFAULT NULL',
+        scope: 'TEXT NULL DEFAULT NULL',
+        token_type: 'VARCHAR(50) NULL DEFAULT NULL',
+        expiry_date: 'BIGINT NULL DEFAULT NULL',
+        is_active: 'TINYINT(1) NOT NULL DEFAULT 1',
+        created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
+        updated_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
     }
 };
