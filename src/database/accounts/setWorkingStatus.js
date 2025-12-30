@@ -1,4 +1,3 @@
-const {queryAsync} = require("../utils/connection");
 const {t} = require("../../config/i18n.config");
 const getWorkingStatus = require("./getWorkingStatus");
 const updateAccount = require("./updateAccount");
@@ -21,11 +20,10 @@ function setWorkingStatus(userId, companyId, isWorking) {
                 });
             }
 
-            const updateData = {is_working: isWorking};
-
-            if ( isWorking === false ) {
-                updateData.last_worked_at = new Date();
-            }
+            const updateData = {
+                is_working: isWorking,
+                last_worked_at: new Date()
+            };
 
             await updateAccount(account.accountId, updateData)
                 .then((result) => {
