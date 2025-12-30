@@ -155,7 +155,6 @@ const responseHelper = require('../utils/responseHelper');
 const { t } = require('../../config/i18n.config');
 const { readUserPermissions } = require('../../utils/permissionsManager');
 const {cleanInputs} = require("../../utils/inputCleaner");
-const {getWorkingStatus} = require("../../database/accounts");
 
 router.post('/', async (req, res) => {
 
@@ -191,15 +190,13 @@ router.post('/', async (req, res) => {
 
         const userPermissionsData = await readUserPermissions(user.id);
         const permissions = userPermissionsData.permissions || [];
-        const workingStatus = await getWorkingStatus(user.id);
 
         const tokenPayload = {
             id: user.id,
             username: user.username,
             permissions: permissions,
             max_companies: user.max_companies,
-            rememberMe: !!rememberMe,
-            workingStatus: workingStatus.accounts
+            rememberMe: !!rememberMe
         };
 
         const tokenLifetime = rememberMe
