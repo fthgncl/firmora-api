@@ -76,6 +76,10 @@
     "name": "Turnike moduna geçme",
     "description": "Cihazın, kullanıcı oturumundan çıkış yaparak sistemde turnike modu altında çalışmasını ve giriş-çıkış işlemlerini gerçekleştirmesini sağlar."
   },
+  "can_view_user_work_status": {
+    "name": "Kullanıcı çalışma durumunu görüntüleme",
+    "description": "Kullanıcı, bağlı olduğu şirketin çalışanlarının çalışma durumunu görüntüleyebilir."
+  },
   "readUser": {
     "success": "Kullanıcı yetkileri getirildi",
     "noPermissions": "Kullanıcıya ait herhangi bir yetki bulunamadı",

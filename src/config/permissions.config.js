@@ -108,6 +108,12 @@ const permissions = {
         "category": "permissions:categories.system",
         "name": "permissions:can_act_as_turnstile.name",
         "description": "permissions:can_act_as_turnstile.description"
+    },
+    "can_view_user_work_status": {
+        "code": "s",
+        "category": "permissions:categories.personnel",
+        "name": "permissions:can_view_user_work_status.name",
+        "description": "permissions:can_view_user_work_status.description"
     }
 };
 
