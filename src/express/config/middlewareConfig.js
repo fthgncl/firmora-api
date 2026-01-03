@@ -6,6 +6,7 @@ const swaggerSpec = require('../../config/swagger');
 const { generalRateLimit} = require('../middleware/rateLimitMiddleware');
 const languageMiddleware = require('../middleware/languageMiddleware');
 const tokenPayloadMiddleware = require('../middleware/tokenPayloadMiddleware');
+const ensureBodyMiddleware = require('../middleware/ensureBodyMiddleware');
 
 const setupMiddlewares = (app) => {
     // Güvenlik ve rate limiting
@@ -20,6 +21,9 @@ const setupMiddlewares = (app) => {
     // Body parsing middleware'ları
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
+
+    // req.body kontrolü - body yoksa boş obje ata
+    app.use(ensureBodyMiddleware);
 
     // Dil desteği middleware'i - tüm route'larda dil desteği
     app.use(languageMiddleware);
