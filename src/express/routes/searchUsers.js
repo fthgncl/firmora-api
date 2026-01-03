@@ -580,7 +580,7 @@ router.post('/', async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error)
+
         const statusCode = error.status || 500;
         const message = error.message || t('users:search.error');
 

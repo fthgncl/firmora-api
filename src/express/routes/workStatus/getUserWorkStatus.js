@@ -90,7 +90,7 @@ router.post('/user-work-status', async (req, res) => {
         if (!userId) {
             return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
-        console.log(targetUserId);
+
         if (!targetUserId) {
             return responseHelper.error(res, t('workStatus:get.targetUserIdRequired'), 400);
         }
