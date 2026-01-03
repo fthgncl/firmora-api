@@ -1,3 +1,8 @@
 {
-
+  "get": {
+    "targetUserIdRequired": "Hedef kullanıcı kimliği gereklidir.",
+    "companyIdRequired": "Şirket kimliği gereklidir.",
+    "dateRangeRequired": "Tarih aralığı gereklidir.",
+    "cannotAccess": "Bu kullanıcının çalışma durumu bilgilerine erişemezsiniz."
+  }
 }

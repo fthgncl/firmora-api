@@ -1,3 +1,5 @@
 {
-
+  "get": {
+    "targetUserIdRequired": "Ziel-Benutzer-ID ist erforderlich."
+  }
 }
