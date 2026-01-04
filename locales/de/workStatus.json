@@ -1,5 +1,8 @@
 {
   "get": {
-    "targetUserIdRequired": "Ziel-Benutzer-ID ist erforderlich."
+    "targetUserIdRequired": "Ziel-Benutzer-ID ist erforderlich.",
+    "companyIdRequired": "Firmen-ID ist erforderlich.",
+    "dateRangeRequired": "Datumsbereich ist erforderlich.",
+    "cannotAccess": "Sie können nicht auf die Arbeitsstatusinformationen dieses Benutzers zugreifen."
   }
 }

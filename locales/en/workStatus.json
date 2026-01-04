@@ -1,5 +1,8 @@
 {
   "get": {
-    "targetUserIdRequired": "Target user ID is required."
+    "targetUserIdRequired": "Target user ID is required.",
+    "companyIdRequired": "Company ID is required.",
+    "dateRangeRequired": "Date range is required.",
+    "cannotAccess": "You cannot access the work status information of this user."
   }
 }
