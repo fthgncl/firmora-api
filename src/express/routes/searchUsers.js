@@ -254,6 +254,35 @@
  *                                 permissions: "abc"
  *                               - companyId: "223e4567-e89b-12d3-a456-426614174001"
  *                                 permissions: "de"
+ *                           balance:
+ *                             type: number
+ *                             description: |
+ *                               Kullanıcının bakiyesi (opsiyonel)
+ *
+ *                               **Yetki Gereksinimi:** `can_view_other_users_transfer_history`
+ *
+ *                               Bu alan sadece kullanıcı `can_view_other_users_transfer_history` yetkisine sahip olduğunda döner.
+ *                             example: 1500.50
+ *                           currency:
+ *                             type: string
+ *                             nullable: true
+ *                             description: |
+ *                               Kullanıcının para birimi (opsiyonel)
+ *
+ *                               **Yetki Gereksinimi:** `can_view_other_users_transfer_history`
+ *
+ *                               Bu alan sadece kullanıcı `can_view_other_users_transfer_history` yetkisine sahip olduğunda döner.
+ *                             example: "TRY"
+ *                           is_working:
+ *                             type: boolean
+ *                             nullable: true
+ *                             description: |
+ *                               Kullanıcının çalışma durumu (opsiyonel)
+ *
+ *                               **Yetki Gereksinimi:** `can_view_user_work_status`
+ *
+ *                               Bu alan sadece kullanıcı `can_view_user_work_status` yetkisine sahip olduğunda döner.
+ *                             example: true
  *                     pagination:
  *                       type: object
  *                       description: Sayfalama bilgileri
@@ -337,6 +366,9 @@
  *                             permissions: "abc"
  *                           - companyId: "223e4567-e89b-12d3-a456-426614174001"
  *                             permissions: "de"
+ *                         balance: 1500.50
+ *                         currency: "TRY"
+ *                         is_working: true
  *                       - id: "223e4567-e89b-12d3-a456-426614174001"
  *                         name: "Mehmet"
  *                         surname: "Demir"
@@ -348,6 +380,9 @@
  *                         permissions:
  *                           - companyId: "123e4567-e89b-12d3-a456-426614174000"
  *                             permissions: "f"
+ *                         balance: 750.25
+ *                         currency: "TRY"
+ *                         is_working: false
  *                     pagination:
  *                       total: 150
  *                       limit: 20
@@ -478,9 +513,9 @@
 
 const express = require('express');
 const router = express.Router();
-const { canUserSearchUsers, checkUserRoles} = require('../../utils/permissionsManager');
-const { searchAllUsers, searchUsersInCompany } = require('../../database/users/searchUsers');
-const { t } = require('../../config/i18n.config');
+const {canUserSearchUsers, checkUserRoles} = require('../../utils/permissionsManager');
+const {searchAllUsers, searchUsersInCompany} = require('../../database/users/searchUsers');
+const {t} = require('../../config/i18n.config');
 const {getAccountsByUserId} = require("../../database/accounts");
 
 router.post('/', async (req, res) => {
@@ -541,35 +576,32 @@ router.post('/', async (req, res) => {
         }
 
         result.data.users = await Promise.all(
-            result.data.users.map(async user => {
-                const additionalData = {};
-                if (await checkUserRoles(userId, companyId, ['can_view_other_users_transfer_history'])) {
-                    const { accounts } = await getAccountsByUserId(user.id, ['balance','currency'], companyId);
-                    additionalData.balance = accounts[0]?.balance || 0;
-                    additionalData.currency = accounts[0]?.currency || null;
+            result.data.users.map(async (user) => {
+                const {accounts} = await getAccountsByUserId(user.id, ['balance', 'currency', 'is_working'], companyId);
+
+                const account = accounts?.[0] || {};
+                const roleBasedFields = {};
+
+                const [
+                    canViewTransfers,
+                    canViewWorkStatus
+                ] = await Promise.all([
+                    checkUserRoles(userId, companyId, ['can_view_other_users_transfer_history']),
+                    checkUserRoles(userId, companyId, ['can_view_user_work_status'])
+                ]);
+
+                if (canViewTransfers) {
+                    roleBasedFields.balance = account.balance ?? 0;
+                    roleBasedFields.currency = account.currency ?? null;
                 }
 
-                if (!await checkUserRoles(userId, companyId, ['personnel_manager'])) {
-                    delete user.permissions;
+                if (canViewWorkStatus) {
+                    roleBasedFields.is_working = account.is_working ?? null;
                 }
 
-                return { ...user, ...additionalData };
+                return {...user, ...roleBasedFields};
             })
         );
-
-
-
-
-        if (await checkUserRoles(userId, companyId, ['can_view_other_users_transfer_history'])) {
-            result.data.users = await Promise.all(
-                result.data.users.map(async user => {
-                    const { accounts } = await getAccountsByUserId(user.id, ['balance','currency'], companyId);
-                    const balance = accounts[0]?.balance || 0;
-                    const currency = accounts[0]?.currency || null;
-                    return { ...user, balance, currency };
-                })
-            );
-        }
 
         return res.status(200).json({
             success: true,
