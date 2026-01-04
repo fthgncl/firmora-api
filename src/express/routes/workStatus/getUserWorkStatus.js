@@ -3,6 +3,7 @@ const responseHelper = require("../../utils/responseHelper");
 const {t} = require("../../../config/i18n.config");
 const {checkUserRoles} = require("../../../utils/permissionsManager");
 const {getUserWorkSessions} = require("../../../database/userCompanyEntries");
+const getUserById = require("../../../database/users/getUserById");
 const router = express.Router();
 
 /**
@@ -72,6 +73,21 @@ const router = express.Router();
  *                         nullable: true
  *                       isOpen:
  *                         type: boolean
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "USR_5be149a20df10d5d"
+ *                     name:
+ *                       type: string
+ *                       example: "Fatih"
+ *                     surname:
+ *                       type: string
+ *                       example: "Gencal"
+ *                     phone:
+ *                       type: string
+ *                       example: "905466112233"
  *                 totalMinutes:
  *                   type: number
  *       400:
@@ -112,6 +128,7 @@ router.post('/user-work-status', async (req, res) => {
         }
 
         const sessions = await getUserWorkSessions(targetUserId, companyId, startDate, endDate);
+        const user = await getUserById(targetUserId, ['id', 'name', 'surname', 'phone']);
 
         const totalMinutes = sessions
             .filter(session => session.durationMinutes !== null)
@@ -119,6 +136,7 @@ router.post('/user-work-status', async (req, res) => {
 
         return responseHelper.success(res, {
             sessions,
+            user,
             totalMinutes
         });
 
