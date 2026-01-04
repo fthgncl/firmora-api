@@ -16,7 +16,9 @@ const getUserWorkSessions = async (userId, companyId, startDate, endDate) => {
     let currentEntry = null;
 
     for (const record of entries) {
-        if (record.entry_type === 'entry') {
+
+
+        if ( currentEntry?.entry_type !== 'entry' && record.entry_type === 'entry') {
             currentEntry = record;
         } else if (record.entry_type === 'exit' && currentEntry) {
             const entryTime = new Date(currentEntry.created_at);
