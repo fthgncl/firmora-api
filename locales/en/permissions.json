@@ -76,7 +76,7 @@
     "name": "Switch to turnstile mode",
     "description": "Allows the device to log out of the user session and operate in turnstile mode to perform entry and exit operations within the system."
   },
-  "can_view_user_work_status": {
+  "can_view_users_work_status": {
     "name": "View user work status",
     "description": "The user can view the work status of other users within the same company."
   },

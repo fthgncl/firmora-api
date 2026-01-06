@@ -120,7 +120,7 @@ router.post('/user-work-status', async (req, res) => {
         }
 
         if (userId !== targetUserId) {
-            const hasPermission = await checkUserRoles(userId, companyId, ['can_view_user_work_status']);
+            const hasPermission = await checkUserRoles(userId, companyId, ['can_view_users_work_status']);
 
             if (!hasPermission) {
                 return responseHelper.error(res, t('workStatus:get.cannotAccess'), 403);

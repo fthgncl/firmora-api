@@ -116,7 +116,7 @@ router.post('/company-users-work-status', async (req, res) => {
             return responseHelper.error(res, t('workStatus:get.dateRangeRequired'), 400);
         }
 
-        const hasPermission = await checkUserRoles(userId, companyId, ['can_view_user_work_status']);
+        const hasPermission = await checkUserRoles(userId, companyId, ['can_view_users_work_status']);
 
         if (!hasPermission) {
             return responseHelper.error(res, t('workStatus:get.cannotAccess'), 403);

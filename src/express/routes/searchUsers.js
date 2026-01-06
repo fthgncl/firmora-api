@@ -279,9 +279,9 @@
  *                             description: |
  *                               Kullanıcının çalışma durumu (opsiyonel)
  *
- *                               **Yetki Gereksinimi:** `can_view_user_work_status`
+ *                               **Yetki Gereksinimi:** `can_view_users_work_status`
  *
- *                               Bu alan sadece kullanıcı `can_view_user_work_status` yetkisine sahip olduğunda döner.
+ *                               Bu alan sadece kullanıcı `can_view_users_work_status` yetkisine sahip olduğunda döner.
  *                             example: true
  *                     pagination:
  *                       type: object
@@ -587,7 +587,7 @@ router.post('/', async (req, res) => {
                     canViewWorkStatus
                 ] = await Promise.all([
                     checkUserRoles(userId, companyId, ['can_view_other_users_transfer_history']),
-                    checkUserRoles(userId, companyId, ['can_view_user_work_status'])
+                    checkUserRoles(userId, companyId, ['can_view_users_work_status'])
                 ]);
 
                 if (canViewTransfers) {
