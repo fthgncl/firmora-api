@@ -30,8 +30,6 @@ const isValidHexColor = (color) => {
 };
 
 const isValidPhone = (phone) => {
-    // telefonun önündeki + yı kaldır
-    phone = phone.replace(/^\+/, '');
     return phone && phoneRegex.test(phone);
 };
 

@@ -139,6 +139,9 @@ function cleanInputs(inputData) {
             case 'currency':
                 cleanedData[key] = cleanCurrencyInput(value);
                 break;
+            case 'phone':
+                cleanedData[key] = cleanPhoneInput(value);
+                break;
             default:
                 cleanedData[key] = value;
                 break;
