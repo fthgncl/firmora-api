@@ -114,6 +114,12 @@ const permissions = {
         "category": "permissions:categories.personnel",
         "name": "permissions:can_view_users_work_status.name",
         "description": "permissions:can_view_users_work_status.description"
+    },
+    "member": {
+        "code": "z",
+        "category": "permissions:categories.system",
+        "name": "permissions:member.name",
+        "description": "permissions:member.description"
     }
 };
 
