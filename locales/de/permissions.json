@@ -70,7 +70,7 @@
   },
   "member": {
     "name": "Mitglied",
-    "description": "Sie können diese Rolle zuweisen, wenn der Benutzer innerhalb des Unternehmens keine Berechtigungen haben soll."
+    "description": "Diese Rolle ermöglicht es dem Benutzer, Mitglied des Unternehmens zu sein, gewährt jedoch keine Berechtigungen. Sie dient ausschließlich der Mitgliedschaft."
   },
   "can_approve_transfers": {
     "name": "Eingehende Überweisungsfreigabe",

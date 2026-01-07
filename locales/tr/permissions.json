@@ -82,7 +82,7 @@
   },
   "member": {
     "name": "Üye",
-    "description": "Firmada hiç bir yetkisi bulunmasını istemiyorsanız bu rolü atayabilirsiniz."
+    "description": "Bu rol, kullanıcının firmaya üye olmasını sağlar ancak herhangi bir yetki vermez. Sadece üyelik amacıyla kullanılan bir roldür."
   },
   "readUser": {
     "success": "Kullanıcı yetkileri getirildi",

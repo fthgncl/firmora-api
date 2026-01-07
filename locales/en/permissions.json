@@ -70,7 +70,7 @@
   },
   "member": {
     "name": "Member",
-    "description": "You can assign this role if you do not want the user to have any permissions within the company."
+    "description": "This role allows the user to be a member of the company but does not grant any permissions. It is used solely for membership purposes."
   },
   "can_approve_transfers": {
     "name": "Incoming Transfer Approval",
