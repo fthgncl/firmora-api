@@ -39,10 +39,12 @@ const getUserWorkSessions = async (userId, companyId, startDate, endDate) => {
 
     // Eğer açık bir entry varsa (henüz exit yapılmamış)
     if (currentEntry) {
+        const entryTime = new Date(currentEntry.created_at);
+        const durationMinutes = Math.round((new Date() - entryTime) / (1000 * 60));
         sessions.push({
             entryTime: currentEntry.created_at,
             exitTime: null,
-            durationMinutes: null,
+            durationMinutes,
             entryNote: currentEntry.note,
             exitNote: null,
             isOpen: true
