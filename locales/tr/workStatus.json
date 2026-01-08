@@ -3,6 +3,7 @@
     "targetUserIdRequired": "Hedef kullanıcı kimliği gereklidir.",
     "companyIdRequired": "Şirket kimliği gereklidir.",
     "dateRangeRequired": "Tarih aralığı gereklidir.",
-    "cannotAccess": "Bu kullanıcının çalışma durumu bilgilerine erişemezsiniz."
+    "cannotAccess": "Bu kullanıcının çalışma durumu bilgilerine erişemezsiniz.",
+    "cannotAccessInCompany": "Bu şirket içindeki çalışma durumu bilgilerine erişemezsiniz."
   }
 }

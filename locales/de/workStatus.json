@@ -3,6 +3,7 @@
     "targetUserIdRequired": "Ziel-Benutzer-ID ist erforderlich.",
     "companyIdRequired": "Firmen-ID ist erforderlich.",
     "dateRangeRequired": "Datumsbereich ist erforderlich.",
-    "cannotAccess": "Sie können nicht auf die Arbeitsstatusinformationen dieses Benutzers zugreifen."
+    "cannotAccess": "Sie können nicht auf die Arbeitsstatusinformationen dieses Benutzers zugreifen.",
+    "cannotAccessInCompany": "Sie können nicht auf die Arbeitsstatusinformationen in diesem Unternehmen zugreifen."
   }
 }
