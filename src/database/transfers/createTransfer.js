@@ -9,7 +9,7 @@ const {
     validateAmount,
     validateCompanyBalance
 } = require("../utils/validators");
-const {handleFileUpload} = require("../../express/utils/fileUploadHandler");
+const {handleFileUploadWithDatePath} = require("../../express/utils/fileUploadHandler");
 const {deductCompanyBalance, addCompanyBalance, getCompanyById} = require("../companies");
 const {addAccountBalance, deductAccountBalance, getAccountsByUserId} = require("../accounts");
 
@@ -36,30 +36,7 @@ const createTransfer = async (transferData, userId, companyId, uploadedFiles) =>
     await applyApprovalRequirement(transferData); // transferData.requires_approval = true/false yapar.
 
     // Dosya yükleme işlemi
-    let uploadedFilePaths = null;
-    if (uploadedFiles && uploadedFiles.length > 0) {
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        const targetSubDir = `${year}/${month}`;
-
-        try {
-            const uploadResult = await handleFileUpload(
-                uploadedFiles,
-                'receipt',
-                targetSubDir
-            );
-
-            if (uploadResult.uploadedFiles && uploadResult.uploadedFiles.length > 0) {
-                uploadedFilePaths = uploadResult.uploadedFiles.map(file => file.relativePath);
-            }
-        } catch (error) {
-            throw new Error(t('errors:upload.upload_failed') + ' ' + (error.message || ''));
-        }
-    }
-
-    transferData.files = uploadedFilePaths ? JSON.stringify(uploadedFilePaths) : null;
-
+    transferData.files = await handleFileUploadWithDatePath(uploadedFiles, 'receipt');
 
     try {
         await queryAsync('START TRANSACTION');

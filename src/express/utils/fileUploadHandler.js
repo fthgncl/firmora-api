@@ -227,13 +227,47 @@ const handleFileUpload = async (files, uploadType, targetSubDir = '') => {
 };
 
 /**
+ * Dosya yükleme işlemini tarih bazlı alt klasör ile gerçekleştirir ve JSON string olarak döndürür
+ * @param {Array} files - Yüklenen dosya dizisi (multer'dan gelen)
+ * @param {string} uploadType - Yükleme tipi (örn: 'receipt')
+ * @returns {Promise<string|null>} - JSON string olarak dosya yolları veya null
+ */
+const handleFileUploadWithDatePath = async (files, uploadType) => {
+    if (!files || files.length === 0) {
+        return null;
+    }
+
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const targetSubDir = `${year}/${month}`;
+
+    try {
+        const uploadResult = await handleFileUpload(
+            files,
+            uploadType,
+            targetSubDir
+        );
+
+        if (uploadResult.uploadedFiles && uploadResult.uploadedFiles.length > 0) {
+            const uploadedFilePaths = uploadResult.uploadedFiles.map(file => file.relativePath);
+            return JSON.stringify(uploadedFilePaths);
+        }
+
+        return null;
+    } catch (error) {
+        throw new Error(t('errors:upload.upload_failed') + ' ' + (error.message || ''));
+    }
+};
+
+/**
  * Yüklenen dosyayı siler
  * @param {string} filePath - Silinecek dosyanın yolu
  */
 const deleteUploadedFile = async (filePath) => {
     try {
-        const fullPath = path.isAbsolute(filePath) 
-            ? filePath 
+        const fullPath = path.isAbsolute(filePath)
+            ? filePath
             : path.join(uploadConfig.general.uploadDirectory, filePath);
 
         await fs.unlink(fullPath);
@@ -252,6 +286,7 @@ module.exports = {
     ensureTempDirectory,
     ensureTargetDirectory,
     handleFileUpload,
+    handleFileUploadWithDatePath,
     deleteUploadedFile,
     generateUniqueFileName
 };
