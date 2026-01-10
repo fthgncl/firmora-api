@@ -1,4 +1,4 @@
-const {queryAsync} = require("../utils/connection");
+const {queryAsync, beginTransaction, commit, rollback} = require("../utils/connection");
 const {t} = require("../../config/i18n.config");
 const getTransferById = require("./getTransferById");
 const {addCompanyBalance, getCompanyById} = require("../companies");
@@ -46,7 +46,7 @@ async function approveTransfer(transferId, userId) {
 
 async function pendingToCompleted(transfer, userId) {
     try {
-        await queryAsync('START TRANSACTION');
+        await beginTransaction();
 
         const receiver_final_balance = await getFinalBalance(transfer);
 
@@ -75,11 +75,11 @@ async function pendingToCompleted(transfer, userId) {
                 throw new Error(t('transfers:approveTransfer.invalidToScope'));
         }
 
-        await queryAsync('COMMIT');
+        await commit();
 
         return transfer;
     } catch (error) {
-        await queryAsync('ROLLBACK');
+        await rollback();
         throw error;
     }
 }

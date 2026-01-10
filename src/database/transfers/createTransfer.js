@@ -1,4 +1,4 @@
-const {queryAsync} = require('../utils/connection');
+const {queryAsync, beginTransaction, commit, rollback} = require('../utils/connection');
 const {generateUniqueId} = require('../../utils/idUtils');
 const {t} = require('../../config/i18n.config');
 const {checkUserRoles} = require('../../utils/permissionsManager');
@@ -39,7 +39,7 @@ const createTransfer = async (transferData, userId, companyId, uploadedFiles) =>
     transferData.files = await handleFileUploadWithDatePath(uploadedFiles, 'receipt');
 
     try {
-        await queryAsync('START TRANSACTION');
+        await beginTransaction();
 
         // Transfer tipine göre ilgili fonksiyona yönlendir
         let result;
@@ -94,12 +94,12 @@ const createTransfer = async (transferData, userId, companyId, uploadedFiles) =>
 
 
         // İşlem başarılı, commit yap
-        await queryAsync('COMMIT');
+        await commit();
         return result;
 
     } catch (error) {
         // Hata durumunda rollback yap
-        await queryAsync('ROLLBACK');
+        await rollback();
         throw error;
     }
 };

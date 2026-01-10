@@ -1,4 +1,4 @@
-const { queryAsync } = require('../utils/connection');
+const { queryAsync, beginTransaction, commit, rollback } = require('../utils/connection');
 const { generateUniqueId } = require('../../utils/idUtils');
 const {t} = require("../../config/i18n.config");
 const {getAccountsByUserId, setWorkingStatus} = require("../accounts");
@@ -32,14 +32,14 @@ const createEntry = async (userId, companyId, entryType, note = null) => {
         }
 
 
-        await queryAsync('START TRANSACTION');
+        await beginTransaction();
 
         const entryId = await generateUniqueId('ENT', 'user_company_entries');
         const sql = `INSERT INTO user_company_entries (id, user_id, company_id, entry_type, note) VALUES (?, ?, ?, ?, ?)`;
         await queryAsync(sql, [entryId, userId, companyId, entryType, note]);
 
         await setWorkingStatus(userId, companyId, entryType==='entry');
-        await queryAsync('COMMIT');
+        await commit();
 
         return {
             status: 'success',
@@ -52,7 +52,7 @@ const createEntry = async (userId, companyId, entryType, note = null) => {
             }
         };
     } catch (error) {
-        await queryAsync('ROLLBACK');
+        await rollback();
         throw error;
     }
 };

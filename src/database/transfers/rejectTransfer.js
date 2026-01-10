@@ -1,4 +1,4 @@
-const {queryAsync} = require("../utils/connection");
+const {queryAsync, beginTransaction, commit, rollback} = require("../utils/connection");
 const {t} = require("../../config/i18n.config");
 const getTransferById = require("./getTransferById");
 const {addCompanyBalance} = require("../companies");
@@ -46,7 +46,7 @@ async function rejectTransfer(transferId, userId) {
 
 async function pendingToReject(transfer, userId) {
     try {
-        await queryAsync('START TRANSACTION');
+        await beginTransaction();
 
         // Transfer'ı onayla
         const result = await queryAsync(
@@ -79,11 +79,11 @@ async function pendingToReject(transfer, userId) {
                 throw new Error(t('transfers:approveTransfer.invalidToScope'));
         }
 
-        await queryAsync('COMMIT');
+        await commit();
 
         return transfer;
     } catch (error) {
-        await queryAsync('ROLLBACK');
+        await rollback();
         throw error;
     }
 }
