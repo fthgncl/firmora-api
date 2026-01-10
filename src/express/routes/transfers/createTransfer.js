@@ -137,7 +137,7 @@ const { t } = require('../../../config/i18n.config');
 const { uploadConfig } = require('../../config/uploadConfig');
 const uploadMiddleware = require('../../middleware/uploadMiddleware');
 
-router.post('/create', uploadMiddleware(uploadConfig.receipt.maxFileCount), async (req, res) => {
+router.post('/create', uploadMiddleware(uploadConfig.receipt.maxFileCount, "attachments"), async (req, res) => {
     try {
         const userId = req.tokenPayload?.id;
         const transferData = req.body;

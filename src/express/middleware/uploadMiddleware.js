@@ -7,11 +7,12 @@ const upload = multer({ dest: 'uploads/' });
 /**
  * Dosya yükleme middleware'i
  * @param {number} maxFileCount - Maksimum yüklenebilecek dosya sayısı
+ * @param fieldName
  * @returns {Function} Express middleware fonksiyonu
  */
-const uploadMiddleware = (maxFileCount) => {
+const uploadMiddleware = (maxFileCount, fieldName = 'attachments') => {
     return (req, res, next) => {
-        upload.array('attachments', maxFileCount)(req, res, (err) => {
+        upload.array(fieldName, maxFileCount)(req, res, (err) => {
             if (err) {
                 if (err instanceof multer.MulterError && err.code === 'LIMIT_UNEXPECTED_FILE') {
                     // Buraya geldiğinde fazladan dosya gönderilmiş demektir
