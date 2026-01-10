@@ -1,0 +1,8 @@
+{
+    "create": {
+        "success": "İzin günü başarıyla oluşturuldu",
+        "startDateEndDateRequired": "Start date and end date are required",
+        "endDateBeforeStartDate": "End date must be after start date",
+        "invalidDateFormat": "Invalid date format"
+    }
+}

@@ -25,6 +25,27 @@ const uploadConfig = {
 
     },
 
+    // İzin ekleri yükleme ayarları
+    allowedAttachments: {
+        // Maksimum dosya boyutu (byte cinsinden) - 5MB
+        maxFileSize: 5 * 1024 * 1024,
+
+        // Maksimum dosya sayısı
+        maxFileCount: 5,
+
+        // Desteklenen dosya uzantıları
+        allowedExtensions: ['.jpg', '.jpeg', '.png', '.pdf'],
+
+        // İzin verilen MIME türleri
+        allowedMimeTypes: [
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+            'application/pdf'
+        ],
+
+    },
+
     // Genel ayarlar
     general: {
         // Yükleme dizini

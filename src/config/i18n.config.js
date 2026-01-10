@@ -70,7 +70,7 @@ async function initializeI18n() {
                     loadPath: path.join(__dirname, '../../locales/{{lng}}/{{ns}}.json'),
                 },
 
-                ns: ['accounts', 'auth', 'common', 'companies', 'emails', 'errors', 'permissions', 'server', 'transfers', 'turnstile', 'users', 'validation', 'workStatus'], // namespace'ler
+                ns: ['accounts', 'auth', 'allowedDays' ,'common', 'companies', 'emails', 'errors', 'permissions', 'server', 'transfers', 'turnstile', 'users', 'validation', 'workStatus'], // namespace'ler
                 defaultNS: 'common',
 
                 interpolation: {

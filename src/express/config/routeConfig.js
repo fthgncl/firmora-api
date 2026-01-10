@@ -15,6 +15,7 @@ const passwordResetRouter = require('../routes/passwordReset');
 const turnstileRouter = require('../routes/turnstile');
 const oauthKeysRouter = require('../routes/oauthKeys');
 const workStatusRouter = require('../routes/workStatus');
+const userAllowedDaysRouter = require('../routes/userAllowedDays');
 
 
 
@@ -70,6 +71,7 @@ const setupRoutes = (app) => {
     app.use('/update-permissions', strictRateLimit, updatePermissionsRouter);
     app.use('/turnstile', strictRateLimit, turnstileRouter);
     app.use('/work-status', strictRateLimit, workStatusRouter);
+    app.use('/user-allowed-days', strictRateLimit, userAllowedDaysRouter);
 
     // 404 hata handler'ı - hiçbir rotaya eşleşmeyen istekler için
     app.use((req, res, next) => {

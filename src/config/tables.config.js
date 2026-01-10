@@ -80,6 +80,15 @@ module.exports = {
         note: 'VARCHAR(255) NULL DEFAULT NULL',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP'
     },
+    user_allowed_days: {
+        id: 'VARCHAR(36) NOT NULL UNIQUE',
+        user_id: 'VARCHAR(36) NOT NULL',
+        company_id: 'VARCHAR(36) NOT NULL',
+        start_date: 'DATETIME NOT NULL',
+        end_date: 'DATETIME NOT NULL',
+        files: 'TEXT NULL DEFAULT NULL',
+        created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP'
+    },
     oauth_keys: {
         id: 'VARCHAR(36) NOT NULL UNIQUE',
         provider: "ENUM('google','microsoft','apple') NOT NULL",

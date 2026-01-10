@@ -1,0 +1,8 @@
+{
+    "create": {
+        "success": "Erlaubt Tag erfolgreich erstellt",
+        "startDateEndDateRequired": "Startdatum und Enddatum sind erforderlich",
+        "endDateBeforeStartDate": "Enddatum muss nach Startdatum liegen",
+        "invalidDateFormat": "Ungültiges Datumsformat"
+    }
+}

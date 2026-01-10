@@ -1,0 +1,8 @@
+{
+  "create": {
+    "success": "İzin günü başarıyla oluşturuldu.",
+    "startDateEndDateRequired": "Başlangıç ve bitiş tarihleri gereklidir.",
+    "endDateBeforeStartDate": "Bitiş tarihi başlangıç tarihinden önce olamaz.",
+    "invalidDateFormat": "Geçersiz tarih formatı."
+  }
+}
