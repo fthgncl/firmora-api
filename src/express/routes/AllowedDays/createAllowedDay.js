@@ -7,7 +7,114 @@ const { uploadConfig } = require('../../config/uploadConfig');
 const uploadMiddleware = require('../../middleware/uploadMiddleware');
 const moment = require("moment");
 
-router.post('/create', uploadMiddleware(uploadConfig.receipt.maxFileCount), async (req, res) => {
+/**
+ * @swagger
+ * tags:
+ *   name: User Allowed Days
+ *   description: Kullanıcı izin günleri yönetimi
+ */
+
+/**
+ * @swagger
+ * /user-allowed-days/create:
+ *   post:
+ *     summary: Yeni izin günü oluştur
+ *     description: Kullanıcı için yeni bir izin günü kaydı oluşturur. İsteğe bağlı olarak dosya yüklenebilir.
+ *     tags: [User Allowed Days]
+ *     security:
+ *       - ApiKeyAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - startDate
+ *               - endDate
+ *               - companyId
+ *             properties:
+ *               startDate:
+ *                 type: string
+ *                 format: date-time
+ *                 description: İzin başlangıç tarihi ve saati (örn. 2021-01-01 13:00:00)
+ *                 example: "2021-01-01 13:00:00"
+ *               endDate:
+ *                 type: string
+ *                 format: date-time
+ *                 description: İzin bitiş tarihi ve saati (örn. 2021-01-31 13:00:00)
+ *                 example: "2021-01-31 13:00:00"
+ *               companyId:
+ *                 type: string
+ *                 description: Firma ID
+ *                 example: "COM123456"
+ *               files:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *                 description: Yüklenecek dosyalar (opsiyonel)
+ *     responses:
+ *       200:
+ *         description: İzin günü başarıyla oluşturuldu
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       description: Başarı mesajı
+ *                     allowedDayId:
+ *                       type: string
+ *                       description: Oluşturulan izin günü ID'si
+ *       400:
+ *         description: Geçersiz istek parametreleri
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: "Başlangıç ve bitiş tarihi zorunludur"
+ *       401:
+ *         description: Yetkilendirme hatası
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: "Token eksik"
+ *       500:
+ *         description: Sunucu hatası
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ */
+
+router.post('/create', uploadMiddleware(uploadConfig.allowedAttachments.maxFileCount, 'files'), async (req, res) => {
     try {
         const userId = req.tokenPayload?.id;
         const { startDate, endDate, companyId } = req.body;
