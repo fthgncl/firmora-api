@@ -6,8 +6,8 @@
 const uploadConfig = {
     // Dekont yükleme ayarları
     receipt: {
-        // Maksimum dosya boyutu (byte cinsinden) - 5MB
-        maxFileSize: 5 * 1024 * 1024,
+        // Maksimum dosya boyutu (byte cinsinden) - 25MB
+        maxFileSize: 25 * 1024 * 1024,
 
         // Maksimum dosya sayısı
         maxFileCount: 5,
@@ -27,8 +27,8 @@ const uploadConfig = {
 
     // İzin ekleri yükleme ayarları
     allowedAttachments: {
-        // Maksimum dosya boyutu (byte cinsinden) - 5MB
-        maxFileSize: 5 * 1024 * 1024,
+        // Maksimum dosya boyutu (byte cinsinden) - 25MB
+        maxFileSize: 25 * 1024 * 1024,
 
         // Maksimum dosya sayısı
         maxFileCount: 5,
