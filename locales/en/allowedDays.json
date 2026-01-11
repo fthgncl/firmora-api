@@ -8,17 +8,14 @@
     },
     "getByCompanyId": {
         "companyIdRequired": "Company ID is required",
-        "queryError": "Error getting allowed days",
-        "noAllowedDaysFound": "No allowed days found"
+        "dateRangeRequired": "Start date and end date are required"
     },
     "getByUserId": {
         "userIdRequired": "User ID is required",
-        "queryError": "Error getting allowed days",
-        "noAllowedDaysFound": "No allowed days found"
+        "dateRangeRequired": "Start date and end date are required"
     },
     "getId": {
         "allowedDayIdRequired": "Allowed day ID is required",
-        "queryError": "Error getting allowed days",
-        "noAllowedDaysFound": "No allowed days found"
+        "dateRangeRequired": "Start date and end date are required"
     }
 }

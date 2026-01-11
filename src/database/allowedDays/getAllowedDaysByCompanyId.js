@@ -2,23 +2,33 @@ const {queryAsync} = require('../utils/connection');
 const {t} = require("../../config/i18n.config");
 const {createToken} = require("../../auth/jwt");
 
-const getAllowedDaysByCompanyId = async (companyId) => {
+const getAllowedDaysByCompanyId = async (companyId, startDate = null, endDate = null) => {
     if (!companyId) {
         throw new Error(t('allowedDays:getByCompanyId.companyIdRequired'));
     }
 
     try {
-        const sql = `SELECT * FROM user_allowed_days WHERE company_id = ?`;
-        const allowedDays = await queryAsync(sql, [companyId]);
+        let sql = `SELECT *
+                   FROM user_allowed_days
+                   WHERE company_id = ?`;
+        const params = [companyId];
 
-        if (allowedDays.length === 0) {
-            throw new Error(t('allowedDays:getByCompanyId.noAllowedDaysFound'));
+        if (startDate && endDate) {
+            sql += ` AND start_date >= ? AND end_date <= ?`;
+            params.push(startDate, endDate);
+        } else if (startDate) {
+            sql += ` AND start_date >= ?`;
+            params.push(startDate);
+        } else if (endDate) {
+            sql += ` AND end_date <= ?`;
+            params.push(endDate);
         }
 
+        const allowedDays = await queryAsync(sql, params);
 
-        return allowedDays.map(day => {
+        const processedAllowedDays = allowedDays.map(day => {
             const filesCount = day.files ? JSON.parse(day.files).length : 0;
-            const getFilesToken = createToken({allowedDayId: day.id}, process.env.FILE_DOWNLOAD_TOKEN_LIFETIME );
+            const getFilesToken = createToken({allowedDayId: day.id}, process.env.FILE_DOWNLOAD_TOKEN_LIFETIME);
 
             delete day.files;
             return {
@@ -28,8 +38,17 @@ const getAllowedDaysByCompanyId = async (companyId) => {
             }
         });
 
+        return {
+            status: 'success',
+            allowedDays: processedAllowedDays
+        }
+
+
     } catch (error) {
-        throw new Error(t('allowedDays:getByCompanyId.queryError', {error: error.message}));
+        return {
+            status: 'error',
+            message: error.message
+        }
     }
 };
 

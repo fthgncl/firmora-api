@@ -8,17 +8,14 @@
   },
   "getByCompanyId": {
     "companyIdRequired": "Firma ID'si gereklidir",
-    "queryError": "İzin günü sorgusu sırasında hata oluştu: {{error}}",
-    "noAllowedDaysFound": "İzin günü bulunamadı"
+    "dateRangeRequired": "Başlangıç ve bitiş tarihleri gereklidir."
   },
   "getByUserId": {
     "userIdRequired": "Kullanıcı ID'si gereklidir",
-    "queryError": "İzin günü sorgusu sırasında hata oluştu: {{error}}",
-    "noAllowedDaysFound": "İzin günü bulunamadı"
+    "dateRangeRequired": "Başlangıç ve bitiş tarihleri gereklidir."
   },
   "getId": {
     "allowedDayIdRequired": "İzin günü ID'si gereklidir",
-    "queryError": "İzin günü sorgusu sırasında hata oluştu: {{error}}",
-    "noAllowedDaysFound": "İzin günü bulunamadı"
+    "dateRangeRequired": "Başlangıç ve bitiş tarihleri gereklidir."
   }
 }

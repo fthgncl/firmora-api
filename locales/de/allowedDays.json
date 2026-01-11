@@ -8,17 +8,14 @@
     },
     "getByCompanyId": {
         "companyIdRequired": "Firma ID ist erforderlich",
-        "queryError": "Fehler beim Abfragen der Datenbank",
-        "noAllowedDaysFound": "Keine Erlaubten Tage gefunden"
+        "dateRangeRequired": "Startdatum und Enddatum sind erforderlich"
     },
     "getByUserId": {
         "userIdRequired": "Benutzer ID ist erforderlich",
-        "queryError": "Fehler beim Abfragen der Datenbank",
-        "noAllowedDaysFound": "Keine Erlaubten Tage gefunden"
+        "dateRangeRequired": "Startdatum und Enddatum sind erforderlich"
     },
     "getId": {
         "allowedDayIdRequired": "Erlaubten Tag ID ist erforderlich",
-        "queryError": "Fehler beim Abfragen der Datenbank",
-        "noAllowedDaysFound": "Keine Erlaubten Tage gefunden"
+        "dateRangeRequired": "Startdatum und Enddatum sind erforderlich"
     }
 }

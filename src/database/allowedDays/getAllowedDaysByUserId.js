@@ -2,21 +2,29 @@ const {queryAsync} = require('../utils/connection');
 const {t} = require("../../config/i18n.config");
 const {createToken} = require("../../auth/jwt");
 
-const getAllowedDaysByUserId = async (userId) => {
+const getAllowedDaysByUserId = async (userId, startDate = null, endDate = null) => {
     if (!userId) {
         throw new Error(t('allowedDays:getByUserId.userIdRequired'));
     }
 
     try {
-        const sql = `SELECT * FROM user_allowed_days WHERE user_id = ?`;
-        const allowedDays = await queryAsync(sql, [userId]);
+        let sql = `SELECT * FROM user_allowed_days WHERE user_id = ?`;
+        const params = [userId];
 
-        if (allowedDays.length === 0) {
-            throw new Error(t('allowedDays:getByUserId.noAllowedDaysFound'));
+        if (startDate && endDate) {
+            sql += ` AND start_date >= ? AND end_date <= ?`;
+            params.push(startDate, endDate);
+        } else if (startDate) {
+            sql += ` AND start_date >= ?`;
+            params.push(startDate);
+        } else if (endDate) {
+            sql += ` AND end_date <= ?`;
+            params.push(endDate);
         }
 
+        const allowedDays = await queryAsync(sql, params);
 
-        return allowedDays.map(day => {
+        const processedAllowedDays = allowedDays.map(day => {
             const filesCount = day.files ? JSON.parse(day.files).length : 0;
             const getFilesToken = createToken({allowedDayId: day.id}, process.env.FILE_DOWNLOAD_TOKEN_LIFETIME );
 
@@ -28,8 +36,16 @@ const getAllowedDaysByUserId = async (userId) => {
             }
         });
 
+        return {
+            status: 'success',
+            allowedDays: processedAllowedDays
+        }
+
     } catch (error) {
-        throw new Error(t('allowedDays:getByUserId.queryError', {error: error.message}));
+        return {
+            status: 'error',
+            message: error.message
+        }
     }
 };
 
