@@ -146,7 +146,11 @@ router.post('/create', uploadMiddleware(uploadConfig.allowedAttachments.maxFileC
             return responseHelper.error(res, t('allowedDays:create.descriptionTooLong',{maxLength: 255}), 400);
         }
 
-        const result = await createAllowedDay(userId, startDate, endDate, companyId, description, uploadedFiles);
+        // ISO formatındaki tarihleri MySQL DATETIME formatına dönüştür
+        const formattedStartDate = moment(startDate).format('YYYY-MM-DD HH:mm:ss');
+        const formattedEndDate = moment(endDate).format('YYYY-MM-DD HH:mm:ss');
+
+        const result = await createAllowedDay(userId, formattedStartDate, formattedEndDate, companyId, description, uploadedFiles);
 
         return responseHelper.success(res, {
             message: result.message,
