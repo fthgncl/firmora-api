@@ -87,6 +87,7 @@ module.exports = {
         start_date: 'DATETIME NOT NULL',
         end_date: 'DATETIME NOT NULL',
         files: 'TEXT NULL DEFAULT NULL',
+        description: 'VARCHAR(255) NULL DEFAULT NULL',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP'
     },
     oauth_keys: {

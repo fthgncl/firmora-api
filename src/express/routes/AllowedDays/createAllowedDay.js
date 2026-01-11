@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const createAllowedDay = require('../../../database/allowedDays/createAllowedDay');
 const responseHelper = require('../../utils/responseHelper');
-const { t } = require('../../../config/i18n.config');
-const { uploadConfig } = require('../../config/uploadConfig');
+const {t} = require('../../../config/i18n.config');
+const {uploadConfig} = require('../../config/uploadConfig');
 const uploadMiddleware = require('../../middleware/uploadMiddleware');
 const moment = require("moment");
 
@@ -117,10 +117,8 @@ const moment = require("moment");
 router.post('/create', uploadMiddleware(uploadConfig.allowedAttachments.maxFileCount, 'files'), async (req, res) => {
     try {
         const userId = req.tokenPayload?.id;
-        const { startDate, endDate, companyId } = req.body;
+        const {startDate, endDate, companyId, description = null} = req.body;
         const uploadedFiles = req.files || null;
-
-        // Örnek req.body: { startDate: "2021-01-01 13:00:00", endDate: "2021-01-31 13:00:00", companyId: "COM123456" }
 
         // Token kontrolü
         if (!userId) {
@@ -132,11 +130,11 @@ router.post('/create', uploadMiddleware(uploadConfig.allowedAttachments.maxFileC
             return responseHelper.error(res, t('companies:get.companyIdRequired'), 400);
         }
 
-        if (!startDate || !endDate){
+        if (!startDate || !endDate) {
             return responseHelper.error(res, t('allowedDays:create.startDateEndDateRequired'), 400);
         }
 
-        if (!moment(startDate).isValid() || !moment(endDate).isValid()){
+        if (!moment(startDate).isValid() || !moment(endDate).isValid()) {
             return responseHelper.error(res, t('allowedDays:create.invalidDateFormat'), 400);
         }
 
@@ -144,9 +142,11 @@ router.post('/create', uploadMiddleware(uploadConfig.allowedAttachments.maxFileC
             return responseHelper.error(res, t('allowedDays:create.endDateBeforeStartDate'), 400);
         }
 
+        if (description && description.length > 255) {
+            return responseHelper.error(res, t('allowedDays:create.descriptionTooLong',{maxLength: 255}), 400);
+        }
 
-        // AllowedDay oluştur - dosyaları da parametre olarak gönder
-        const result = await createAllowedDay(userId, startDate, endDate, companyId, uploadedFiles);
+        const result = await createAllowedDay(userId, startDate, endDate, companyId, description, uploadedFiles);
 
         return responseHelper.success(res, {
             message: result.message,

@@ -3,6 +3,7 @@
         "success": "Erlaubt Tag erfolgreich erstellt",
         "startDateEndDateRequired": "Startdatum und Enddatum sind erforderlich",
         "endDateBeforeStartDate": "Enddatum muss nach Startdatum liegen",
-        "invalidDateFormat": "Ungültiges Datumsformat"
+        "invalidDateFormat": "Ungültiges Datumsformat",
+        "descriptionTooLong": "Beschreibung darf maximal {{maxLength}} Zeichen lang sein"
     }
 }

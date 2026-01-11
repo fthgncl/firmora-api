@@ -3,7 +3,7 @@ const {generateUniqueId} = require('../../utils/idUtils');
 const {t} = require('../../config/i18n.config');
 const {handleFileUploadWithDatePath} = require("../../express/utils/fileUploadHandler");
 
-const createAllowedDay = async (userId, startDate, endDate, companyId, uploadedFiles) => {
+const createAllowedDay = async (userId, startDate, endDate, companyId, description, uploadedFiles) => {
 
 
     const allowedDayId = await generateUniqueId("AD", "user_allowed_days")
@@ -13,7 +13,7 @@ const createAllowedDay = async (userId, startDate, endDate, companyId, uploadedF
         // Transaction başlat
         await beginTransaction();
 
-        await queryAsync('INSERT INTO user_allowed_days (id, user_id, company_id, start_date, end_date, files) VALUES (?, ?, ?, ?, ?, ?)', [allowedDayId, userId, companyId, startDate, endDate, files]);
+        await queryAsync('INSERT INTO user_allowed_days (id, user_id, company_id, start_date, end_date, description, files) VALUES (?, ?, ?, ?, ?, ?, ?)', [allowedDayId, userId, companyId, startDate, endDate, description, files]);
 
         // İşlem başarılı, commit yap
         await commit();
