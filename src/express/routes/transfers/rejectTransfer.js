@@ -141,7 +141,7 @@ router.post('/reject', async (req, res) => {
         }
 
         // Transfer bilgilerini çek
-        const transfer = await getTransferById(transferId, ['user_id', 'to_user_company_id', 'to_scope']);
+        const transfer = await getTransferById(transferId, ['user_id', 'to_user_id', 'to_user_company_id', 'to_scope']);
 
         if (!transfer) {
             return responseHelper.error(res, t('transfers:getById.notFound'), 404);
