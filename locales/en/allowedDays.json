@@ -5,5 +5,20 @@
         "endDateBeforeStartDate": "End date must be after start date",
         "invalidDateFormat": "Invalid date format",
         "descriptionTooLong": "Description cannot be longer than {{maxLength}} characters"
+    },
+    "getByCompanyId": {
+        "companyIdRequired": "Company ID is required",
+        "queryError": "Error getting allowed days",
+        "noAllowedDaysFound": "No allowed days found"
+    },
+    "getByUserId": {
+        "userIdRequired": "User ID is required",
+        "queryError": "Error getting allowed days",
+        "noAllowedDaysFound": "No allowed days found"
+    },
+    "getId": {
+        "allowedDayIdRequired": "Allowed day ID is required",
+        "queryError": "Error getting allowed days",
+        "noAllowedDaysFound": "No allowed days found"
     }
 }

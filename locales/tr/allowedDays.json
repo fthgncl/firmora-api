@@ -5,5 +5,20 @@
     "endDateBeforeStartDate": "Bitiş tarihi başlangıç tarihinden önce olamaz.",
     "invalidDateFormat": "Geçersiz tarih formatı.",
     "descriptionTooLong": "Açıklama {{maxLength}} karakterden uzun olamaz."
+  },
+  "getByCompanyId": {
+    "companyIdRequired": "Firma ID'si gereklidir",
+    "queryError": "İzin günü sorgusu sırasında hata oluştu: {{error}}",
+    "noAllowedDaysFound": "İzin günü bulunamadı"
+  },
+  "getByUserId": {
+    "userIdRequired": "Kullanıcı ID'si gereklidir",
+    "queryError": "İzin günü sorgusu sırasında hata oluştu: {{error}}",
+    "noAllowedDaysFound": "İzin günü bulunamadı"
+  },
+  "getId": {
+    "allowedDayIdRequired": "İzin günü ID'si gereklidir",
+    "queryError": "İzin günü sorgusu sırasında hata oluştu: {{error}}",
+    "noAllowedDaysFound": "İzin günü bulunamadı"
   }
 }

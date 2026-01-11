@@ -5,5 +5,20 @@
         "endDateBeforeStartDate": "Enddatum muss nach Startdatum liegen",
         "invalidDateFormat": "Ungültiges Datumsformat",
         "descriptionTooLong": "Beschreibung darf maximal {{maxLength}} Zeichen lang sein"
+    },
+    "getByCompanyId": {
+        "companyIdRequired": "Firma ID ist erforderlich",
+        "queryError": "Fehler beim Abfragen der Datenbank",
+        "noAllowedDaysFound": "Keine Erlaubten Tage gefunden"
+    },
+    "getByUserId": {
+        "userIdRequired": "Benutzer ID ist erforderlich",
+        "queryError": "Fehler beim Abfragen der Datenbank",
+        "noAllowedDaysFound": "Keine Erlaubten Tage gefunden"
+    },
+    "getId": {
+        "allowedDayIdRequired": "Erlaubten Tag ID ist erforderlich",
+        "queryError": "Fehler beim Abfragen der Datenbank",
+        "noAllowedDaysFound": "Keine Erlaubten Tage gefunden"
     }
 }
