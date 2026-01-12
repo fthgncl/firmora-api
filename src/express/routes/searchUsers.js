@@ -274,15 +274,21 @@
  *                               Bu alan sadece kullanıcı `can_view_other_users_transfer_history` yetkisine sahip olduğunda döner.
  *                             example: "TRY"
  *                           is_working:
- *                             type: boolean
+ *                             type: integer
  *                             nullable: true
+ *                             enum: [0, 1, 2]
  *                             description: |
  *                               Kullanıcının çalışma durumu (opsiyonel)
  *
  *                               **Yetki Gereksinimi:** `can_view_users_work_status`
  *
  *                               Bu alan sadece kullanıcı `can_view_users_work_status` yetkisine sahip olduğunda döner.
- *                             example: true
+ *
+ *                               **Değerler:**
+ *                               - `0`: Çalışmıyor
+ *                               - `1`: Çalışıyor
+ *                               - `2`: Mazeretli
+ *                             example: 1
  *                     pagination:
  *                       type: object
  *                       description: Sayfalama bilgileri
@@ -368,7 +374,7 @@
  *                             permissions: "de"
  *                         balance: 1500.50
  *                         currency: "TRY"
- *                         is_working: true
+ *                         is_working: 1
  *                       - id: "223e4567-e89b-12d3-a456-426614174001"
  *                         name: "Mehmet"
  *                         surname: "Demir"
@@ -382,7 +388,7 @@
  *                             permissions: "f"
  *                         balance: 750.25
  *                         currency: "TRY"
- *                         is_working: false
+ *                         is_working: 0
  *                     pagination:
  *                       total: 150
  *                       limit: 20
@@ -517,6 +523,7 @@ const {canUserSearchUsers, checkUserRoles} = require('../../utils/permissionsMan
 const {searchAllUsers, searchUsersInCompany} = require('../../database/users/searchUsers');
 const {t} = require('../../config/i18n.config');
 const {getAccountsByUserId} = require("../../database/accounts");
+const {getAllowedDaysByUserId} = require("../../database/allowedDays");
 
 router.post('/', async (req, res) => {
     try {
@@ -596,6 +603,13 @@ router.post('/', async (req, res) => {
                 }
 
                 if (canViewWorkStatus) {
+
+                    const now = new Date();
+                    const {allowedDays} = await getAllowedDaysByUserId(user.id, companyId, now, now);
+                    if ( allowedDays.length > 0) {
+                        account.is_working = 2;
+                    }
+
                     roleBasedFields.is_working = account.is_working ?? null;
                 }
 
