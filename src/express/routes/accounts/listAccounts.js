@@ -3,20 +3,9 @@
  * /accounts:
  *   get:
  *     summary: Kullanıcının hesaplarını listele
- *     description: Token'dan alınan kullanıcıya ait tüm hesapları getirir. İsteğe bağlı olarak firma filtresi uygulanabilir.
+ *     description: Token'dan alınan kullanıcıya ait tüm hesapları getirir.
  *     tags:
  *       - Accounts
- *     requestBody:
- *       required: false
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               companyId:
- *                 type: string
- *                 description: Belirli bir firmaya ait hesapları filtrelemek için firma ID'si (opsiyonel)
- *                 example: "COM_547dc37210f0157d"
  *     responses:
  *       200:
  *         description: Hesaplar başarıyla getirildi
@@ -69,6 +58,18 @@
  *                             type: string
  *                             format: date-time
  *                             example: "2025-01-15T10:30:00Z"
+ *                           is_working:
+ *                             type: integer
+ *                             nullable: true
+ *                             enum: [0, 1, 2]
+ *                             description: |
+ *                               Kullanıcının çalışma durumu
+ *
+ *                               **Değerler:**
+ *                               - `0`: Çalışmıyor
+ *                               - `1`: Çalışıyor
+ *                               - `2`: Mazeretli
+ *                             example: 1
  *                           company:
  *                             type: object
  *                             nullable: true
@@ -131,6 +132,7 @@ const router = express.Router();
 const getAccountsByUserId = require('../../../database/accounts/getAccountsByUserId');
 const responseHelper = require('../../utils/responseHelper');
 const { t } = require('../../../config/i18n.config');
+const {getAllowedDaysByUserId} = require("../../../database/allowedDays");
 
 router.get('/', async (req, res) => {
     try {
@@ -140,16 +142,19 @@ router.get('/', async (req, res) => {
             return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
 
-        // Opsiyonel firma ID filtresi
-
         // Kullanıcının hesaplarını getir
-        const result = await getAccountsByUserId(userId);
+        const { accounts, message, user } = await getAccountsByUserId(userId);
 
-        return responseHelper.success(res, {
-            message: result.message,
-            accounts: result.accounts,
-            user: result.user
-        });
+        const accountsWithIsWorking = await Promise.all(accounts.map( async account => {
+            const now = new Date();
+            const {allowedDays} = await getAllowedDaysByUserId(userId, account.company.id , now, now);
+            if ( allowedDays.length > 0) {
+                account.is_working = 2;
+            }
+            return account;
+        }));
+
+        return responseHelper.success(res, { accounts:accountsWithIsWorking, message, user });
 
     } catch (error) {
         return responseHelper.serverError(res, error);
