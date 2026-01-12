@@ -34,7 +34,7 @@
  *     tags:
  *       - Companies
  *     security:
- *       - bearerAuth: []
+ *       - ApiKeyAuth: []
  *     requestBody:
  *       required: true
  *       description: Firma ID bilgisi

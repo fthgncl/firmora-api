@@ -12,7 +12,7 @@
  *     tags:
  *       - Transfers
  *     security:
- *       - bearerAuth: []
+ *       - ApiKeyAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -277,7 +277,7 @@ router.post('/files', async (req, res) => {
  *     tags:
  *       - Transfers
  *     security:
- *       - bearerAuth: []
+ *       - ApiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: fileToken

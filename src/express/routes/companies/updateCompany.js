@@ -7,7 +7,7 @@
  *     operationId: updateCompany
  *     tags: [Companies]
  *     security:
- *       - bearerAuth: []
+ *       - ApiKeyAuth: []
  *     requestBody:
  *       required: true
  *       content:

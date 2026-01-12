@@ -35,7 +35,7 @@
  *     tags:
  *       - Companies
  *     security:
- *       - bearerAuth: []
+ *       - ApiKeyAuth: []
  *     responses:
  *       200:
  *         description: Başarılı - Şirketler başarıyla listelendi

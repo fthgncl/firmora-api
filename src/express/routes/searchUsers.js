@@ -44,7 +44,7 @@
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - ApiKeyAuth: []
  *     requestBody:
  *       required: true
  *       description: Arama kriterleri ve sayfalama parametreleri

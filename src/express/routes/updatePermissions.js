@@ -14,7 +14,7 @@ const {getCompaniesByOwnerId} = require("../../database/companies");
  *     tags:
  *       - Permissions
  *     security:
- *       - bearerAuth: []
+ *       - ApiKeyAuth: []
  *     requestBody:
  *       required: true
  *       content:
