@@ -2,7 +2,7 @@ const {queryAsync} = require('../utils/connection');
 const {t} = require("../../config/i18n.config");
 const {createToken} = require("../../auth/jwt");
 
-const getAllowedDaysByUserId = async (userId, startDate = null, endDate = null) => {
+const getAllowedDaysByUserId = async (userId, companyId = null , startDate = null, endDate = null) => {
     if (!userId) {
         throw new Error(t('allowedDays:getByUserId.userIdRequired'));
     }
@@ -10,6 +10,11 @@ const getAllowedDaysByUserId = async (userId, startDate = null, endDate = null) 
     try {
         let sql = `SELECT * FROM user_allowed_days WHERE user_id = ?`;
         const params = [userId];
+
+        if (companyId) {
+            sql += ` AND company_id = ?`;
+            params.push(companyId);
+        }
 
         if (startDate && endDate) {
             sql += ` AND NOT (end_date < ? OR start_date > ?)`;
