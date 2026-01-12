@@ -19,5 +19,13 @@
     "allowedDayIdRequired": "İzin günü ID'si gereklidir",
     "dateRangeRequired": "Başlangıç ve bitiş tarihleri gereklidir.",
     "notFound": "İzin günü bulunamadı."
+  },
+  "getFiles": {
+    "noFiles": "İzin günü dosyaları bulunamadı.",
+    "filesNotFound": "İzin günü dosyaları bulunamadı.",
+    "invalidFormat": "Geçersiz dosya formatı.",
+    "success": "İzin günü dosyaları başarıyla alındı.",
+    "allowedDayIdRequired": "İzin günü ID'si gereklidir",
+    "notFound": "İzin günü dosyaları bulunamadı."
   }
 }
