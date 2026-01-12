@@ -4,6 +4,7 @@ const {t} = require("../../../config/i18n.config");
 const {checkUserRoles} = require("../../../utils/permissionsManager");
 const {getUserWorkSessions} = require("../../../database/userCompanyEntries");
 const getUserById = require("../../../database/users/getUserById");
+const {getAllowedDaysByUserId} = require("../../../database/allowedDays");
 const router = express.Router();
 
 /**
@@ -90,6 +91,29 @@ const router = express.Router();
  *                       example: "905466112233"
  *                 totalMinutes:
  *                   type: number
+ *                 allowedDays:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       user_id:
+ *                         type: string
+ *                       company_id:
+ *                         type: string
+ *                       start_date:
+ *                         type: string
+ *                         format: date-time
+ *                       end_date:
+ *                         type: string
+ *                         format: date-time
+ *                       description:
+ *                         type: string
+ *                       filesCount:
+ *                         type: number
+ *                       getFilesToken:
+ *                         type: string
  *       400:
  *         description: Geçersiz parametreler
  *       401:
@@ -128,6 +152,7 @@ router.post('/user-work-status', async (req, res) => {
         }
 
         const sessions = await getUserWorkSessions(targetUserId, companyId, startDate, endDate);
+        const { allowedDays } = await getAllowedDaysByUserId(userId, companyId, startDate, endDate)
         const user = await getUserById(targetUserId, ['id', 'name', 'surname', 'phone']);
 
         const totalMinutes = sessions
@@ -136,6 +161,7 @@ router.post('/user-work-status', async (req, res) => {
 
         return responseHelper.success(res, {
             sessions,
+            allowedDays,
             user,
             totalMinutes
         });
