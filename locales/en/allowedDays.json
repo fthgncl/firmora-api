@@ -18,6 +18,7 @@
         "success": "Allowed day ID retrieved successfully",
         "allowedDayIdRequired": "Allowed day ID is required",
         "dateRangeRequired": "Start date and end date are required",
-        "notFound": "Allowed day not found"
+        "notFound": "Allowed day not found",
+        "invalidFieldsLog": "Invalid fields: {{fields}}"
     }
 }

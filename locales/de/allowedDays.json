@@ -18,6 +18,7 @@
         "success": "Erlaubten Tag erfolgreich abgerufen",
         "allowedDayIdRequired": "Erlaubten Tag ID ist erforderlich",
         "dateRangeRequired": "Startdatum und Enddatum sind erforderlich",
-        "notFound": "Erlaubten Tag nicht gefunden"
+        "notFound": "Erlaubten Tag nicht gefunden",
+        "invalidFieldsLog": "Ungültige Felder: {{fields}}"
     }
 }

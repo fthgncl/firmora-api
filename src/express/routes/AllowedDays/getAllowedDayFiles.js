@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const fs = require('fs').promises;
-const getTransferById = require('../../../database/transfers/getTransferById');
 const {t} = require('../../../config/i18n.config');
 const responseHelper = require('../../utils/responseHelper');
-const {canUserViewTransfer, checkUserRoles} = require("../../../utils/permissionsManager");
+const {checkUserRoles} = require("../../../utils/permissionsManager");
 const {createToken, verifyToken} = require("../../../auth/jwt");
 const getAllowedDayById = require("../../../database/allowedDays/getAllowedDaysById");
 
@@ -220,7 +219,7 @@ router.post('/files', async (req, res) => {
                 await fs.access(fullPath);
                 const fileStats = await fs.stat(fullPath);
 
-                const fileToken = await createToken({transferId: transferId, fileIndex: i}, process.env.TOKEN_LIFETIME);
+                const fileToken = await createToken({allowedDayId, fileIndex: i}, process.env.TOKEN_LIFETIME);
 
                 // Dosya bilgilerini al
                 const fileName = path.basename(normalizedPath);
@@ -265,10 +264,10 @@ router.get('/file/:fileToken', async (req, res) => {
         const {fileToken} = req.params;
 
         // fileToken'ı decode et
-        let transferId, fileIndex;
+        let allowedDayId, fileIndex;
         try {
             const decoded = await verifyToken(fileToken);
-            transferId = decoded.transferId;
+            allowedDayId = decoded.allowedDayId;
             fileIndex = decoded.fileIndex;
         } catch (tokenError) {
             return responseHelper.error(res, t('errors:auth.tokenInvalid'), 401);
@@ -278,30 +277,34 @@ router.get('/file/:fileToken', async (req, res) => {
             return responseHelper.error(res, t('errors:auth.tokenMissing'), 401);
         }
 
-        const transfer = await getTransferById(transferId, ['files', 'user_id', 'company_id', 'to_user_id', 'to_user_company_id', 'from_scope', 'to_scope']);
 
-        if (!transfer) {
-            return responseHelper.error(res, t('transfers:getById.notFound'), 404);
+        const {allowedDay} = await getAllowedDayById(allowedDayId);
+
+        if (!allowedDay) {
+            return responseHelper.error(res, t('allowedDays:getId.notFound'), 404);
         }
 
-        if (!await canUserViewTransfer(userId, transfer)) {
-            return responseHelper.error(res, t('errors:permissions.cannotViewOtherUserTransferHistory'), 403);
+        if (!allowedDay.files) {
+            return responseHelper.error(res, t('allowedDays:getFiles.noFiles'), 404);
         }
 
-        if (!transfer.files) {
-            return responseHelper.error(res, t('transfers:files.noFiles'), 404);
+        const hasPermission = await checkUserRoles(userId, allowedDay.company_id, ['can_view_users_work_status']);
+        if (!hasPermission) {
+            return responseHelper.error(res, t('workStatus:get.cannotAccessInCompany'), 403);
         }
+
+
 
         let filePaths;
         try {
-            filePaths = JSON.parse(transfer.files);
+            filePaths = JSON.parse(allowedDay.files);
         } catch (parseError) {
-            return responseHelper.error(res, t('transfers:files.invalidFormat'), 400);
+            return responseHelper.error(res, t('allowedDays:getFiles.invalidFormat'), 400);
         }
 
         const index = parseInt(fileIndex);
         if (isNaN(index) || index < 0 || index >= filePaths.length) {
-            return responseHelper.error(res, t('transfers:files.invalidIndex'), 400);
+            return responseHelper.error(res, t('allowedDays:getFiles.invalidIndex'), 400);
         }
 
         const filePath = filePaths[index];
@@ -317,14 +320,14 @@ router.get('/file/:fileToken', async (req, res) => {
             if (err) {
                 console.error('Dosya gönderme hatası:', err);
                 if (!res.headersSent) {
-                    return responseHelper.error(res, t('transfers:files.sendError'), 500);
+                    return responseHelper.error(res, t('allowedDays:getFiles.sendError'), 500);
                 }
             }
         });
 
     } catch (error) {
         if (error.code === 'ENOENT') {
-            return responseHelper.error(res, t('transfers:files.fileNotFound'), 404);
+            return responseHelper.error(res, t('allowedDays:getFiles.filesNotFound'), 404);
         }
         if (error.status === 500) {
             return responseHelper.serverError(res, error);

@@ -18,7 +18,8 @@
     "success": "İzin günü başarıyla alındı.",
     "allowedDayIdRequired": "İzin günü ID'si gereklidir",
     "dateRangeRequired": "Başlangıç ve bitiş tarihleri gereklidir.",
-    "notFound": "İzin günü bulunamadı."
+    "notFound": "İzin günü bulunamadı.",
+    "invalidFieldsLog": "Geçersiz alanlar: {{fields}}"
   },
   "getFiles": {
     "noFiles": "İzin günü dosyaları bulunamadı.",
@@ -26,6 +27,8 @@
     "invalidFormat": "Geçersiz dosya formatı.",
     "success": "İzin günü dosyaları başarıyla alındı.",
     "allowedDayIdRequired": "İzin günü ID'si gereklidir",
-    "notFound": "İzin günü dosyaları bulunamadı."
+    "notFound": "İzin günü dosyaları bulunamadı.",
+    "invalidIndex": "Geçersiz dosya indeksi.",
+    "sendError": "Dosya gönderme hatası."
   }
 }
