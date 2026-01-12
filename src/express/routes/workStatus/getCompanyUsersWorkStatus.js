@@ -4,6 +4,7 @@ const {t} = require("../../../config/i18n.config");
 const {checkUserRoles} = require("../../../utils/permissionsManager");
 const {getUserWorkSessions} = require("../../../database/userCompanyEntries");
 const {getEmployeesByCompanyId} = require("../../../database/companies");
+const {getAllowedDaysByCompanyId} = require("../../../database/allowedDays");
 const router = express.Router();
 
 /**
@@ -91,6 +92,41 @@ const router = express.Router();
  *                               type: boolean
  *                       totalMinutes:
  *                         type: number
+ *                 allowedDays:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         example: "AD_97067d0322e89250"
+ *                       user_id:
+ *                         type: string
+ *                         example: "USR_5be149a20df10d5d"
+ *                       company_id:
+ *                         type: string
+ *                         example: "COM_75441bb5871d5970"
+ *                       start_date:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2026-01-18T21:00:00.000Z"
+ *                       end_date:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2026-01-23T20:59:00.000Z"
+ *                       description:
+ *                         type: string
+ *                         nullable: true
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2026-01-12T00:15:13.000Z"
+ *                       filesCount:
+ *                         type: number
+ *                         example: 0
+ *                       getFilesToken:
+ *                         type: string
+ *                         example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  *       400:
  *         description: Geçersiz parametreler
  *       401:
@@ -123,7 +159,7 @@ router.post('/company-users-work-status', async (req, res) => {
         }
 
         const employees = await getEmployeesByCompanyId(companyId, ['id', 'name', 'surname', 'phone']);
-
+        const {allowedDays} = await getAllowedDaysByCompanyId(companyId, startDate, endDate)
         const updatedEmployees = await Promise.all(
             employees.map(async (employee) => {
                 employee.sessions = await getUserWorkSessions(
@@ -142,7 +178,8 @@ router.post('/company-users-work-status', async (req, res) => {
         );
 
         return responseHelper.success(res, {
-            employees: updatedEmployees
+            employees: updatedEmployees,
+            allowedDays
         });
 
     } catch (error) {
