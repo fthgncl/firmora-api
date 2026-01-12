@@ -15,7 +15,9 @@
         "dateRangeRequired": "Startdatum und Enddatum sind erforderlich"
     },
     "getId": {
+        "success": "Erlaubten Tag erfolgreich abgerufen",
         "allowedDayIdRequired": "Erlaubten Tag ID ist erforderlich",
-        "dateRangeRequired": "Startdatum und Enddatum sind erforderlich"
+        "dateRangeRequired": "Startdatum und Enddatum sind erforderlich",
+        "notFound": "Erlaubten Tag nicht gefunden"
     }
 }

@@ -15,7 +15,9 @@
     "dateRangeRequired": "Başlangıç ve bitiş tarihleri gereklidir."
   },
   "getId": {
+    "success": "İzin günü başarıyla alındı.",
     "allowedDayIdRequired": "İzin günü ID'si gereklidir",
-    "dateRangeRequired": "Başlangıç ve bitiş tarihleri gereklidir."
+    "dateRangeRequired": "Başlangıç ve bitiş tarihleri gereklidir.",
+    "notFound": "İzin günü bulunamadı."
   }
 }

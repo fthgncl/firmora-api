@@ -31,7 +31,8 @@
     "updateFailed": "Beim Aktualisieren der Berechtigungen ist ein Fehler aufgetreten.",
     "cannotModifyImmunityUser": "Nur der Firmengründer kann die Berechtigungen dieses Benutzers ändern.",
     "cannotViewCompanyTransferHistory": "Sie haben keine Berechtigung, die Überweisungshistorie dieses Unternehmens anzuzeigen.",
-    "cannotViewOtherUserTransferHistory": "Sie haben keine Berechtigung, die Überweisungshistorie eines anderen Benutzers in diesem Unternehmen anzuzeigen."
+    "cannotViewOtherUserTransferHistory": "Sie haben keine Berechtigung, die Überweisungshistorie eines anderen Benutzers in diesem Unternehmen anzuzeigen.",
+    "cannotViewOtherUserWorkStatus": "Sie haben keine Berechtigung, den Arbeitsstatus eines anderen Benutzers in diesem Unternehmen anzuzeigen."
   },
   "database": {
     "invalidConnection": "Ungültiges Verbindungsobjekt!",
