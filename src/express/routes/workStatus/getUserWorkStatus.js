@@ -152,7 +152,7 @@ router.post('/user-work-status', async (req, res) => {
         }
 
         const sessions = await getUserWorkSessions(targetUserId, companyId, startDate, endDate);
-        const { allowedDays } = await getAllowedDaysByUserId(userId, companyId, startDate, endDate)
+        const { allowedDays } = await getAllowedDaysByUserId(targetUserId, companyId, startDate, endDate)
         const user = await getUserById(targetUserId, ['id', 'name', 'surname', 'phone']);
 
         const totalMinutes = sessions
