@@ -257,7 +257,47 @@ router.post('/files', async (req, res) => {
     }
 });
 
-
+/**
+ * @swagger
+ * /user-allowed-days/file/{fileToken}:
+ *   get:
+ *     summary: İzin günü dosyasını stream olarak indir
+ *     description: |
+ *       JWT token kullanarak izin günü dosyasını stream olarak indirir.
+ *       Token içerisinde allowedDayId ve fileIndex bilgileri encode edilmiştir.
+ *       Token, /user-allowed-days/files endpoint'inden alınan downloadUrl içerisinde bulunur.
+ *       React'te <img>, <video> veya download link olarak kullanılabilir.
+ *     tags:
+ *       - User Allowed Days
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: fileToken
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: İzin günü dosyası için JWT token (allowedDayId ve fileIndex içerir)
+ *         example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGxvd2VkRGF5SWQiOiJBTERfNWJlMTQ5YTIwZGYxMGQ1ZCIsImZpbGVJbmRleCI6MH0.xxxxx"
+ *     responses:
+ *       200:
+ *         description: Dosya başarıyla stream edildi
+ *         content:
+ *           application/octet-stream:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       400:
+ *         description: Geçersiz dosya index'i veya format hatası
+ *       401:
+ *         description: Token geçersiz veya eksik
+ *       403:
+ *         description: Erişim izni yok
+ *       404:
+ *         description: İzin günü veya dosya bulunamadı
+ *       500:
+ *         description: Sunucu hatası
+ */
 router.get('/file/:fileToken', async (req, res) => {
     try {
         const userId = req.tokenPayload?.id;
