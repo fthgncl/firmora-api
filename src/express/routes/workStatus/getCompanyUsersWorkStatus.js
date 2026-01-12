@@ -92,41 +92,41 @@ const router = express.Router();
  *                               type: boolean
  *                       totalMinutes:
  *                         type: number
- *                 allowedDays:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                         example: "AD_97067d0322e89250"
- *                       user_id:
- *                         type: string
- *                         example: "USR_5be149a20df10d5d"
- *                       company_id:
- *                         type: string
- *                         example: "COM_75441bb5871d5970"
- *                       start_date:
- *                         type: string
- *                         format: date-time
- *                         example: "2026-01-18T21:00:00.000Z"
- *                       end_date:
- *                         type: string
- *                         format: date-time
- *                         example: "2026-01-23T20:59:00.000Z"
- *                       description:
- *                         type: string
- *                         nullable: true
- *                       created_at:
- *                         type: string
- *                         format: date-time
- *                         example: "2026-01-12T00:15:13.000Z"
- *                       filesCount:
- *                         type: number
- *                         example: 0
- *                       getFilesToken:
- *                         type: string
- *                         example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                       allowedDays:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             id:
+ *                               type: string
+ *                               example: "AD_97067d0322e89250"
+ *                             user_id:
+ *                               type: string
+ *                               example: "USR_5be149a20df10d5d"
+ *                             company_id:
+ *                               type: string
+ *                               example: "COM_75441bb5871d5970"
+ *                             start_date:
+ *                               type: string
+ *                               format: date-time
+ *                               example: "2026-01-18T21:00:00.000Z"
+ *                             end_date:
+ *                               type: string
+ *                               format: date-time
+ *                               example: "2026-01-23T20:59:00.000Z"
+ *                             description:
+ *                               type: string
+ *                               nullable: true
+ *                             created_at:
+ *                               type: string
+ *                               format: date-time
+ *                               example: "2026-01-12T00:15:13.000Z"
+ *                             filesCount:
+ *                               type: number
+ *                               example: 0
+ *                             getFilesToken:
+ *                               type: string
+ *                               example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  *       400:
  *         description: Geçersiz parametreler
  *       401:
@@ -169,6 +169,7 @@ router.post('/company-users-work-status', async (req, res) => {
                     endDate
                 );
 
+                employee.allowedDays = allowedDays.filter(day => day.user_id === employee.id);
                 employee.totalMinutes = employee.sessions
                     .filter(session => session.durationMinutes !== null)
                     .reduce((sum, session) => sum + session.durationMinutes, 0);
@@ -177,9 +178,12 @@ router.post('/company-users-work-status', async (req, res) => {
             })
         );
 
+        console.log({
+            employees: updatedEmployees
+        });
+
         return responseHelper.success(res, {
-            employees: updatedEmployees,
-            allowedDays
+            employees: updatedEmployees
         });
 
     } catch (error) {
