@@ -14,13 +14,13 @@ const getAllowedDaysByCompanyId = async (companyId, startDate = null, endDate = 
         const params = [companyId];
 
         if (startDate && endDate) {
-            sql += ` AND start_date >= ? AND end_date <= ?`;
+            sql += ` AND NOT (end_date < ? OR start_date > ?)`;
             params.push(startDate, endDate);
         } else if (startDate) {
-            sql += ` AND start_date >= ?`;
+            sql += ` AND end_date >= ?`;
             params.push(startDate);
         } else if (endDate) {
-            sql += ` AND end_date <= ?`;
+            sql += ` AND start_date <= ?`;
             params.push(endDate);
         }
 
