@@ -45,29 +45,37 @@ const getUserById = require("../../../database/users/getUserById");
  *                       properties:
  *                         id:
  *                           type: string
- *                           example: "ALD_5be149a20df10d5d"
+ *                           example: "AD_5e05cf13d2706627"
  *                         user_id:
  *                           type: string
  *                           example: "USR_5be149a20df10d5d"
  *                         company_id:
  *                           type: string
- *                           example: "COM_5be149a20df10d5d"
+ *                           example: "COM_75441bb5871d5970"
  *                         start_date:
  *                           type: string
  *                           format: date-time
- *                           example: "2026-01-10T08:00:00.000Z"
+ *                           example: "2026-01-18T21:00:00.000Z"
  *                         end_date:
  *                           type: string
  *                           format: date-time
- *                           example: "2026-01-15T18:00:00.000Z"
+ *                           example: "2026-01-23T20:59:00.000Z"
  *                         description:
  *                           type: string
  *                           nullable: true
- *                           example: "Yıllık izin"
+ *                           example: "Test açıklama"
  *                         created_at:
  *                           type: string
  *                           format: date-time
- *                           example: "2026-01-08T10:30:00.000Z"
+ *                           example: "2026-01-12T18:33:12.000Z"
+ *                         filesCount:
+ *                           type: integer
+ *                           description: İzin gününe ait dosya sayısı
+ *                           example: 3
+ *                         getFilesToken:
+ *                           type: string
+ *                           description: Dosyaları almak için kullanılan JWT token
+ *                           example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGxvd2VkRGF5SWQiOiJBRF81ZTA1Y2YxM2QyNzA2NjI3IiwiaWF0IjoxNzY4MjQ2OTgzLCJleHAiOjE3NjgyNDc4ODN9.LHY1_imKlVt3VxwhvnfUMcGGmIKyxdKtw4P8BVxG3SY"
  *                     user:
  *                       type: object
  *                       properties:
@@ -76,10 +84,13 @@ const getUserById = require("../../../database/users/getUserById");
  *                           example: "Fatih"
  *                         surname:
  *                           type: string
- *                           example: "Gencal"
+ *                           example: "Gençal"
+ *                 status:
+ *                   type: string
+ *                   example: "success"
  *                 message:
  *                   type: string
- *                   example: "İzin günü bilgileri başarıyla getirildi"
+ *                   example: "İzin günü başarıyla alındı."
  *       400:
  *         description: Geçersiz parametreler
  *       401:
