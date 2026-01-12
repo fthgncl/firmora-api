@@ -15,7 +15,7 @@ const passwordResetRouter = require('../routes/passwordReset');
 const turnstileRouter = require('../routes/turnstile');
 const oauthKeysRouter = require('../routes/oauthKeys');
 const workStatusRouter = require('../routes/workStatus');
-const userAllowedDaysRouter = require('../routes/userAllowedDays');
+const userAllowedDaysRouter = require('../routes/AllowedDays');
 
 
 
