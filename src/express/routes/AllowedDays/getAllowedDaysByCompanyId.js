@@ -64,29 +64,54 @@ const {checkUserRoles} = require("../../../utils/permissionsManager");
  *                       id:
  *                         type: string
  *                         description: İzin günü ID'si
+ *                         example: "ALD_5be149a20df10d5d"
  *                       user_id:
  *                         type: string
  *                         description: Kullanıcı ID'si
+ *                         example: "USR_5be149a20df10d5d"
  *                       company_id:
  *                         type: string
  *                         description: Firma ID'si
+ *                         example: "COM_75441bb5871d5970"
  *                       start_date:
  *                         type: string
  *                         format: date-time
  *                         description: Başlangıç tarihi
+ *                         example: "2026-01-18T21:00:00.000Z"
  *                       end_date:
  *                         type: string
  *                         format: date-time
  *                         description: Bitiş tarihi
+ *                         example: "2026-01-23T20:59:00.000Z"
  *                       description:
  *                         type: string
  *                         description: Açıklama
+ *                         example: "Test açıklama"
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                         description: Oluşturulma tarihi
+ *                         example: "2026-01-12T18:33:12.000Z"
  *                       filesCount:
  *                         type: integer
  *                         description: Dosya sayısı
+ *                         example: 3
  *                       getFilesToken:
  *                         type: string
  *                         description: Dosyaları indirmek için token
+ *                         example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGxvd2VkRGF5SWQiOiJBTERfNWJlMTQ5YTIwZGYxMGQ1ZCIsImlhdCI6MTc2ODI4NTk3NywiZXhwIjoxNzY4Mjg2ODc3fQ.9EtCvJBC_rV8jfgjewJhSBxbNd1vHXH5vJXk5xWP1EI"
+ *                       user:
+ *                         type: object
+ *                         description: Kullanıcı bilgileri
+ *                         properties:
+ *                           name:
+ *                             type: string
+ *                             description: Kullanıcı adı
+ *                             example: "Fatih"
+ *                           surname:
+ *                             type: string
+ *                             description: Kullanıcı soyadı
+ *                             example: "Gençal"
  *       400:
  *         description: Geçersiz istek parametreleri
  *         content:

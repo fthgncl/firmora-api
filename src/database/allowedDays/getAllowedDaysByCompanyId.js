@@ -1,6 +1,7 @@
 const {queryAsync} = require('../utils/connection');
 const {t} = require("../../config/i18n.config");
 const {createToken} = require("../../auth/jwt");
+const getUserById = require("../../database/users/getUserById");
 
 const getAllowedDaysByCompanyId = async (companyId, startDate = null, endDate = null) => {
     if (!companyId) {
@@ -26,17 +27,27 @@ const getAllowedDaysByCompanyId = async (companyId, startDate = null, endDate = 
 
         const allowedDays = await queryAsync(sql, params);
 
-        const processedAllowedDays = allowedDays.map(day => {
-            const filesCount = day.files ? JSON.parse(day.files).length : 0;
-            const getFilesToken = createToken({allowedDayId: day.id}, process.env.FILE_DOWNLOAD_TOKEN_LIFETIME);
+        const processedAllowedDays = await Promise.all(
+            allowedDays.map(async day => {
+                const filesCount = day.files ? JSON.parse(day.files).length : 0;
+                const getFilesToken = createToken(
+                    { allowedDayId: day.id },
+                    process.env.FILE_DOWNLOAD_TOKEN_LIFETIME
+                );
 
-            delete day.files;
-            return {
-                ...day,
-                filesCount,
-                getFilesToken
-            }
-        });
+                const user = await getUserById(day.user_id, ['name', 'surname']);
+
+                delete day.files;
+
+                return {
+                    ...day,
+                    filesCount,
+                    getFilesToken,
+                    user
+                };
+            })
+        );
+
 
         return {
             status: 'success',
