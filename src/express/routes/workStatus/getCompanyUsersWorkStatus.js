@@ -178,10 +178,6 @@ router.post('/company-users-work-status', async (req, res) => {
             })
         );
 
-        console.log({
-            employees: updatedEmployees
-        });
-
         return responseHelper.success(res, {
             employees: updatedEmployees
         });
