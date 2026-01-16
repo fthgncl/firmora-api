@@ -72,6 +72,13 @@ const router = express.Router();
  *                         items:
  *                           type: object
  *                           properties:
+ *                             entryId:
+ *                               type: string
+ *                               example: "ENT_b1cbd61e6a50afa0"
+ *                             exitId:
+ *                               type: string
+ *                               example: "ENT_2e05767d02188cc1"
+ *                               nullable: true
  *                             entryTime:
  *                               type: string
  *                               format: date-time

@@ -26,6 +26,8 @@ const getUserWorkSessions = async (userId, companyId, startDate, endDate) => {
             const durationMinutes = Math.round((exitTime - entryTime) / (1000 * 60));
 
             sessions.push({
+                entryId: currentEntry.id,
+                exitId: record.id,
                 entryTime: currentEntry.created_at,
                 exitTime: record.created_at,
                 durationMinutes,
@@ -42,6 +44,8 @@ const getUserWorkSessions = async (userId, companyId, startDate, endDate) => {
         const entryTime = new Date(currentEntry.created_at);
         const durationMinutes = Math.round((new Date() - entryTime) / (1000 * 60));
         sessions.push({
+            entryId: currentEntry.id,
+            exitId: null,
             entryTime: currentEntry.created_at,
             exitTime: null,
             durationMinutes,
