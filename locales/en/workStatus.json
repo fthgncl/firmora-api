@@ -5,5 +5,17 @@
     "dateRangeRequired": "Date range is required.",
     "cannotAccess": "You cannot access the work status information of this user.",
     "cannotAccessInCompany": "You cannot access the work status information in this company."
+  },
+  "getEntryById": {
+    "success": "Entry retrieved successfully.",
+    "error": "An error occurred while retrieving the entry.",
+    "notFound": "Entry not found.",
+    "entryIdRequired": "Entry ID is required.",
+    "fieldsRequired": "Fields are required.",
+    "invalidFieldsLog": "Invalid fields",
+    "validFieldsRequired": "Valid fields are required",
+    "userFetchError": "User information could not be retrieved",
+    "companyFetchError": "Company information could not be retrieved",
+    "unauthorized": "You do not have access to this record"
   }
 }

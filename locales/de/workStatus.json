@@ -5,5 +5,17 @@
     "dateRangeRequired": "Datumsbereich ist erforderlich.",
     "cannotAccess": "Sie können nicht auf die Arbeitsstatusinformationen dieses Benutzers zugreifen.",
     "cannotAccessInCompany": "Sie können nicht auf die Arbeitsstatusinformationen in diesem Unternehmen zugreifen."
+  },
+  "getEntryById": {
+    "success": "Eintrag erfolgreich abgerufen.",
+    "error": "Fehler beim Abrufen des Eintrags.",
+    "notFound": "Eintrag nicht gefunden.",
+    "entryIdRequired": "Eintrag-ID ist erforderlich.",
+    "fieldsRequired": "Felder sind erforderlich.",
+    "invalidFieldsLog": "Ungültige Felder",
+    "validFieldsRequired": "Gültige Felder sind erforderlich",
+    "userFetchError": "Benutzerinformationen konnten nicht abgerufen werden",
+    "companyFetchError": "Firmeninformationen konnten nicht abgerufen werden",
+    "unauthorized": "Sie haben keinen Zugriff auf diesen Eintrag"
   }
 }

@@ -5,5 +5,17 @@
     "dateRangeRequired": "Tarih aralığı gereklidir.",
     "cannotAccess": "Bu kullanıcının çalışma durumu bilgilerine erişemezsiniz.",
     "cannotAccessInCompany": "Bu şirket içindeki çalışma durumu bilgilerine erişemezsiniz."
+  },
+  "getEntryById": {
+    "success": "Çalışma durumu başarıyla alınmıştır.",
+    "error": "Çalışma durumu alınamadı.",
+    "notFound": "Çalışma durumu bulunamadı.",
+    "entryIdRequired": "Çalışma durumu kimliği gereklidir.",
+    "fieldsRequired": "Alanlar gereklidir.",
+    "invalidFieldsLog": "Geçersiz alanlar",
+    "validFieldsRequired": "Geçerli alanlar gereklidir",
+    "userFetchError": "Kullanıcı bilgileri getirilirken hata oluştu",
+    "companyFetchError": "Firma bilgileri getirilirken hata oluştu",
+    "unauthorized": "Bu kayde erişiminiz yok"
   }
 }
