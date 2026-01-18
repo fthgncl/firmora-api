@@ -17,5 +17,16 @@
     "userFetchError": "Benutzerinformationen konnten nicht abgerufen werden",
     "companyFetchError": "Firmeninformationen konnten nicht abgerufen werden",
     "unauthorized": "Sie haben keinen Zugriff auf diesen Eintrag"
+  },
+  "update": {
+    "success": "Arbeitsstatus erfolgreich aktualisiert!",
+    "notFound": "Arbeitsstatus nicht gefunden",
+    "unknownError": "Beim Aktualisieren des Arbeitsstatus ist ein unbekannter Fehler aufgetreten",
+    "noUpdateData": "Keine Aktualisierungsdaten angegeben",
+    "youNotCompanyOwner": "Sie sind kein Firmenbesitzer, daher können Sie ihn nicht aktualisieren",
+    "error": "Beim Aktualisieren des Arbeitsstatus ist ein Fehler aufgetreten",
+    "noValidFields": "Keine gültigen Felder für die Aktualisierung gefunden",
+    "entryIdRequired": "Arbeitsstatus-ID ist erforderlich",
+    "serverError": "Serverfehler aufgetreten"
   }
 }

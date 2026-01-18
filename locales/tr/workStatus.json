@@ -17,5 +17,16 @@
     "userFetchError": "Kullanıcı bilgileri getirilirken hata oluştu",
     "companyFetchError": "Firma bilgileri getirilirken hata oluştu",
     "unauthorized": "Bu kayde erişiminiz yok"
+  },
+  "update": {
+    "success": "Çalışma durumu başarıyla güncellendi!",
+    "notFound": "Çalışma durumu bulunamadı",
+    "unknownError": "Çalışma durumu güncellenirken bilinmeyen bir hata oluştu",
+    "noUpdateData": "Çalışma durumu güncelleme verisi sağlanmadı",
+    "youNotCompanyOwner": "Çalışma durumu sahibi olmadığınız için güncelleme yapamazsınız",
+    "error": "Çalışma durumu güncellenirken hata oluştu",
+    "noValidFields": "Güncellenecek geçerli alan bulunamadı",
+    "entryIdRequired": "Çalışma durumu kimliği gereklidir",
+    "serverError": "Sunucu hatası oluştu"
   }
 }

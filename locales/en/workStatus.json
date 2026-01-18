@@ -17,5 +17,16 @@
     "userFetchError": "User information could not be retrieved",
     "companyFetchError": "Company information could not be retrieved",
     "unauthorized": "You do not have access to this record"
+  },
+  "update": {
+    "success": "Work status updated successfully!",
+    "notFound": "Work status not found",
+    "unknownError": "An unknown error occurred while updating the work status",
+    "noUpdateData": "No update data provided",
+    "youNotCompanyOwner": "You are not the company owner, so you cannot update it",
+    "error": "An error occurred while updating the work status",
+    "noValidFields": "No valid fields found for update",
+    "entryIdRequired": "Work status ID is required",
+    "serverError": "Server error occurred"
   }
 }
