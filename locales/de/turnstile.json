@@ -14,6 +14,7 @@
     "invalidEntryType": "Ungültiger Eintragstyp: {{validTypes}}.",
     "noteMustBeString": "Die Notiz muss eine Zeichenkette sein.",
     "noteTooLong": "Die Notiz kann höchstens {{maxLength}} Zeichen lang sein.",
-    "userNotInCompany": "Der Benutzer gehört nicht zu diesem Unternehmen."
+    "userNotInCompany": "Der Benutzer gehört nicht zu diesem Unternehmen.",
+    "duplicateEntryType": "Einen Eintrag/Abgangs-Eintrag haben Sie bereits gemacht."
   }
 }

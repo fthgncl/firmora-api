@@ -98,6 +98,9 @@ router.post('/scan', async (req, res) => {
         });
 
     } catch (error) {
+        if (error.status) {
+            return responseHelper.error(res, error.message, error.status);
+        }
         return responseHelper.serverError(res, error);
     }
 });

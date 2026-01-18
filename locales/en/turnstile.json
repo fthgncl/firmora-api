@@ -14,6 +14,7 @@
     "invalidEntryType": "Invalid entry type: {{validTypes}}.",
     "noteMustBeString": "Note must be a string.",
     "noteTooLong": "Note can be at most {{maxLength}} characters.",
-    "userNotInCompany": "User does not belong to this company."
+    "userNotInCompany": "User does not belong to this company.",
+    "duplicateEntryType": "An entry/exit record has already been made."
   }
 }

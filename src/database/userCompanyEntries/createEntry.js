@@ -28,9 +28,28 @@ const createEntry = async (userId, companyId, entryType, note = null) => {
         const isUserInCompany = accounts.some(acc => acc.company.id === companyId);
 
         if ( !isUserInCompany ) {
-            throw new Error(t('turnstile:scan.userNotInCompany'));
+            throw {
+                status: 400,
+                message: t('turnstile:scan.userNotInCompany')
+            }
         }
 
+        // Son kaydı kontrol et
+        const lastEntryQuery = `
+            SELECT entry_type
+            FROM user_company_entries
+            WHERE user_id = ? AND company_id = ?
+            ORDER BY created_at DESC
+            LIMIT 1
+        `;
+        const lastEntryResult = await queryAsync(lastEntryQuery, [userId, companyId]);
+
+        if (lastEntryResult.length > 0 && lastEntryResult[0].entry_type === entryType) {
+            throw {
+                status: 400,
+                message: t('turnstile:scan.duplicateEntryType')
+            }
+        }
 
         await beginTransaction();
 

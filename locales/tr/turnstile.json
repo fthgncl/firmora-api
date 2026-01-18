@@ -14,6 +14,7 @@
     "invalidEntryType": "Geçersiz giriş türü: {{validTypes}}.",
     "noteMustBeString": "Not bir metin olmalıdır.",
     "noteTooLong": "Not en fazla {{maxLength}} karakter olabilir.",
-    "userNotInCompany": "Kullanıcı bu şirkete ait değil."
+    "userNotInCompany": "Kullanıcı bu şirkete ait değil.",
+    "duplicateEntryType": "Zaten Giriş/Çıkış kaydı yapılmış."
   }
 }
