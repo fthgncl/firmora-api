@@ -32,7 +32,8 @@
     "cannotModifyImmunityUser": "Nur der Firmengründer kann die Berechtigungen dieses Benutzers ändern.",
     "cannotViewCompanyTransferHistory": "Sie haben keine Berechtigung, die Überweisungshistorie dieses Unternehmens anzuzeigen.",
     "cannotViewOtherUserTransferHistory": "Sie haben keine Berechtigung, die Überweisungshistorie eines anderen Benutzers in diesem Unternehmen anzuzeigen.",
-    "cannotViewOtherUserWorkStatus": "Sie haben keine Berechtigung, den Arbeitsstatus eines anderen Benutzers in diesem Unternehmen anzuzeigen."
+    "cannotViewOtherUserWorkStatus": "Sie haben keine Berechtigung, den Arbeitsstatus eines anderen Benutzers in diesem Unternehmen anzuzeigen.",
+    "cannotEditWorkHours": "Sie haben keine Berechtigung, die Arbeitszeiten in diesem Unternehmen zu ändern."
   },
   "database": {
     "invalidConnection": "Ungültiges Verbindungsobjekt!",

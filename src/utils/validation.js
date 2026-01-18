@@ -7,6 +7,7 @@ const phoneRegex = /^\d{2,4}\d{10}$/;
 const usernameRegex = /^[a-zA-ZığüşöçİĞÜŞÖÇ][a-zA-ZığüşöçİĞÜŞÖÇ0-9]{5,14}$/;
 const companyIdRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const amountRegex = /^(?!0\d)\d+(\.\d{1,2})?$/;
+const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/;
 
 
 const email = (email) => {
@@ -27,6 +28,10 @@ const hasSpecialChars = (text) => {
 
 const isValidHexColor = (color) => {
     return color && hexColorRegex.test(color);
+};
+
+const isValidIsoDate = (date) => {
+    return date && isoRegex.test(date);
 };
 
 const isValidPhone = (phone) => {
@@ -61,5 +66,6 @@ module.exports = {
     isValidPhone,
     isValidUsername,
     isValidCompanyId,
-    isValidAmount
+    isValidAmount,
+    isValidIsoDate
 };

@@ -27,6 +27,8 @@
     "error": "Beim Aktualisieren des Arbeitsstatus ist ein Fehler aufgetreten",
     "noValidFields": "Keine gültigen Felder für die Aktualisierung gefunden",
     "entryIdRequired": "Arbeitsstatus-ID ist erforderlich",
-    "serverError": "Serverfehler aufgetreten"
+    "serverError": "Serverfehler aufgetreten",
+    "newDateRequired": "Neue Datum ist erforderlich",
+    "invalidDateFormat": "Ungültiges Datumsformat"
   }
 }

@@ -27,6 +27,8 @@
     "error": "An error occurred while updating the work status",
     "noValidFields": "No valid fields found for update",
     "entryIdRequired": "Work status ID is required",
-    "serverError": "Server error occurred"
+    "serverError": "Server error occurred",
+    "newDateRequired": "New date is required",
+    "invalidDateFormat": "Invalid date format"
   }
 }

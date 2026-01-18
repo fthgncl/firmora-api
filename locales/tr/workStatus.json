@@ -27,6 +27,8 @@
     "error": "Çalışma durumu güncellenirken hata oluştu",
     "noValidFields": "Güncellenecek geçerli alan bulunamadı",
     "entryIdRequired": "Çalışma durumu kimliği gereklidir",
-    "serverError": "Sunucu hatası oluştu"
+    "serverError": "Sunucu hatası oluştu",
+    "newDateRequired": "Yeni tarih gereklidir",
+    "invalidDateFormat": "Geçersiz tarih formatı"
   }
 }

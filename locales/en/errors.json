@@ -32,7 +32,8 @@
     "cannotModifyImmunityUser": "Only the company creator can modify this user's permissions.",
     "cannotViewCompanyTransferHistory": "You do not have permission to view this company's transfer history.",
     "cannotViewOtherUserTransferHistory": "You do not have permission to view another user's transfer history in this company.",
-    "cannotViewOtherUserWorkStatus": "You do not have permission to view another user's work status in this company."
+    "cannotViewOtherUserWorkStatus": "You do not have permission to view another user's work status in this company.",
+    "cannotEditWorkHours": "You do not have permission to edit work hours in this company."
   },
   "database": {
     "invalidConnection": "Invalid connection object!",
