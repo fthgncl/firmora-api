@@ -64,7 +64,7 @@ const getEntryById = async (entryId, fields = null) => {
         // Sorguyu çalıştır
         const entries = await queryAsync(sql, [entryId]);
 
-        // Hesap bulunamadıysa hata fırlat
+        // Giriş/Çıkış kaydı bulunamadıysa hata fırlat
         if (!entries || entries.length === 0) {
             throw {
                 status: 404,
