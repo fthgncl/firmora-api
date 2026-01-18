@@ -29,6 +29,7 @@
     "entryIdRequired": "Work status ID is required",
     "serverError": "Server error occurred",
     "newDateRequired": "New date is required",
-    "invalidDateFormat": "Invalid date format"
+    "invalidDateFormat": "Invalid date format",
+    "invalidSequence": "This date update would break the entry-exit sequence. Please choose a different date."
   }
 }

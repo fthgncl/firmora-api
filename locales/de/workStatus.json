@@ -29,6 +29,7 @@
     "entryIdRequired": "Arbeitsstatus-ID ist erforderlich",
     "serverError": "Serverfehler aufgetreten",
     "newDateRequired": "Neue Datum ist erforderlich",
-    "invalidDateFormat": "Ungültiges Datumsformat"
+    "invalidDateFormat": "Ungültiges Datumsformat",
+    "invalidSequence": "Diese Datumsaktualisierung würde die Ein-/Austrittsreihenfolge unterbrechen. Bitte wählen Sie ein anderes Datum."
   }
 }

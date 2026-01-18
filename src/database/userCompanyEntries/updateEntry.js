@@ -28,7 +28,6 @@ const updateEntry = async (entryId, updateData) => {
             updatedFields: updateData
         };
     } catch (error) {
-        console.log(error);
         // getEntryById'den gelen hatalar zaten yapılandırılmış olarak gelir
         if (error.status && error.message && error.statusCode) {
             throw error;

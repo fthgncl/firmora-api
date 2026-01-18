@@ -3,6 +3,7 @@ const responseHelper = require("../../utils/responseHelper");
 const {t} = require("../../../config/i18n.config");
 const {checkUserRoles} = require("../../../utils/permissionsManager");
 const {getEntryById, updateEntry} = require("../../../database/userCompanyEntries");
+const getUserEntries = require("../../../database/userCompanyEntries/getUserEntries");
 const {isValidIsoDate} = require("../../../utils/validation");
 const router = express.Router();
 
@@ -80,6 +81,34 @@ router.post('/update-work-status-date', async (req, res) => {
 
         if (!hasPermission) {
             return responseHelper.error(res, t('errors:permissions.cannotEditWorkHours'), 403);
+        }
+
+        // Mevcut kayıt tarihi ile yeni tarih arasındaki tüm kayıtları çek
+        const currentDate = new Date(entry.created_at);
+        const minDate = currentDate < date ? currentDate : date;
+        const maxDate = currentDate > date ? currentDate : date;
+
+        const startDateStr = minDate.toISOString().split('T')[0];
+        const endDateStr = maxDate.toISOString().split('T')[0];
+
+        const entriesInRange = await getUserEntries(entry.user_id, company.id, startDateStr, endDateStr);
+
+        // Güncellenen kayıt hariç, diğer kayıtları yeni tarih ile birlikte sırala
+        const otherEntries = entriesInRange.filter(e => e.id !== entry.id);
+        const updatedEntry = { ...entry, created_at: date };
+        const allEntries = [...otherEntries, updatedEntry].sort((a, b) =>
+            new Date(a.created_at) - new Date(b.created_at)
+        );
+
+        // Entry-exit sıralamasını kontrol et
+        for (let i = 0; i < allEntries.length - 1; i++) {
+            const current = allEntries[i];
+            const next = allEntries[i + 1];
+
+            // Üst üste aynı tip kayıt varsa hata dön
+            if (current.entry_type === next.entry_type) {
+                return responseHelper.error(res, t('workStatus:update.invalidSequence'), 400);
+            }
         }
 
         const updateData = {

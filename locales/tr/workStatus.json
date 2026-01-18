@@ -29,6 +29,7 @@
     "entryIdRequired": "Çalışma durumu kimliği gereklidir",
     "serverError": "Sunucu hatası oluştu",
     "newDateRequired": "Yeni tarih gereklidir",
-    "invalidDateFormat": "Geçersiz tarih formatı"
+    "invalidDateFormat": "Geçersiz tarih formatı",
+    "invalidSequence": "Bu tarih güncellemesi giriş-çıkış sıralamasını bozacaktır. Lütfen uygun bir tarih seçiniz."
   }
 }
