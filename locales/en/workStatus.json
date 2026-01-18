@@ -4,7 +4,8 @@
     "companyIdRequired": "Company ID is required.",
     "dateRangeRequired": "Date range is required.",
     "cannotAccess": "You cannot access the work status information of this user.",
-    "cannotAccessInCompany": "You cannot access the work status information in this company."
+    "cannotAccessInCompany": "You cannot access the work status information in this company.",
+    "invalidDateRange": "Invalid date range"
   },
   "getEntryById": {
     "success": "Entry retrieved successfully.",

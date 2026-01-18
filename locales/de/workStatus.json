@@ -4,7 +4,8 @@
     "companyIdRequired": "Firmen-ID ist erforderlich.",
     "dateRangeRequired": "Datumsbereich ist erforderlich.",
     "cannotAccess": "Sie können nicht auf die Arbeitsstatusinformationen dieses Benutzers zugreifen.",
-    "cannotAccessInCompany": "Sie können nicht auf die Arbeitsstatusinformationen in diesem Unternehmen zugreifen."
+    "cannotAccessInCompany": "Sie können nicht auf die Arbeitsstatusinformationen in diesem Unternehmen zugreifen.",
+    "invalidDateRange": "Ungültiges Datumsbereich"
   },
   "getEntryById": {
     "success": "Eintrag erfolgreich abgerufen.",

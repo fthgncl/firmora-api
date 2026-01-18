@@ -159,6 +159,10 @@ router.post('/company-users-work-status', async (req, res) => {
             return responseHelper.error(res, t('workStatus:get.dateRangeRequired'), 400);
         }
 
+        if ( new Date(startDate) > new Date(endDate) ){
+            return responseHelper.error(res, t('workStatus:get.invalidDateRange'), 400);
+        }
+
         const hasPermission = await checkUserRoles(userId, companyId, ['can_view_users_work_status']);
 
         if (!hasPermission) {

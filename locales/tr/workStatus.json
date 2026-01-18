@@ -4,7 +4,8 @@
     "companyIdRequired": "Şirket kimliği gereklidir.",
     "dateRangeRequired": "Tarih aralığı gereklidir.",
     "cannotAccess": "Bu kullanıcının çalışma durumu bilgilerine erişemezsiniz.",
-    "cannotAccessInCompany": "Bu şirket içindeki çalışma durumu bilgilerine erişemezsiniz."
+    "cannotAccessInCompany": "Bu şirket içindeki çalışma durumu bilgilerine erişemezsiniz.",
+    "invalidDateRange": "Geçersiz tarih aralığı"
   },
   "getEntryById": {
     "success": "Çalışma durumu başarıyla alınmıştır.",
