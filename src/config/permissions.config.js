@@ -115,6 +115,12 @@ const permissions = {
         "name": "permissions:can_view_users_work_status.name",
         "description": "permissions:can_view_users_work_status.description"
     },
+    "can_edit_work_hours": {
+        "code": "t",
+        "category": "permissions:categories.personnel",
+        "name": "permissions:can_edit_work_hours.name",
+        "description": "permissions:can_edit_work_hours.description"
+    },
     "member": {
         "code": "z",
         "category": "permissions:categories.system",

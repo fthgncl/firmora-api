@@ -80,6 +80,10 @@
     "name": "Kullanıcı çalışma durumunu görüntüleme",
     "description": "Kullanıcı, bağlı olduğu şirketin çalışanlarının çalışma durumunu görüntüleyebilir."
   },
+  "can_edit_work_hours": {
+    "name": "Çalışma saatlerini düzenleme",
+    "description": "Kullanıcı, firmadaki çalışanların giriş ve çıkış saatlerini düzenleyebilir."
+  },
   "member": {
     "name": "Üye",
     "description": "Bu rol, kullanıcının firmaya üye olmasını sağlar ancak herhangi bir yetki vermez. Sadece üyelik amacıyla kullanılan bir roldür."

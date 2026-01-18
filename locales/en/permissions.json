@@ -84,6 +84,10 @@
     "name": "View user work status",
     "description": "The user can view the work status of other users within the same company."
   },
+  "can_edit_work_hours": {
+    "name": "Edit work hours",
+    "description": "The user can edit entry and exit times of employees in the company."
+  },
   "readUser": {
     "success": "User permissions retrieved",
     "noPermissions": "No permissions found for the user",

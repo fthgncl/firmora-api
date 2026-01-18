@@ -84,6 +84,10 @@
     "name": "Kundenarbeitstatus anzeigen",
     "description": "Der Benutzer kann den Arbeitstatus anderer Mitarbeiter innerhalb desselben Unternehmens einsehen."
   },
+  "can_edit_work_hours": {
+    "name": "Arbeitszeiten bearbeiten",
+    "description": "Der Benutzer kann die Ein- und Austrittszeiten der Mitarbeiter im Unternehmen bearbeiten."
+  },
   "readUser": {
     "success": "Benutzerberechtigungen abgerufen",
     "noPermissions": "Keine Berechtigungen für den Benutzer gefunden",
