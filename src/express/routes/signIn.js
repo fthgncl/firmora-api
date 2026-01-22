@@ -166,11 +166,11 @@ router.post('/', async (req, res) => {
 
     try {
         const query = `
-      SELECT id, username, password, max_companies, emailverified
-      FROM users
-      WHERE username = ?
-      LIMIT 1
-    `;
+            SELECT id, username, password, max_companies, emailverified, email
+            FROM users
+            WHERE username = ?
+            LIMIT 1
+        `;
         const users = await queryAsync(query, [username]);
 
         if (users.length === 0) {
@@ -198,6 +198,13 @@ router.post('/', async (req, res) => {
             max_companies: user.max_companies,
             rememberMe: !!rememberMe
         };
+
+        if ( user.email === process.env.GOOGLE_BACKUP_MAIL ) {
+            const [googleBackup] = await queryAsync('SELECT is_active FROM oauth_keys WHERE provider = "google" LIMIT 1');
+            if(!googleBackup || !googleBackup.is_active){
+                tokenPayload.googleBackup = false;
+            }
+        }
 
         const tokenLifetime = rememberMe
             ? process.env.REMEMBER_ME_TOKEN_LIFETIME
