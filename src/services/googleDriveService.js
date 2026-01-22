@@ -5,6 +5,7 @@ const path = require('path');
 const mime = require('mime-types'); // npm install mime-types
 const googleConfig = require('../config/google.config');
 const { getGoogleOAuthClientFromDb } = require('./googleOAuthService');
+const {queryAsync} = require("../database/utils/connection");
 
 let driveClient = null;
 
@@ -246,6 +247,14 @@ async function syncGoogleDriveBackupFolders() {
             message: 'Google Drive yedekleme işlemi başarıyla tamamlandı.',
         };
     } catch (error) {
+        // Hata oluştuğunda Google OAuth anahtarlarını devre dışı bırak
+        try {
+            await queryAsync("UPDATE oauth_keys SET is_active = 0 WHERE provider = 'google'");
+            console.log('[GoogleDriveBackup] Google OAuth keys deactivated due to backup error.');
+        } catch (dbError) {
+            console.error('[GoogleDriveBackup] Failed to deactivate OAuth keys:', dbError);
+        }
+
         // Hata durumunda senin formatına uygun dön
         return {
             status: 'error',
