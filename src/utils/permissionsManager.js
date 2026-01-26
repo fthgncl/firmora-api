@@ -5,7 +5,7 @@ const getCompaniesByOwnerId = require('../database/companies/getCompaniesByOwner
 const sortAlphabetically = require('./sortAlphabetically');
 
 async function readUserPermissions (userId, companyId = null){
-    try { // TODO: kullanıcı firma sahibi ise doğrudan "a" yetkisi verilebilir. Bu sayede diğer fonksiyonlardaki sahiplik kontrolü kaldırılabilir.
+    try {
         let query, params;
 
         if (companyId) {
