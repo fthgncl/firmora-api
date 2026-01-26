@@ -56,12 +56,16 @@ async function getBackupFoldersTotalSize() {
     return formatBytes(totalSizeInBytes);
 }
 
-async function createBackupInfo(){
+async function createBackupInfo(status){
+
+    if ( status && status === 'failed' || status === 'success'){
+        throw new Error('Invalid status provided');
+    }
 
     const id = await generateUniqueId('BI','backup_info');
     const backupSize = await getBackupFoldersTotalSize();
 
-    const query = `INSERT INTO backup_info (id, backup_size, backup_status) VALUES ('${id}', '${backupSize}', 'success')`;
+    const query = `INSERT INTO backup_info (id, backup_size, backup_status) VALUES ('${id}', '${backupSize}', '${status}')`;
     await queryAsync(query);
 
 

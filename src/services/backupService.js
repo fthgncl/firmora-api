@@ -3,6 +3,7 @@ const cron = require('node-cron');
 const logError = require('../utils/logger');
 const { startDatabaseBackupService } = require('./databaseBackupService');
 const { syncGoogleDriveBackupFolders } = require('./googleDriveService');
+const {createBackupInfo} = require("../database/backupInfo");
 
 const startBackupService = async () => {
     try {
@@ -32,6 +33,7 @@ const startBackupService = async () => {
             async () => {
                 console.log('[BackupService] Yedekleme işlemi başlatıldı...');
 
+
                 // 1) Veritabanı yedeği
                 const dbResult = await startDatabaseBackupService();
                 if (dbResult && dbResult.status === 'error') {
@@ -44,6 +46,7 @@ const startBackupService = async () => {
                     await logError(driveResult.message, driveResult.error);
                 }
 
+                await createBackupInfo('success');
                 console.log('[BackupService] Yedekleme işlemi tamamlandı.');
             },
             {
@@ -62,6 +65,7 @@ const startBackupService = async () => {
         };
 
     } catch (error) {
+        await createBackupInfo('failed');
         const errorMsg = `Backup servisi başlatma hatası: ${error.message}`;
         await logError(errorMsg, error);
         return { status: 'error', error, message: errorMsg };
