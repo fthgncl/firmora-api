@@ -104,5 +104,12 @@ module.exports = {
         is_active: 'TINYINT(1) NOT NULL DEFAULT 1',
         created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
         updated_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+    },
+    // son yedekleme bilgileri
+    backup_info:{
+        id: 'VARCHAR(36) NOT NULL UNIQUE',
+        backup_size: 'VARCHAR(20) NOT NULL',
+        backup_status: "ENUM('success','failed') NOT NULL",
+        created_at: 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP'
     }
 };
