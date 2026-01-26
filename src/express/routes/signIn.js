@@ -149,16 +149,17 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
-const { queryAsync } = require('../../database/utils/connection');
-const { createToken } = require("../../auth/jwt");
+const {queryAsync} = require('../../database/utils/connection');
+const {createToken} = require("../../auth/jwt");
 const responseHelper = require('../utils/responseHelper');
-const { t } = require('../../config/i18n.config');
-const { readUserPermissions } = require('../../utils/permissionsManager');
+const {t} = require('../../config/i18n.config');
+const {readUserPermissions} = require('../../utils/permissionsManager');
 const {cleanInputs} = require("../../utils/inputCleaner");
+const {getLastestSuccessfulBackupInfo, getLastestFailedBackupInfo} = require("../../database/backupInfo");
 
 router.post('/', async (req, res) => {
 
-    const { username, password, rememberMe } = cleanInputs(req.body);
+    const {username, password, rememberMe} = cleanInputs(req.body);
 
     if (!username || !password) {
         return responseHelper.error(res, t('errors:signIn.fieldsRequired'), 400);
@@ -199,11 +200,28 @@ router.post('/', async (req, res) => {
             rememberMe: !!rememberMe
         };
 
-        if ( user.email === process.env.GOOGLE_BACKUP_MAIL ) {
+        if (user.email === process.env.GOOGLE_BACKUP_MAIL) {
+            const backup_info = {};
             const [googleBackup] = await queryAsync('SELECT is_active FROM oauth_keys WHERE provider = "google" LIMIT 1');
-            if(!googleBackup || !googleBackup.is_active){
-                tokenPayload.googleBackup = false;
+
+            const lastSuccessfulBackup = await getLastestSuccessfulBackupInfo();
+            const lastFailedBackup = await getLastestFailedBackupInfo();
+
+            if (lastSuccessfulBackup && lastFailedBackup) {
+                if (lastFailedBackup.created_at > lastSuccessfulBackup.created_at) {
+                    backup_info.lastFailedBackup = lastFailedBackup;
+                }
             }
+
+            if (lastSuccessfulBackup) {
+                backup_info.lastSuccessfulBackup = lastSuccessfulBackup;
+            }
+
+            if (!googleBackup || !googleBackup.is_active) {
+                backup_info.googleBackup = false;
+            }
+
+            tokenPayload.backup_info = backup_info;
         }
 
         const tokenLifetime = rememberMe
