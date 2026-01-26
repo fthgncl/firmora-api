@@ -5,7 +5,10 @@
     "dateRangeRequired": "Tarih aralığı gereklidir.",
     "cannotAccess": "Bu kullanıcının çalışma durumu bilgilerine erişemezsiniz.",
     "cannotAccessInCompany": "Bu şirket içindeki çalışma durumu bilgilerine erişemezsiniz.",
-    "invalidDateRange": "Geçersiz tarih aralığı"
+    "invalidDateRange": "Geçersiz tarih aralığı",
+    "entryExitMismatch": "Giriş ve çıkış kayıtları farklı kullanıcılar için",
+    "companyMismatch": "Giriş ve çıkış kayıtları farklı şirketler için",
+    "entryExitTypeMismatch": "Giriş ve çıkış kayıtları farklı türler için"
   },
   "getEntryById": {
     "success": "Çalışma durumu başarıyla alınmıştır.",

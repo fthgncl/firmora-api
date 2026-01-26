@@ -5,7 +5,10 @@
     "dateRangeRequired": "Date range is required.",
     "cannotAccess": "You cannot access the work status information of this user.",
     "cannotAccessInCompany": "You cannot access the work status information in this company.",
-    "invalidDateRange": "Invalid date range"
+    "invalidDateRange": "Invalid date range",
+    "entryExitMismatch": "Entry and exit records are from different users",
+    "companyMismatch": "Entry and exit records are from different companies",
+    "entryExitTypeMismatch": "Entry and exit records are of different types"
   },
   "getEntryById": {
     "success": "Entry retrieved successfully.",
