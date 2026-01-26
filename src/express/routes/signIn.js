@@ -207,8 +207,8 @@ router.post('/', async (req, res) => {
             const lastSuccessfulBackup = await getLastestSuccessfulBackupInfo();
             const lastFailedBackup = await getLastestFailedBackupInfo();
 
-            if (lastSuccessfulBackup && lastFailedBackup) {
-                if (lastFailedBackup.created_at > lastSuccessfulBackup.created_at) {
+            if (lastFailedBackup) {
+                if ( !lastSuccessfulBackup || lastFailedBackup.created_at > lastSuccessfulBackup.created_at) {
                     backup_info.lastFailedBackup = lastFailedBackup;
                 }
             }
