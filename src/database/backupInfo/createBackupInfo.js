@@ -58,7 +58,7 @@ async function getBackupFoldersTotalSize() {
 
 async function createBackupInfo(status){
 
-    if ( status && status === 'failed' || status === 'success'){
+    if ( !status && status === 'failed' || status === 'success'){
         throw new Error('Invalid status provided');
     }
 
