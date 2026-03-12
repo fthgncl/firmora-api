@@ -21,7 +21,7 @@ const startServer = (app, port) => {
             try {
                 // SSL klasörü yolunu belirle: önce proje dizininde ara, yoksa C:/ssl kullan
                 const projectSslPath = path.join(process.cwd(), 'ssl');
-                const sslPath = fs.existsSync(projectSslPath) ? projectSslPath : 'C:/ssl';
+                const sslPath = fs.existsSync(projectSslPath) ? projectSslPath : 'C:/ssl/ligouse.com';
 
                 const privateKey = fs.readFileSync(path.join(sslPath, 'private.key'), 'utf8');
                 const certificate = fs.readFileSync(path.join(sslPath, 'certificate.crt'), 'utf8');
